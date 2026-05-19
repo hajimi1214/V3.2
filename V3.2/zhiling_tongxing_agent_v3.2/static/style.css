@@ -1,0 +1,21 @@
+/* 智领铜行--人工智能机械臂多Agent智能决策平台样式加载清单。 */
+@import url('/static/styles/platform/00-base/screen_adaptive_layout.css');
+@import url('/static/styles/platform/00-base/base_shell.css');
+@import url('/static/styles/platform/01-readability/operator_readability_overlay.css');
+@import url('/static/styles/platform/02-decision-flow/progressive_agent_flow.css');
+@import url('/static/styles/platform/03-device-config/device_parameter_config.css');
+@import url('/static/styles/platform/04-config-center/config_report_gateway.css');
+@import url('/static/styles/platform/04-config-center/config_detail_panel.css');
+@import url('/static/styles/platform/05-module-detail/module_detail_overlay.css');
+@import url('/static/styles/platform/06-agent-review/agent_decision_review.css');
+@import url('/static/styles/platform/07-workflow-canvas/workflow_canvas_builder.css');
+@import url('/static/styles/platform/07-workflow-canvas/workflow_canvas_interaction.css');
+@import url('/static/styles/platform/07-workflow-canvas/workflow_canvas_layout.css');
+@import url('/static/styles/platform/08-agent-model-runtime/agent_model_import.css');
+@import url('/static/styles/platform/09-governance-workflow/governance_workflow_panel.css');
+@import url('/static/styles/platform/09-governance-workflow/agent_component_drawer.css');
+@import url('/static/styles/platform/10-navigation-shell/platform_navigation_shell.css');
+@import url('/static/styles/platform/11-industrial-state-media/industrial_state_media_gate.css');
+@import url('/static/styles/platform/12-execution-topology/execution_topology.css');
+@import url('/static/styles/platform/13-command-dispatch/command_dispatch_button.css');
+@import url('/static/styles/platform/14-platform-runtime/platform_runtime_docs.css');

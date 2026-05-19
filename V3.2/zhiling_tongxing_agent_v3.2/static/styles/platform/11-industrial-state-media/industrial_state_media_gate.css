@@ -1,0 +1,160 @@
+
+.state-frame-panel .state-frame-body{
+  grid-template-columns:minmax(0,1.25fr) .52fr!important;
+  align-items:stretch;
+}
+.state-frame-media{
+  position:relative;
+  min-height:0;
+  width:100%;
+  height:100%;
+  border:1px solid rgba(24,231,255,.24);
+  border-radius:8px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 46%,rgba(24,231,255,.12),transparent 36%),
+    linear-gradient(rgba(24,231,255,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(24,231,255,.045) 1px,transparent 1px),
+    rgba(3,17,33,.86);
+  background-size:auto,40px 40px,40px 40px,auto;
+  box-shadow:inset 0 0 24px rgba(24,231,255,.05),0 10px 24px rgba(0,0,0,.18);
+}
+.state-frame-empty{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:18px;
+  text-align:center;
+  color:#d9f7ff;
+  background:linear-gradient(180deg, rgba(3,17,33,.22), rgba(3,17,33,.68));
+}
+.state-frame-empty::before{
+  content:'⚠';
+  width:52px;
+  height:52px;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  color:#ffb13c;
+  font-size:26px;
+  border:1px solid rgba(255,177,60,.34);
+  background:rgba(255,177,60,.08);
+  box-shadow:0 0 18px rgba(255,177,60,.12);
+}
+.state-frame-empty b{
+  color:#ffcf7b;
+  font-size:18px!important;
+  letter-spacing:.6px;
+}
+.state-frame-empty span{
+  max-width:460px;
+  color:#9fc1d8;
+  font-size:12px;
+  line-height:1.65;
+}
+.state-frame-video{
+  display:none;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  background:#020d18;
+}
+.state-frame-body.state-video-ready .state-frame-empty{display:none;}
+.state-frame-body.state-video-ready .state-frame-video{display:block;}
+.state-frame-metrics b.offline{color:#ffb13c!important;}
+.state-frame-metrics b.online{color:#41f17a!important;}
+.state-frame-panel .panel-head [data-state-frame-label]{color:#ffcf7b;}
+.state-frame-panel.state-device-connected .panel-head [data-state-frame-label]{color:#18e7ff;}
+.module-detail-primary .state-frame-panel.focused-clone-panel .state-frame-body{
+  min-height:420px;
+}
+.module-detail-primary .state-frame-panel.focused-clone-panel .state-frame-empty b{
+  font-size:22px!important;
+}
+@media(max-height:820px){
+  .module-detail-primary .state-frame-panel.focused-clone-panel .state-frame-body{min-height:340px;}
+  .state-frame-empty b{font-size:16px!important;}
+  .state-frame-empty span{font-size:11px;}
+}
+
+
+.state-frame-body:not(.state-video-ready) .state-frame-video,
+.state-frame-body.state-no-device .state-frame-video{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+}
+.state-frame-body:not(.state-video-ready) .state-frame-empty,
+.state-frame-body.state-no-device .state-frame-empty{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+.state-frame-body.state-video-ready .state-frame-empty{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+}
+.state-frame-body.state-video-ready .state-frame-video{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+.state-frame-empty b::after{
+  content:' / 等待系统配置接入';
+  font-weight:700;
+  color:#9fc1d8;
+  font-size:12px;
+  letter-spacing:0;
+}
+body.connected-auto-flow-expanded #treeViewport .tree-node.flow-canvas-node{
+  transition:box-shadow .22s ease, border-color .22s ease, transform .22s ease!important;
+}
+body.connected-auto-flow-expanded #treeViewport .tree-node.workflow-node-hidden{
+  display:block!important;
+  opacity:1!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+}
+body.connected-auto-flow-expanded #treeViewport .flow-canvas-line{
+  opacity:.95!important;
+}
+
+
+.state-frame-body.state-no-device .state-frame-media,
+.state-frame-body:not(.state-video-ready) .state-frame-media{
+  background:
+    linear-gradient(rgba(4,18,34,.52),rgba(4,18,34,.58)),
+    radial-gradient(circle at 50% 46%,rgba(255,177,60,.08),transparent 34%),
+    url('/static/assets/platform_copper_scene.png') center/cover no-repeat,
+    linear-gradient(rgba(24,231,255,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(24,231,255,.04) 1px,transparent 1px),
+    rgba(3,17,33,.92)!important;
+}
+.state-frame-body.state-no-device .state-frame-video,
+.state-frame-body:not(.state-video-ready) .state-frame-video{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+}
+.state-frame-body.state-no-device .state-frame-empty,
+.state-frame-body:not(.state-video-ready) .state-frame-empty{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+.state-frame-body.state-video-ready .state-frame-empty{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+}
+.state-frame-body.state-video-ready .state-frame-video{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+

@@ -1,0 +1,120 @@
+
+body.no-device-execution-flow #treeViewport .tree-node.flow-canvas-node,
+body.no-device-execution-flow #treeViewport .tree-node[data-node],
+body.no-device-execution-flow #treeViewport .custom-agent,
+body.no-device-execution-flow #treeViewport .add-agent{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+body.no-device-execution-flow #treeViewport .flow-canvas-line,
+body.no-device-execution-flow #treeViewport path.flow-canvas-line{
+  display:none!important;
+  opacity:0!important;
+}
+body.no-device-execution-flow .tree-viewport.workflow-canvas-empty::before{
+  content:'暂无设备连接';
+  color:rgba(255,207,123,.88);
+  letter-spacing:.08em;
+  font-size:26px;
+}
+body.no-device-execution-flow .tree-viewport.workflow-canvas-empty::after{
+  content:'请先进入“系统配置”完成设备接入；未连接设备时，平台不会加载默认多Agent决策树。';
+  color:rgba(159,193,216,.90);
+  font-size:13px;
+}
+body.execution-step-flow #treeViewport .tree-node.workflow-node-hidden,
+body.execution-step-flow.connected-auto-flow-expanded #treeViewport .tree-node.workflow-node-hidden,
+body.execution-step-flow #treeViewport .tree-node.future-node{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+body.execution-step-flow .tree-viewport.canvas-builder{
+  overflow:auto!important;
+  min-height:0!important;
+}
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node{
+  display:block;
+  border-radius:10px!important;
+  overflow:hidden!important;
+  box-shadow:0 8px 22px rgba(0,0,0,.28), inset 0 0 18px rgba(24,231,255,.045)!important;
+}
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node.root,
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node.model,
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node.fusion{
+  min-height:88px!important;
+  padding:14px 14px!important;
+}
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node.agent{
+  min-height:118px!important;
+  max-height:126px!important;
+  padding:32px 12px 10px!important;
+}
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node h3{
+  font-size:13px!important;
+  line-height:1.2!important;
+  white-space:normal!important;
+  padding-right:38px!important;
+  letter-spacing:0!important;
+}
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node.agent h3{padding-left:26px!important;}
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node p,
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node .node-work-summary{
+  font-size:9.6px!important;
+  line-height:1.34!important;
+  margin:3px 0!important;
+  white-space:normal!important;
+  display:-webkit-box!important;
+  -webkit-line-clamp:2!important;
+  -webkit-box-orient:vertical!important;
+  overflow:hidden!important;
+  color:#a7c4db!important;
+}
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node .node-work-summary{
+  -webkit-line-clamp:1!important;
+  color:#6fe7ff!important;
+}
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node em{
+  width:26px!important;
+  height:26px!important;
+  font-size:13px!important;
+  border-radius:7px!important;
+}
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node.agent em{
+  position:absolute!important;
+  left:10px!important;
+  top:8px!important;
+}
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node strong,
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node small,
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node .badge{
+  font-size:9px!important;
+}
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node.agent .badge{
+  top:9px!important;
+  right:8px!important;
+  padding:3px 5px!important;
+}
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node.fusion h3,
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node.root h3,
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node.model h3{
+  font-size:13.5px!important;
+}
+body.execution-step-flow .flow-canvas-line.execution-step-line{
+  stroke:#22dfff!important;
+  stroke-width:2.2!important;
+  opacity:.82!important;
+  filter:drop-shadow(0 0 5px rgba(24,231,255,.36));
+}
+body.execution-step-flow .flow-canvas-line.execution-step-line.active-line{
+  stroke:#41f17a!important;
+  stroke-width:3!important;
+  opacity:1!important;
+  stroke-dasharray:8 8!important;
+  animation:dash 1.05s linear infinite!important;
+}
+
+

@@ -1,0 +1,385 @@
+
+:root{
+  --side: 286px;
+}
+.sidebar{
+  padding:20px 16px 16px;
+}
+.brand-block{
+  height:110px;
+  gap:16px;
+  padding:0 6px 20px;
+}
+.brand-logo{
+  width:72px;
+  height:72px;
+  border-radius:18px;
+  font-size:38px;
+}
+.brand-title{
+  font-size:26px;
+}
+.brand-sub{
+  font-size:15px;
+  line-height:1.35;
+}
+.brand-ver{
+  font-size:12px;
+}
+.nav-list{
+  gap:8px;
+  padding-top:20px;
+}
+.nav-item{
+  height:52px;
+  border-radius:11px;
+  padding:0 18px;
+  gap:16px;
+  font-size:17px;
+  letter-spacing:.2px;
+}
+.nav-item span{
+  width:22px;
+  font-size:19px;
+}
+.nav-item i{
+  min-width:22px;
+  height:22px;
+  border-radius:11px;
+  font-size:11px;
+}
+.platform-card{
+  height:154px;
+  padding:16px;
+}
+.main-stage{
+  padding:16px 18px 12px;
+  gap:9px;
+  grid-template-rows:clamp(70px,8vh,90px) 34px minmax(430px,2fr) minmax(150px,.48fr) minmax(118px,.34fr);
+}
+.title-area h1{
+  font-size:clamp(30px,2.05vw,42px);
+}
+.title-area p{
+  font-size:clamp(13px,.8vw,15px);
+}
+.tree-panel.workflow-canvas-mode{
+  grid-template-rows:auto auto minmax(0,1fr);
+  gap:8px;
+}
+.tree-panel.workflow-canvas-mode .panel-head{
+  min-height:42px;
+  padding:8px 14px;
+}
+.tree-panel.workflow-canvas-mode .panel-head h2{
+  font-size:18px;
+}
+.tree-panel.workflow-canvas-mode .panel-head p{
+  font-size:11px;
+}
+.tree-panel.workflow-canvas-mode .panel-head .focus-pill{
+  max-width:520px;
+}
+.workflow-canvas-toolbar{
+  min-height:50px;
+  padding:8px 12px;
+  margin:0 10px;
+  align-items:center;
+  z-index:80;
+}
+.workflow-mode-group{
+  flex:0 0 auto;
+}
+.workflow-action-group{
+  flex:1 1 auto;
+  justify-content:flex-end;
+}
+.workflow-canvas-toolbar button,
+.workflow-canvas-toolbar select{
+  height:32px;
+  font-size:11.5px;
+  padding:0 11px;
+}
+.workflow-mode-label,
+.workflow-mode-help{
+  font-size:12px;
+}
+.tree-panel.workflow-canvas-mode .tree-viewport{
+  margin:0 10px 10px;
+  min-height:360px;
+}
+.tree-viewport.canvas-builder{
+  overflow:hidden;
+}
+.tree-node.custom-agent{
+  width:220px!important;
+  min-width:220px!important;
+  height:146px!important;
+  max-height:146px!important;
+  padding-top:34px!important;
+}
+.tree-node.custom-agent h3{
+  font-size:14px;
+}
+.tree-node.custom-agent p{
+  font-size:10px;
+  line-height:1.25;
+}
+.flow-canvas-hint{
+  max-width:58%!important;
+  font-size:12px!important;
+  bottom:12px!important;
+}
+.flow-agent-library.workflow-agent-library{
+  position:fixed!important;
+  top:150px!important;
+  right:30px!important;
+  left:auto;
+  width:420px;
+  max-width:calc(100vw - var(--side) - 56px);
+  max-height:calc(100vh - 178px);
+  resize:both;
+  min-width:340px;
+  min-height:260px;
+  z-index:1600;
+  box-shadow:0 22px 80px rgba(0,0,0,.56),0 0 36px rgba(24,231,255,.18);
+}
+.flow-agent-library.workflow-agent-library.open{
+  display:flex;
+  flex-direction:column;
+}
+.flow-agent-library-head{
+  cursor:move;
+  flex:0 0 46px;
+}
+.flow-agent-library-head b::after{
+  content:'  · 可拖动';
+  color:#7beeff;
+  font-size:11px;
+  letter-spacing:0;
+}
+.flow-agent-library.workflow-agent-library > p{
+  flex:0 0 auto;
+}
+.workflow-agent-library .agent-lib-section{
+  min-height:0;
+}
+.workflow-agent-library .agent-lib-list{
+  max-height:210px;
+}
+.flow-agent-library.workflow-agent-library.dragging-library{
+  user-select:none;
+  transition:none!important;
+  box-shadow:0 28px 100px rgba(0,0,0,.70),0 0 50px rgba(24,231,255,.30);
+}
+.flow-agent-library.workflow-agent-library.library-minimized{
+  width:260px!important;
+  min-width:260px!important;
+  height:48px!important;
+  min-height:48px!important;
+  overflow:hidden!important;
+  resize:none;
+}
+.flow-agent-library.workflow-agent-library.library-minimized > p,
+.flow-agent-library.workflow-agent-library.library-minimized .agent-lib-section{
+  display:none!important;
+}
+.detail-grid{
+  gap:8px;
+}
+.bottom-grid{
+  gap:8px;
+}
+.detail-grid .panel,
+.bottom-grid .panel{
+  min-height:0;
+}
+.panel-head.compact h3{
+  font-size:14px;
+}
+@media(max-width:1460px){
+  :root{--side:258px;}
+  .nav-item{height:48px;font-size:16px;padding:0 15px;}
+  .brand-logo{width:64px;height:64px;font-size:34px;}
+  .brand-title{font-size:23px;}
+  .main-stage{grid-template-rows:62px 30px minmax(390px,1.95fr) minmax(138px,.46fr) minmax(108px,.32fr);}
+  .workflow-canvas-toolbar{align-items:flex-start;flex-direction:column;gap:7px;min-height:86px;}
+  .workflow-action-group{justify-content:flex-start;width:100%;}
+  .flow-agent-library.workflow-agent-library{top:164px!important;right:18px!important;width:380px;max-width:calc(100vw - var(--side) - 38px);}
+  .tree-panel.workflow-canvas-mode .tree-viewport{min-height:310px;}
+}
+@media(max-height:760px){
+  .nav-item{height:44px;font-size:15.5px;}
+  .main-stage{grid-template-rows:56px 28px minmax(330px,1.85fr) minmax(132px,.42fr) minmax(104px,.30fr);gap:6px;}
+  .tree-panel.workflow-canvas-mode .tree-viewport{min-height:280px;}
+  .flow-agent-library.workflow-agent-library{top:130px!important;max-height:calc(100vh - 150px);}
+}
+
+
+:root{
+  --workflow-canvas-w: 1880px;
+  --workflow-canvas-h: 820px;
+}
+.sidebar{
+  width: var(--side);
+  flex: 0 0 var(--side);
+}
+.tree-panel.workflow-canvas-mode.workflow-canvas-mode{
+  min-height: min(68vh, 720px);
+}
+.tree-panel.workflow-canvas-mode .tree-viewport,
+.tree-viewport.canvas-builder{
+  overflow: auto !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  padding: 0;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(24,231,255,.52) rgba(2,18,34,.76);
+}
+.tree-viewport.canvas-builder::-webkit-scrollbar{
+  width: 10px;
+  height: 10px;
+}
+.tree-viewport.canvas-builder::-webkit-scrollbar-track{
+  background: rgba(2,18,34,.82);
+  border-radius: 999px;
+}
+.tree-viewport.canvas-builder::-webkit-scrollbar-thumb{
+  background: linear-gradient(135deg,rgba(24,231,255,.78),rgba(31,151,255,.62));
+  border-radius: 999px;
+  border: 2px solid rgba(2,18,34,.82);
+}
+.tree-viewport.canvas-builder::before{
+  content: '';
+  display: block;
+  width: var(--workflow-canvas-w);
+  height: var(--workflow-canvas-h);
+  pointer-events: none;
+}
+.flow-canvas-svg{
+  width: var(--workflow-canvas-w) !important;
+  height: var(--workflow-canvas-h) !important;
+  min-width: var(--workflow-canvas-w);
+  min-height: var(--workflow-canvas-h);
+  overflow: visible;
+}
+.tree-viewport.canvas-builder .tree-node{
+  box-sizing: border-box;
+  overflow: visible;
+}
+.tree-viewport.canvas-builder .tree-node.agent,
+.tree-viewport.canvas-builder .tree-node.custom-agent{
+  min-height: 174px !important;
+  height: auto !important;
+  padding: 44px 16px 16px !important;
+  display: block;
+}
+.tree-viewport.canvas-builder .tree-node.root,
+.tree-viewport.canvas-builder .tree-node.model{
+  min-height: 102px !important;
+  height: auto !important;
+  padding: 18px 18px !important;
+}
+.tree-viewport.canvas-builder .tree-node.fusion{
+  min-height: 92px !important;
+  height: auto !important;
+  padding: 16px 18px !important;
+}
+.tree-viewport.canvas-builder .tree-node h3{
+  font-size: 17px !important;
+  line-height: 1.22;
+  white-space: normal;
+  padding-right: 56px;
+}
+.tree-viewport.canvas-builder .tree-node.agent h3,
+.tree-viewport.canvas-builder .tree-node.custom-agent h3{
+  margin-top: 2px;
+}
+.tree-viewport.canvas-builder .tree-node p,
+.tree-viewport.canvas-builder .tree-node .node-work-summary{
+  font-size: 12px !important;
+  line-height: 1.42 !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  color: #b9d7ea;
+}
+.tree-viewport.canvas-builder .tree-node strong,
+.tree-viewport.canvas-builder .tree-node small,
+.tree-viewport.canvas-builder .tree-node .badge{
+  font-size: 12px !important;
+}
+.tree-viewport.canvas-builder .tree-node.agent .badge,
+.tree-viewport.canvas-builder .tree-node.custom-agent .badge{
+  top: 48px !important;
+  right: 14px !important;
+}
+.tree-viewport.canvas-builder .tree-node.agent em,
+.tree-viewport.canvas-builder .tree-node.custom-agent em{
+  position: absolute;
+  left: 18px;
+  top: 18px;
+  width: 38px;
+  height: 38px;
+}
+.tree-viewport.canvas-builder .tree-node.agent h3,
+.tree-viewport.canvas-builder .tree-node.custom-agent h3{
+  padding-left: 0;
+}
+.tree-viewport.canvas-builder .node-enable-toggle{
+  top: 12px !important;
+  right: 12px !important;
+  z-index: 12;
+}
+.tree-viewport.canvas-builder .node-delete-btn{
+  top: 12px !important;
+  right: 70px !important;
+  z-index: 13;
+}
+.tree-viewport.canvas-builder .tree-node:not(.custom-agent) .node-delete-btn{
+  display: none !important;
+}
+.tree-viewport.canvas-builder .flow-canvas-hint{
+  position: sticky !important;
+  left: 14px !important;
+  bottom: 10px !important;
+  max-width: min(980px, calc(100vw - var(--side) - 80px)) !important;
+  z-index: 120;
+}
+.tree-viewport.canvas-builder .add-agent{
+  min-height: 112px !important;
+}
+.flow-agent-library.workflow-agent-library.workflow-agent-library{
+  max-height: min(78vh, 640px) !important;
+}
+.workflow-agent-library .agent-lib-list{
+  max-height: 260px !important;
+}
+.workflow-canvas-size-tag{
+  position: sticky;
+  left: calc(100% - 220px);
+  top: 10px;
+  z-index: 90;
+  width: max-content;
+  border: 1px solid rgba(24,231,255,.28);
+  background: rgba(4,29,49,.78);
+  color: #8ceeff;
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 12px;
+  font-weight: 900;
+  pointer-events: none;
+  box-shadow: 0 0 20px rgba(24,231,255,.12);
+}
+@media(max-width:1460px){
+  :root{--workflow-canvas-w:1760px;--workflow-canvas-h:800px;}
+  .tree-viewport.canvas-builder .tree-node h3{font-size:16px!important;}
+  .tree-viewport.canvas-builder .tree-node p,
+  .tree-viewport.canvas-builder .tree-node .node-work-summary{font-size:11.5px!important;}
+}
+@media(max-height:760px){
+  :root{--workflow-canvas-h:760px;}
+  .tree-panel.workflow-canvas-mode.workflow-canvas-mode{min-height: min(70vh, 660px);}
+}
+

@@ -1,0 +1,75 @@
+
+body.agent-library-open:not(.workflow-agent-library-open) #agentLibraryBackdrop{display:none!important;}
+body.workflow-agent-library-open{overflow:hidden!important;}
+body.workflow-agent-library-open #agentLibraryBackdrop{display:none!important;}
+body.workflow-agent-library-open .flow-agent-library{display:none!important;}
+.agent-component-drawer-mask{
+  position:fixed;
+  inset:0;
+  z-index:30000;
+  display:none;
+  background:linear-gradient(90deg,rgba(1,8,18,.42),rgba(1,8,18,.18));
+}
+body.workflow-agent-library-open .agent-component-drawer-mask{display:block;}
+.agent-component-drawer{
+  position:absolute;
+  top:18px;
+  right:18px;
+  bottom:18px;
+  width:min(620px,calc(100vw - 360px));
+  min-width:480px;
+  border:1px solid rgba(24,231,255,.42);
+  border-radius:20px;
+  background:linear-gradient(180deg,rgba(5,29,52,.99),rgba(3,15,31,.99));
+  box-shadow:-18px 0 70px rgba(0,0,0,.68),0 0 0 1px rgba(24,231,255,.08) inset,0 0 46px rgba(24,231,255,.14);
+  color:#dff7ff;
+  display:grid;
+  grid-template-rows:auto auto minmax(0,1fr);
+  overflow:hidden;
+}
+.agent-component-drawer-head{
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 22px;
+  border-bottom:1px solid rgba(24,231,255,.22);
+  background:linear-gradient(90deg,rgba(13,82,111,.88),rgba(3,26,49,.96));
+}
+.agent-component-drawer-head span{display:block;color:#30ecff;font-size:12px;font-weight:1000;letter-spacing:.24em;margin-bottom:4px;}
+.agent-component-drawer-head b{display:block;font-size:22px;line-height:1.1;color:#f0fcff;}
+.agent-component-drawer-head button{width:40px;height:40px;border-radius:12px;border:1px solid rgba(24,231,255,.35);background:rgba(24,231,255,.1);color:#eafcff;font-size:22px;font-weight:1000;cursor:pointer;}
+.agent-component-drawer-info{padding:14px 22px;color:#a9cadc;font-size:13px;font-weight:850;line-height:1.6;background:rgba(24,231,255,.045);border-bottom:1px solid rgba(24,231,255,.12);}
+.agent-component-drawer-body{overflow:auto;padding:18px 22px 22px;scrollbar-width:thin;}
+.v3_2-lib-section{margin-bottom:20px;}
+.v3_2-lib-section h4{font-size:14px;color:#18e7ff;letter-spacing:.18em;margin:0 0 12px;border-left:3px solid #18e7ff;padding-left:10px;}
+.v3_2-lib-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.agent-component-card{
+  min-height:112px;
+  border:1px solid rgba(24,231,255,.22);
+  background:linear-gradient(135deg,rgba(10,44,72,.92),rgba(3,20,39,.98));
+  border-radius:16px;
+  padding:14px;
+  display:grid;
+  grid-template-columns:46px 1fr;
+  gap:12px;
+  text-align:left;
+  color:#dff7ff;
+  cursor:pointer;
+  transition:.16s ease;
+}
+.agent-component-card:hover{border-color:#18e7ff;box-shadow:0 0 24px rgba(24,231,255,.22);transform:translateY(-2px);}
+.agent-component-card i{width:44px;height:44px;border-radius:14px;background:rgba(24,231,255,.14);display:grid;place-items:center;color:#7af5ff;font-style:normal;font-size:22px;font-weight:1000;}
+.agent-component-card b{display:block;font-size:17px;color:#f4fcff;line-height:1.18;margin-bottom:6px;}
+.agent-component-card small{display:block;color:#9ec4d7;font-size:12px;line-height:1.38;font-weight:820;}
+.agent-component-card em{display:inline-block;margin-top:8px;border:1px solid rgba(75,240,119,.25);color:#4bf077;border-radius:999px;padding:2px 8px;font-style:normal;font-size:11px;font-weight:1000;}
+.v3_2-empty-lib{grid-column:1/-1;border:1px dashed rgba(24,231,255,.24);border-radius:14px;color:#9fbfd4;padding:16px;font-weight:900;text-align:center;background:rgba(24,231,255,.04);}
+.governance-real-note{border:1px solid rgba(75,240,119,.22);background:rgba(75,240,119,.055);color:#bfffd0;border-radius:14px;padding:14px;margin:12px 0;font-weight:850;line-height:1.6;}
+.governance-real-ops{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
+.governance-real-ops article{border:1px solid rgba(24,231,255,.22);background:rgba(4,22,40,.82);border-radius:14px;padding:16px;}
+.governance-real-ops h4{font-size:16px;color:#f2fbff;margin-bottom:10px;}
+.governance-real-ops pre{white-space:pre-wrap;background:rgba(0,9,20,.88);border:1px solid rgba(24,231,255,.16);border-radius:12px;padding:12px;color:#aef7ff;font-size:12px;line-height:1.65;overflow:auto;}
+.governance-real-ops p,.governance-real-ops li{color:#a9c8dc;font-weight:820;line-height:1.65;font-size:13px;}
+.governance-real-ops ul{padding-left:18px;}
+@media(max-width:1320px){.agent-component-drawer{width:calc(100vw - 320px);min-width:420px}.v3_2-lib-grid,.governance-real-ops{grid-template-columns:1fr;}}
+
