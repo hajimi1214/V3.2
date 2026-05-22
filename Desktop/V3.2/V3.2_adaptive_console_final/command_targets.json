@@ -1,0 +1,17 @@
+{
+  "protocol": "tcp_plain",
+  "timeout_seconds": 3.0,
+  "ack_timeout_seconds": 0.35,
+  "targets": [
+    {
+      "name": "上位机控制端A",
+      "host": "192.168.0.104",
+      "port": 9000
+    },
+    {
+      "name": "上位机控制端B",
+      "host": "192.168.0.103",
+      "port": 9000
+    }
+  ]
+}

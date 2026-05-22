@@ -1,0 +1,298 @@
+/*
+ * Operator Console Reference Update
+ * 目标：按工业HMI/SCADA操作台习惯重整展示：高对比、低装饰、两排Agent、可拖动画布、隐藏顶部下发按钮。
+ */
+
+:root{
+  --operator-tree-w:1500px;
+  --operator-tree-h:610px;
+  --operator-title:clamp(20px,1.1vw,25px);
+  --operator-body:clamp(15px,.9vw,19px);
+}
+
+/* 顶部不再提供可见下发按钮，只保留启动、清理和主题切换。 */
+#dispatchBtn{
+  display:none!important;
+  visibility:hidden!important;
+}
+.metric-strip.action-only{
+  gap:12px!important;
+}
+
+/* 决策树画布：固定内层大画布 + 外层可滚动。 */
+#treeViewport.tree-viewport{
+  position:relative!important;
+  overflow:auto!important;
+  overscroll-behavior:contain!important;
+  min-height:520px!important;
+  height:min(62vh,650px)!important;
+  padding:0!important;
+  cursor:grab!important;
+  scrollbar-width:thin!important;
+  scrollbar-color:rgba(138,160,190,.75) rgba(20,27,38,.55)!important;
+}
+#treeViewport.tree-viewport.is-panning{
+  cursor:grabbing!important;
+  user-select:none!important;
+}
+#treeViewport.tree-viewport::-webkit-scrollbar{height:10px;width:10px;}
+#treeViewport.tree-viewport::-webkit-scrollbar-track{background:rgba(12,18,28,.55);border-radius:999px;}
+#treeViewport.tree-viewport::-webkit-scrollbar-thumb{background:rgba(148,166,192,.75);border-radius:999px;border:2px solid rgba(12,18,28,.55);}
+.tree-canvas-surface{
+  position:relative!important;
+  width:var(--operator-tree-w)!important;
+  height:var(--operator-tree-h)!important;
+  min-width:var(--operator-tree-w)!important;
+  min-height:var(--operator-tree-h)!important;
+  transform:translateZ(0);
+}
+.tree-canvas-surface .tree-lines{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  pointer-events:none!important;
+}
+
+/* 两排Agent布局：左侧输入，中间2x3审查，右侧仲裁与任务。 */
+#treeViewport .tree-node,
+#treeViewport .tree-node.flow-canvas-node{
+  box-sizing:border-box!important;
+  border-radius:14px!important;
+  padding:13px 16px!important;
+  overflow:hidden!important;
+  min-width:0!important;
+}
+#treeViewport .tree-node.root,
+#treeViewport .tree-node.model,
+#treeViewport .tree-node.fusion{
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+}
+#treeViewport .tree-node em{
+  width:30px!important;
+  height:30px!important;
+  min-width:30px!important;
+  border-radius:8px!important;
+  font-size:16px!important;
+  margin:0 0 6px 0!important;
+}
+#treeViewport .tree-node h3{
+  font-size:var(--operator-title)!important;
+  line-height:1.18!important;
+  margin:0 0 7px 0!important;
+  white-space:normal!important;
+  word-break:keep-all!important;
+  overflow:visible!important;
+}
+#treeViewport .tree-node p,
+#treeViewport .node-work-summary{
+  font-size:var(--operator-body)!important;
+  line-height:1.34!important;
+  margin:3px 0!important;
+  white-space:normal!important;
+  word-break:break-word!important;
+  overflow:hidden!important;
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:1!important;
+}
+#treeViewport .tree-node.agent p:nth-of-type(3){
+  -webkit-line-clamp:2!important;
+}
+#treeViewport .tree-node strong,
+#treeViewport .tree-node small,
+#treeViewport .tree-node .badge{
+  font-size:clamp(13px,.82vw,16px)!important;
+  line-height:1.2!important;
+}
+#treeViewport .tree-node.agent .badge{
+  position:static!important;
+  display:inline-flex!important;
+  margin:0 0 7px 0!important;
+  padding:4px 9px!important;
+  border-radius:7px!important;
+}
+#treeViewport .tree-node.active::after{
+  font-size:12px!important;
+  right:10px!important;
+  bottom:8px!important;
+  padding:3px 8px!important;
+}
+#treeViewport .tree-node.root{left:38px!important;top:58px!important;width:260px!important;height:92px!important;}
+#treeViewport .tree-node.model{left:38px!important;top:202px!important;width:260px!important;height:118px!important;}
+#treeViewport #node-vision_quality{left:342px!important;top:42px!important;width:250px!important;height:172px!important;}
+#treeViewport #node-localization_3d{left:622px!important;top:42px!important;width:250px!important;height:172px!important;}
+#treeViewport #node-placement_plan{left:902px!important;top:42px!important;width:250px!important;height:172px!important;}
+#treeViewport #node-hardware_interlock{left:342px!important;top:268px!important;width:250px!important;height:172px!important;}
+#treeViewport #node-safety_strategy{left:622px!important;top:268px!important;width:250px!important;height:172px!important;}
+#treeViewport #node-execution_constraint{left:902px!important;top:268px!important;width:250px!important;height:172px!important;}
+#treeViewport .add-agent{display:none!important;}
+#treeViewport #node-fusion_arbitration{left:1190px!important;top:62px!important;width:270px!important;height:122px!important;}
+#treeViewport #node-control_task{left:1190px!important;top:236px!important;width:270px!important;height:112px!important;}
+#treeViewport #node-archive{left:1190px!important;top:398px!important;width:270px!important;height:112px!important;}
+#treeViewport .flow-canvas-hint,
+#treeViewport .workflow-canvas-size-tag{display:none!important;}
+
+/* 决策树独立页给更多垂直空间。 */
+body.platform_nav-tree-page #treeViewport.tree-viewport{
+  height:min(78vh,830px)!important;
+  min-height:660px!important;
+}
+body.platform_nav-tree-page .tree-canvas-surface{
+  height:660px!important;
+}
+body.platform_nav-tree-page #treeViewport .tree-node h3{font-size:clamp(22px,1.25vw,30px)!important;}
+body.platform_nav-tree-page #treeViewport .tree-node p{font-size:clamp(17px,1vw,22px)!important;}
+
+/* 右下状态视频区域增大，适合投影展示现场状态。 */
+body.platform_nav-admin-shell .detail-grid{
+  grid-template-columns:minmax(0,1.06fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.05fr) minmax(410px,1.65fr)!important;
+  gap:12px!important;
+}
+.state-frame-panel .state-frame-body,
+.state-frame-panel .twin-body{
+  grid-template-columns:minmax(0,1.85fr) minmax(130px,.55fr)!important;
+  gap:10px!important;
+  padding:10px 12px!important;
+}
+.state-frame-media{
+  min-height:160px!important;
+}
+.state-frame-video,
+.state-frame-media video{
+  object-fit:cover!important;
+}
+.state-frame-metrics li{
+  font-size:clamp(15px,.95vw,20px)!important;
+  line-height:1.35!important;
+  padding:6px 0!important;
+}
+
+/* 主题：沉稳黑，增强日间投影对比；不用高饱和霓虹。 */
+body.zltx-theme-gold{
+  --gold-bg:#101419;
+  --gold-panel:#17202a;
+  --gold-panel-2:#1d2834;
+  --gold-border:#506072;
+  --gold-text:#f5f8fc;
+  --gold-muted:#c6d1dd;
+  --gold-accent:#d5a253;
+  --gold-green:#74d68b;
+  background:#0e1318!important;
+  color:var(--gold-text)!important;
+}
+body.zltx-theme-gold .app-bg{
+  background:linear-gradient(135deg,#0e1318 0%,#16202a 56%,#0b0f14 100%)!important;
+}
+body.zltx-theme-gold .sidebar,
+body.zltx-theme-gold .panel,
+body.zltx-theme-gold .mini-panel,
+body.zltx-theme-gold .platform-card,
+body.zltx-theme-gold .top-header,
+body.zltx-theme-gold .status-bus,
+body.zltx-theme-gold .decision-console-card,
+body.zltx-theme-gold .tree-viewport{
+  background:linear-gradient(180deg,#1a2430,#121820)!important;
+  border-color:rgba(137,154,177,.42)!important;
+  color:#f5f8fc!important;
+  box-shadow:0 14px 30px rgba(0,0,0,.28),inset 0 0 0 1px rgba(255,255,255,.035)!important;
+}
+body.zltx-theme-gold h1,
+body.zltx-theme-gold h2,
+body.zltx-theme-gold h3,
+body.zltx-theme-gold h4,
+body.zltx-theme-gold .brand-title,
+body.zltx-theme-gold .pc-title{color:#ffffff!important;}
+body.zltx-theme-gold p,
+body.zltx-theme-gold span,
+body.zltx-theme-gold label,
+body.zltx-theme-gold li,
+body.zltx-theme-gold .panel-head p,
+body.zltx-theme-gold .title-area p{color:#cbd6e2!important;}
+body.zltx-theme-gold b,
+body.zltx-theme-gold strong{color:#ffe0a3!important;}
+body.zltx-theme-gold .nav-item{
+  background:#151d27!important;
+  border-color:rgba(135,154,178,.34)!important;
+  color:#e6edf5!important;
+}
+body.zltx-theme-gold .nav-item.active{
+  background:linear-gradient(135deg,#263446,#1c2632)!important;
+  border-color:rgba(220,170,85,.65)!important;
+  color:#fff5df!important;
+}
+body.zltx-theme-gold .tree-node,
+body.zltx-theme-gold .tree-node.flow-canvas-node,
+body.zltx-theme-gold .workflow-node-card{
+  background:linear-gradient(180deg,#233142,#17202b)!important;
+  border-color:rgba(147,166,190,.52)!important;
+  color:#f6f9fc!important;
+  box-shadow:0 12px 22px rgba(0,0,0,.28),inset 0 0 0 1px rgba(255,255,255,.04)!important;
+}
+body.zltx-theme-gold .tree-node h3{color:#ffffff!important;}
+body.zltx-theme-gold .tree-node p,
+body.zltx-theme-gold .tree-node small,
+body.zltx-theme-gold .node-work-summary{color:#d7e0ea!important;}
+body.zltx-theme-gold .tree-node em{background:#2b3a4d!important;border-color:#64758a!important;color:#ffd997!important;}
+body.zltx-theme-gold .badge,
+body.zltx-theme-gold .tree-node .badge{background:#253244!important;color:#ffe0a1!important;border-color:#6a7b90!important;}
+body.zltx-theme-gold .flow-line,
+body.zltx-theme-gold .flow-canvas-line{stroke:#d0a55f!important;opacity:.86!important;}
+body.zltx-theme-gold #arrow path{fill:#d0a55f!important;}
+body.zltx-theme-gold .presentation-theme-toggle{
+  background:#ffffff!important;
+  color:#1c2a3a!important;
+  border-color:#b9c6d6!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.18)!important;
+}
+
+/* 主题：工业白，进一步压住眩光，形成强文字对比。 */
+body.zltx-theme-light{
+  background:#edf2f7!important;
+  color:#071524!important;
+}
+body.zltx-theme-light .app-bg{background:linear-gradient(135deg,#f3f6fa,#e5ecf4)!important;}
+body.zltx-theme-light .panel,
+body.zltx-theme-light .mini-panel,
+body.zltx-theme-light .sidebar,
+body.zltx-theme-light .top-header,
+body.zltx-theme-light .status-bus,
+body.zltx-theme-light .platform-card,
+body.zltx-theme-light .decision-console-card,
+body.zltx-theme-light .tree-viewport{
+  background:#ffffff!important;
+  border-color:#9aacbf!important;
+  color:#071524!important;
+  box-shadow:0 10px 24px rgba(30,47,68,.10)!important;
+}
+body.zltx-theme-light h1,
+body.zltx-theme-light h2,
+body.zltx-theme-light h3,
+body.zltx-theme-light h4,
+body.zltx-theme-light .brand-title{color:#06111f!important;}
+body.zltx-theme-light p,
+body.zltx-theme-light span,
+body.zltx-theme-light label,
+body.zltx-theme-light li{color:#20384f!important;}
+body.zltx-theme-light b,
+body.zltx-theme-light strong{color:#071524!important;}
+body.zltx-theme-light .tree-node{
+  background:#ffffff!important;
+  border-color:#849bb4!important;
+  color:#071524!important;
+  box-shadow:0 10px 22px rgba(30,47,68,.10)!important;
+}
+body.zltx-theme-light .tree-node h3{color:#06111f!important;}
+body.zltx-theme-light .tree-node p,
+body.zltx-theme-light .tree-node small{color:#2c435c!important;}
+body.zltx-theme-light .tree-node em{background:#e8eef5!important;color:#0d3158!important;border-color:#9cafc4!important;}
+body.zltx-theme-light .flow-line{stroke:#2d6f9f!important;opacity:.9!important;}
+body.zltx-theme-light #arrow path{fill:#2d6f9f!important;}
+
+@media(max-width:1500px){
+  :root{--operator-tree-w:1380px;--operator-tree-h:610px;}
+  body.platform_nav-admin-shell .detail-grid{grid-template-columns:repeat(2,minmax(360px,1fr))!important;overflow:auto!important;}
+  .state-frame-panel{grid-column:span 2!important;min-height:260px!important;}
+}

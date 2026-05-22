@@ -1,0 +1,287 @@
+/*
+ * V3.2 决策树经典复原 + 工业平台可读性修复
+ * 参考工业HMI/SCADA/MES操作台原则：中心区域突出主流程、高对比、少装饰、信息不重叠。
+ */
+:root{
+  --classic-tree-w:1580px;
+  --classic-tree-h:560px;
+  --classic-node-title:clamp(18px,1.08vw,24px);
+  --classic-node-text:clamp(14px,.88vw,18px);
+  --classic-node-meta:clamp(13px,.8vw,16px);
+  --classic-line:#2f7db3;
+  --classic-line-live:#19d3ff;
+}
+
+/* 顶部下发按钮继续隐藏，演示视角只呈现“决策完成后自动下发”。 */
+#dispatchBtn{display:none!important;visibility:hidden!important;}
+
+/* 决策树恢复为“左输入-中间双排Agent-右仲裁/任务”的经典流程图，不再压成小卡片。 */
+#treeViewport.tree-viewport{
+  position:relative!important;
+  overflow:auto!important;
+  min-height:500px!important;
+  height:min(58vh,610px)!important;
+  padding:0!important;
+  border-radius:16px!important;
+  scroll-behavior:smooth!important;
+  scrollbar-width:thin!important;
+  background:
+    linear-gradient(90deg,rgba(47,125,179,.06) 1px,transparent 1px),
+    linear-gradient(0deg,rgba(47,125,179,.05) 1px,transparent 1px),
+    linear-gradient(180deg,#f7fbff,#eef5fb)!important;
+  background-size:34px 34px,34px 34px,100% 100%!important;
+  cursor:grab!important;
+}
+#treeViewport.tree-viewport.is-panning{cursor:grabbing!important;user-select:none!important;}
+#treeViewport.tree-viewport::-webkit-scrollbar{height:10px;width:10px;}
+#treeViewport.tree-viewport::-webkit-scrollbar-thumb{background:#7c9ab7;border-radius:999px;border:2px solid #e7eff6;}
+#treeViewport.tree-viewport::-webkit-scrollbar-track{background:#dfe9f2;border-radius:999px;}
+
+.tree-canvas-surface{
+  position:relative!important;
+  width:var(--classic-tree-w)!important;
+  min-width:var(--classic-tree-w)!important;
+  height:var(--classic-tree-h)!important;
+  min-height:var(--classic-tree-h)!important;
+}
+.tree-canvas-surface .tree-lines{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  pointer-events:none!important;
+}
+.tree-canvas-surface .flow-line{
+  stroke:var(--classic-line)!important;
+  stroke-width:2.4!important;
+  opacity:.72!important;
+  fill:none!important;
+  stroke-dasharray:0!important;
+}
+.tree-canvas-surface .flow-line.link-live{
+  stroke:var(--classic-line-live)!important;
+  stroke-width:3.2!important;
+  opacity:1!important;
+  stroke-dasharray:10 8!important;
+}
+.tree-canvas-surface #arrow path{fill:var(--classic-line)!important;}
+
+#treeViewport .tree-node,
+#treeViewport .tree-node.flow-canvas-node{
+  position:absolute!important;
+  box-sizing:border-box!important;
+  display:block!important;
+  border-radius:14px!important;
+  padding:14px 16px 13px 16px!important;
+  overflow:hidden!important;
+  background:linear-gradient(180deg,#ffffff,#f6faff)!important;
+  border:1.5px solid #9cb4cd!important;
+  color:#061427!important;
+  box-shadow:0 10px 22px rgba(25,56,92,.13), inset 4px 0 0 #2f80ed!important;
+  transform:none!important;
+}
+#treeViewport .tree-node.root,
+#treeViewport .tree-node.model,
+#treeViewport .tree-node.fusion{
+  display:flex!important;
+  align-items:flex-start!important;
+  gap:10px!important;
+}
+#treeViewport .tree-node>div{min-width:0!important;flex:1 1 auto!important;}
+#treeViewport .tree-node em{
+  width:28px!important;
+  height:28px!important;
+  min-width:28px!important;
+  display:inline-grid!important;
+  place-items:center!important;
+  margin:0 0 8px 0!important;
+  border-radius:9px!important;
+  background:#e7f0fb!important;
+  border:1px solid #afc1d4!important;
+  color:#135aa1!important;
+  font-size:15px!important;
+  font-style:normal!important;
+  line-height:1!important;
+}
+#treeViewport .tree-node h3{
+  margin:0 0 8px 0!important;
+  padding-right:0!important;
+  font-size:var(--classic-node-title)!important;
+  line-height:1.16!important;
+  color:#05172b!important;
+  font-weight:950!important;
+  letter-spacing:-.02em!important;
+  white-space:normal!important;
+  word-break:keep-all!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+#treeViewport .tree-node p,
+#treeViewport .node-work-summary{
+  margin:4px 0!important;
+  font-size:var(--classic-node-text)!important;
+  line-height:1.3!important;
+  color:#27415b!important;
+  font-weight:700!important;
+  white-space:normal!important;
+  overflow:hidden!important;
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:1!important;
+}
+#treeViewport .tree-node.agent p:nth-of-type(3){-webkit-line-clamp:1!important;}
+#treeViewport .tree-node .badge{
+  position:static!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-width:54px!important;
+  height:24px!important;
+  margin:0 0 8px 0!important;
+  padding:0 9px!important;
+  border-radius:7px!important;
+  background:#e9f7ef!important;
+  border:1px solid #7bc796!important;
+  color:#0b7a36!important;
+  font-size:var(--classic-node-meta)!important;
+  line-height:1!important;
+  font-weight:950!important;
+}
+#treeViewport .tree-node strong,
+#treeViewport .tree-node small{
+  display:inline-flex!important;
+  align-items:center!important;
+  min-height:22px!important;
+  margin:5px 8px 0 0!important;
+  font-size:var(--classic-node-meta)!important;
+  line-height:1.2!important;
+  font-weight:900!important;
+  color:#17324e!important;
+  white-space:nowrap!important;
+}
+#treeViewport .tree-node small{color:#5a718a!important;}
+#treeViewport .node-enable-toggle{display:none!important;}
+#treeViewport .tree-node.active::after{
+  content:'当前审查'!important;
+  position:absolute!important;
+  right:10px!important;
+  bottom:9px!important;
+  padding:3px 8px!important;
+  border-radius:999px!important;
+  background:#155eef!important;
+  color:#fff!important;
+  font-size:12px!important;
+  line-height:1.1!important;
+  font-weight:950!important;
+  box-shadow:none!important;
+}
+
+/* 经典清晰坐标：两排Agent，右侧仲裁链路，充分留白但不空。 */
+#treeViewport #node-state_capture{left:46px!important;top:80px!important;width:250px!important;height:112px!important;}
+#treeViewport #node-context_model{left:46px!important;top:284px!important;width:250px!important;height:132px!important;}
+#treeViewport #node-vision_quality{left:354px!important;top:52px!important;width:270px!important;height:154px!important;}
+#treeViewport #node-localization_3d{left:660px!important;top:52px!important;width:270px!important;height:154px!important;}
+#treeViewport #node-placement_plan{left:966px!important;top:52px!important;width:270px!important;height:154px!important;}
+#treeViewport #node-hardware_interlock{left:354px!important;top:296px!important;width:270px!important;height:154px!important;}
+#treeViewport #node-safety_strategy{left:660px!important;top:296px!important;width:270px!important;height:154px!important;}
+#treeViewport #node-execution_constraint{left:966px!important;top:296px!important;width:270px!important;height:154px!important;}
+#treeViewport .add-agent{display:none!important;}
+#treeViewport #node-fusion_arbitration{left:1292px!important;top:68px!important;width:250px!important;height:128px!important;}
+#treeViewport #node-control_task{left:1292px!important;top:242px!important;width:250px!important;height:112px!important;}
+#treeViewport #node-archive{left:1292px!important;top:402px!important;width:250px!important;height:102px!important;}
+#treeViewport .flow-canvas-hint,
+#treeViewport .workflow-canvas-size-tag{display:none!important;}
+
+/* 状态色保持明显但不花哨。 */
+#treeViewport .status-pass .badge,
+#treeViewport .status-done .badge{background:#e9f7ef!important;border-color:#65bf86!important;color:#087533!important;}
+#treeViewport .status-running .badge{background:#eaf1ff!important;border-color:#6ea0ff!important;color:#114fbe!important;}
+#treeViewport .status-limited .badge{background:#fff5df!important;border-color:#d8a34c!important;color:#9a5d05!important;}
+#treeViewport .status-blocked .badge{background:#fff0f0!important;border-color:#e18282!important;color:#bc1f2f!important;}
+#treeViewport .status-running{background:linear-gradient(180deg,#ffffff,#edf5ff)!important;border-color:#2f80ed!important;}
+#treeViewport .status-running::before{opacity:.18!important;}
+
+/* 决策树独立页进一步加大字号，不让文字挤压。 */
+body.platform_nav-tree-page #treeViewport.tree-viewport{height:min(76vh,760px)!important;min-height:640px!important;}
+body.platform_nav-tree-page .tree-canvas-surface{height:620px!important;min-height:620px!important;}
+body.platform_nav-tree-page #treeViewport .tree-node h3{font-size:clamp(21px,1.25vw,28px)!important;}
+body.platform_nav-tree-page #treeViewport .tree-node p{font-size:clamp(16px,1vw,20px)!important;}
+body.platform_nav-tree-page #treeViewport .tree-node strong,
+body.platform_nav-tree-page #treeViewport .tree-node small,
+body.platform_nav-tree-page #treeViewport .tree-node .badge{font-size:clamp(14px,.9vw,18px)!important;}
+
+/* 视频区域：完整显示，不裁切；右下区域扩大。 */
+body.platform_nav-admin-shell .detail-grid{
+  grid-template-columns:minmax(330px,1fr) minmax(330px,1fr) minmax(330px,1fr) minmax(350px,1.05fr) minmax(520px,1.75fr)!important;
+  gap:12px!important;
+}
+.state-frame-panel{min-width:0!important;}
+.state-frame-panel .state-frame-body,
+.state-frame-panel .twin-body{
+  grid-template-columns:minmax(0,2.2fr) minmax(132px,.56fr)!important;
+  gap:12px!important;
+  min-height:210px!important;
+}
+.state-frame-media{
+  min-height:205px!important;
+  background:#07111d!important;
+  border-radius:12px!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+}
+.state-frame-video,
+.state-frame-media video{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  background:#07111d!important;
+}
+.state-frame-metrics li{font-size:clamp(15px,.92vw,20px)!important;}
+
+/* 深色主题改成真实操作台常见的深蓝灰，强对比、少霓虹。 */
+body.zltx-theme-gold{
+  --classic-line:#6ea8d7;
+  --classic-line-live:#21d4ff;
+  background:#0f1823!important;
+  color:#f5f8fc!important;
+}
+body.zltx-theme-gold .app-bg{background:linear-gradient(135deg,#0e1722,#162333 58%,#0b1119)!important;}
+body.zltx-theme-gold #treeViewport.tree-viewport{
+  background:
+    linear-gradient(90deg,rgba(110,168,215,.08) 1px,transparent 1px),
+    linear-gradient(0deg,rgba(110,168,215,.06) 1px,transparent 1px),
+    linear-gradient(180deg,#101b28,#0b121c)!important;
+  background-size:34px 34px,34px 34px,100% 100%!important;
+  border-color:rgba(130,162,197,.45)!important;
+}
+body.zltx-theme-gold #treeViewport .tree-node{
+  background:linear-gradient(180deg,#1c2b3b,#121b27)!important;
+  border-color:rgba(124,155,190,.62)!important;
+  color:#f7fbff!important;
+  box-shadow:0 12px 24px rgba(0,0,0,.30), inset 4px 0 0 #3fa2ff!important;
+}
+body.zltx-theme-gold #treeViewport .tree-node h3{color:#ffffff!important;}
+body.zltx-theme-gold #treeViewport .tree-node p{color:#d7e5f3!important;}
+body.zltx-theme-gold #treeViewport .tree-node strong{color:#ffffff!important;}
+body.zltx-theme-gold #treeViewport .tree-node small{color:#b8c9dc!important;}
+body.zltx-theme-gold #treeViewport .tree-node em{background:#20344a!important;border-color:#55708e!important;color:#9ad2ff!important;}
+body.zltx-theme-gold #treeViewport .tree-node .badge{background:#24364a!important;border-color:#6587a9!important;color:#eaf5ff!important;}
+body.zltx-theme-gold #treeViewport .status-pass .badge,
+body.zltx-theme-gold #treeViewport .status-done .badge{background:#143720!important;border-color:#61bd83!important;color:#91f0ae!important;}
+body.zltx-theme-gold #treeViewport .status-running .badge{background:#16345c!important;border-color:#70a6ff!important;color:#c7ddff!important;}
+body.zltx-theme-gold #treeViewport .status-limited .badge{background:#443014!important;border-color:#d7a057!important;color:#ffd58e!important;}
+body.zltx-theme-gold #treeViewport .status-blocked .badge{background:#451b22!important;border-color:#e07883!important;color:#ffb6bf!important;}
+body.zltx-theme-gold .presentation-theme-toggle{color:#0f1a26!important;}
+body.zltx-theme-gold .presentation-theme-toggle::after{content:'';}
+
+/* 主题按钮命名兼容旧逻辑：显示“深蓝灰”。 */
+#presentationThemeToggle{font-weight:900!important;}
+
+@media(max-width:1500px){
+  :root{--classic-tree-w:1540px;--classic-tree-h:560px;}
+  body.platform_nav-admin-shell .detail-grid{grid-template-columns:repeat(2,minmax(360px,1fr))!important;overflow:auto!important;}
+  .state-frame-panel{grid-column:span 2!important;min-height:310px!important;}
+  .state-frame-media{min-height:240px!important;}
+}

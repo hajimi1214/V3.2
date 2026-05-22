@@ -1,0 +1,206 @@
+/*
+ * V3.2 Presentation Screen Theme
+ * 目标：远距离可读、黑金/白色主题切换、决策树紧凑展示。
+ */
+:root{
+  --present-font: clamp(18px, 1.08vw, 22px);
+  --present-small: clamp(15px, .92vw, 18px);
+  --present-card-title: clamp(20px, 1.24vw, 26px);
+  --present-tree-title: clamp(16px, 1vw, 21px);
+  --present-tree-text: clamp(13px, .84vw, 17px);
+  --present-tree-meta: clamp(12px, .78vw, 15px);
+}
+html,body{
+  font-size:var(--present-font)!important;
+  text-rendering:geometricPrecision!important;
+}
+body,button,input,select,textarea,pre,code,table{
+  font-size:var(--present-font)!important;
+}
+.panel-head h2{font-size:clamp(26px,1.55vw,34px)!important;line-height:1.18!important;}
+.panel-head h3,.panel-head.compact h3,.mini-panel h3{font-size:var(--present-card-title)!important;line-height:1.22!important;}
+.panel-head p,.panel-head span,.focus-pill,.status-bus span,.field-list label{font-size:var(--present-small)!important;}
+.title-area h1{font-size:clamp(38px,2.55vw,54px)!important;letter-spacing:.5px!important;}
+.title-area p{font-size:clamp(18px,1.1vw,24px)!important;}
+.nav-item,.refined-nav .nav-item{font-size:clamp(18px,1.1vw,22px)!important;min-height:56px!important;}
+.nav-item span,.refined-nav .nav-item span{font-size:clamp(21px,1.25vw,26px)!important;}
+.run-button,.dispatch-button,.clear-decision-button,.presentation-theme-toggle,.archive-actions button,.workflow-canvas-toolbar button,.workflow-action-group button,.workflow-mode-group button{
+  font-size:clamp(17px,1vw,21px)!important;
+  min-height:42px!important;
+  font-weight:950!important;
+}
+.presentation-theme-toggle{
+  border:1px solid rgba(218,165,32,.62)!important;
+  border-radius:10px!important;
+  padding:0 16px!important;
+  background:linear-gradient(180deg,#222,#090909)!important;
+  color:#f8e6b0!important;
+  box-shadow:0 0 0 1px rgba(218,165,32,.16),0 8px 18px rgba(0,0,0,.16)!important;
+  cursor:pointer!important;
+}
+.dispatch-button.auto-dispatch-visual{pointer-events:none!important;opacity:1!important;}
+.decision-log-stream p,.log-feed p,.alarm,.evidence-list li,.field-list p,.agent-workbox li,.matrix-table,.archive-list p,.recent-archive p,.spark-list p,.state-frame-metrics li{
+  font-size:clamp(16px,1vw,21px)!important;
+  line-height:1.55!important;
+}
+#taskJson,pre{font-size:clamp(15px,.92vw,19px)!important;line-height:1.5!important;}
+
+/* 决策树紧凑布局：减少空白、避免重叠、放大核心文字。 */
+#treeViewport.tree-viewport{
+  min-height:520px!important;
+  height:min(58vh,620px)!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+body.platform_nav-tree-page #treeViewport.tree-viewport{
+  height:min(76vh,820px)!important;
+  min-height:640px!important;
+}
+#treeViewport .tree-node,
+#treeViewport .tree-node.flow-canvas-node{
+  border-radius:12px!important;
+  padding:10px 12px!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+#treeViewport .tree-node h3,
+#treeViewport .tree-node.flow-canvas-node h3{
+  font-size:var(--present-tree-title)!important;
+  line-height:1.18!important;
+  margin:0 0 5px!important;
+  white-space:normal!important;
+}
+#treeViewport .tree-node p,
+#treeViewport .tree-node.flow-canvas-node p,
+#treeViewport .node-work-summary{
+  font-size:var(--present-tree-text)!important;
+  line-height:1.25!important;
+  margin:2px 0!important;
+  white-space:normal!important;
+  overflow:hidden!important;
+  display:-webkit-box!important;
+  -webkit-line-clamp:1!important;
+  -webkit-box-orient:vertical!important;
+}
+#treeViewport .tree-node strong,
+#treeViewport .tree-node small,
+#treeViewport .tree-node .badge,
+#treeViewport .node-enable-toggle{
+  font-size:var(--present-tree-meta)!important;
+  line-height:1.2!important;
+}
+#treeViewport .tree-node em{
+  width:26px!important;
+  height:26px!important;
+  min-width:26px!important;
+  border-radius:7px!important;
+  font-size:14px!important;
+  margin-bottom:4px!important;
+}
+#treeViewport .tree-node.root{left:2%!important;top:4%!important;width:27%!important;height:17%!important;}
+#treeViewport .tree-node.model{left:36%!important;top:4%!important;width:34%!important;height:17%!important;}
+#treeViewport .tree-node.agent{top:29%!important;width:15.2%!important;height:39%!important;padding-top:11px!important;}
+#treeViewport #node-vision_quality{left:1.3%!important;}
+#treeViewport #node-localization_3d{left:17.6%!important;}
+#treeViewport #node-placement_plan{left:33.9%!important;}
+#treeViewport #node-hardware_interlock{left:50.2%!important;}
+#treeViewport #node-safety_strategy{left:66.5%!important;}
+#treeViewport #node-execution_constraint{left:82.8%!important;}
+#treeViewport .add-agent{display:none!important;}
+#treeViewport #node-fusion_arbitration{left:25%!important;top:77%!important;width:25%!important;height:17%!important;}
+#treeViewport #node-control_task{left:53%!important;top:77%!important;width:20%!important;height:17%!important;}
+#treeViewport #node-archive{left:76%!important;top:77%!important;width:20%!important;height:17%!important;}
+#treeViewport .flow-canvas-hint,#treeViewport .workflow-canvas-size-tag{display:none!important;}
+#treeViewport .tree-lines{height:100%!important;}
+#treeViewport .tree-node.agent .badge{top:8px!important;right:8px!important;}
+#treeViewport .tree-node small{margin-left:4px!important;}
+body.platform_nav-tree-page #treeViewport .tree-node h3{font-size:clamp(20px,1.35vw,28px)!important;}
+body.platform_nav-tree-page #treeViewport .tree-node p,
+body.platform_nav-tree-page #treeViewport .node-work-summary{font-size:clamp(16px,1.04vw,22px)!important;}
+body.platform_nav-tree-page #treeViewport .tree-node strong,
+body.platform_nav-tree-page #treeViewport .tree-node small,
+body.platform_nav-tree-page #treeViewport .tree-node .badge{font-size:clamp(14px,.9vw,18px)!important;}
+
+/* 黑金主题：提高白天投影对比，不走花哨AI风。 */
+body.zltx-theme-gold{
+  --gold-bg:#0a0907;
+  --gold-panel:#12100b;
+  --gold-panel-2:#1b160d;
+  --gold-border:#9c7a2f;
+  --gold-text:#fff7df;
+  --gold-muted:#dacb9c;
+  --gold-accent:#d7a33a;
+  --gold-green:#7ee08f;
+  background:#070604!important;
+  color:var(--gold-text)!important;
+}
+body.zltx-theme-gold .app-bg{background:radial-gradient(circle at 18% 8%,rgba(215,163,58,.18),transparent 32%),linear-gradient(135deg,#070604,#11100d 58%,#050505)!important;}
+body.zltx-theme-gold .sidebar,
+body.zltx-theme-gold .panel,
+body.zltx-theme-gold .mini-panel,
+body.zltx-theme-gold .platform-card,
+body.zltx-theme-gold .top-header,
+body.zltx-theme-gold .status-bus,
+body.zltx-theme-gold .decision-console-card,
+body.zltx-theme-gold .tree-viewport{
+  background:linear-gradient(180deg,var(--gold-panel),#080705)!important;
+  border-color:rgba(215,163,58,.45)!important;
+  box-shadow:0 14px 34px rgba(0,0,0,.34),inset 0 0 0 1px rgba(255,255,255,.02)!important;
+  color:var(--gold-text)!important;
+}
+body.zltx-theme-gold h1,body.zltx-theme-gold h2,body.zltx-theme-gold h3,body.zltx-theme-gold h4,
+body.zltx-theme-gold .brand-title,body.zltx-theme-gold .pc-title{color:#fff3c7!important;}
+body.zltx-theme-gold p,body.zltx-theme-gold span,body.zltx-theme-gold label,body.zltx-theme-gold li,
+body.zltx-theme-gold .panel-head p,body.zltx-theme-gold .title-area p{color:var(--gold-muted)!important;}
+body.zltx-theme-gold b,body.zltx-theme-gold strong{color:#ffe194!important;}
+body.zltx-theme-gold .nav-item{background:#0d0b08!important;border-color:rgba(215,163,58,.28)!important;color:#ffe8a8!important;}
+body.zltx-theme-gold .nav-item.active{background:linear-gradient(135deg,#4b330c,#171006)!important;border-color:rgba(255,217,125,.72)!important;color:#fff8df!important;}
+body.zltx-theme-gold .tree-node,
+body.zltx-theme-gold .tree-node.flow-canvas-node,
+body.zltx-theme-gold .workflow-node-card{
+  background:linear-gradient(180deg,#1b160d,#0d0a06)!important;
+  border-color:rgba(215,163,58,.58)!important;
+  color:#fff7df!important;
+  box-shadow:0 12px 24px rgba(0,0,0,.34),inset 0 0 0 1px rgba(255,255,255,.025)!important;
+}
+body.zltx-theme-gold .tree-node h3{color:#fff0bd!important;}
+body.zltx-theme-gold .tree-node p,body.zltx-theme-gold .tree-node small,body.zltx-theme-gold .node-work-summary{color:#e6d7a7!important;}
+body.zltx-theme-gold .tree-node em{background:#332208!important;border-color:#a7781d!important;color:#ffd678!important;}
+body.zltx-theme-gold .badge,body.zltx-theme-gold .tree-node .badge{background:#2c210d!important;color:#ffe19a!important;border-color:#9c7629!important;}
+body.zltx-theme-gold .status-pass .badge,body.zltx-theme-gold .status-done .badge{background:#12351e!important;color:#8df0a4!important;border-color:#3aa35b!important;}
+body.zltx-theme-gold .status-limited .badge{background:#382507!important;color:#ffd17a!important;border-color:#c28b2a!important;}
+body.zltx-theme-gold .status-blocked .badge{background:#3b1114!important;color:#ff9aa5!important;border-color:#ce4652!important;}
+body.zltx-theme-gold .flow-line,body.zltx-theme-gold .flow-canvas-line{stroke:#c5973a!important;}
+body.zltx-theme-gold #arrow path{fill:#c5973a!important;}
+body.zltx-theme-gold .dispatch-button.ok,body.zltx-theme-gold .run-button:not(.gated){background:linear-gradient(135deg,#a87417,#4c3108)!important;color:#fff8df!important;border-color:#e0b24f!important;}
+
+/* 白色主题：强对比、少装饰，适合白天投影。 */
+body.zltx-theme-light{
+  background:#eef3f8!important;
+  color:#0b1726!important;
+}
+body.zltx-theme-light .presentation-theme-toggle{background:#ffffff!important;color:#15304d!important;border-color:#9bb2ca!important;}
+body.zltx-theme-light .panel,
+body.zltx-theme-light .mini-panel,
+body.zltx-theme-light .sidebar,
+body.zltx-theme-light .top-header,
+body.zltx-theme-light .status-bus,
+body.zltx-theme-light .platform-card,
+body.zltx-theme-light .decision-console-card{
+  background:#ffffff!important;
+  border-color:#b7c7d8!important;
+  color:#0b1726!important;
+  box-shadow:0 10px 26px rgba(28,48,74,.10)!important;
+}
+body.zltx-theme-light h1,body.zltx-theme-light h2,body.zltx-theme-light h3,body.zltx-theme-light h4,
+body.zltx-theme-light .brand-title{color:#07111f!important;}
+body.zltx-theme-light p,body.zltx-theme-light span,body.zltx-theme-light label,body.zltx-theme-light li{color:#28425f!important;}
+body.zltx-theme-light .tree-node{background:#ffffff!important;border-color:#9fb4ca!important;color:#10223a!important;}
+body.zltx-theme-light .tree-node h3{color:#07111f!important;}
+body.zltx-theme-light .tree-node p,body.zltx-theme-light .tree-node small{color:#334c69!important;}
+
+@media(max-width:1500px){
+  :root{--present-font:17px;--present-tree-title:16px;--present-tree-text:13px;}
+  #treeViewport.tree-viewport{height:540px!important;overflow:auto!important;}
+  .title-area h1{white-space:normal!important;font-size:clamp(32px,2.2vw,42px)!important;}
+}

@@ -1,0 +1,196 @@
+/* =====================================================================
+   V3.2 文本重叠与决策画布可读性复核修复
+   目标：
+   1. 页面详情标题、模块标题不再相互挤压；
+   2. 决策画布 Agent 卡片图标缩小、文字放大；
+   3. 卡片之间留足纵向间距，避免内容外溢重叠；
+   4. 维持工业白风格，不牺牲远距可读性。
+   ===================================================================== */
+:root{
+  --v32-route-head-h:clamp(72px,7.1vh,92px);
+  --v32-route-title:clamp(25px,1.58vw,32px);
+  --v32-route-kicker:clamp(13px,.84vw,16px);
+  --v32-canvas-title:clamp(19px,1.18vw,23px);
+  --v32-canvas-body:clamp(15px,.94vw,18px);
+  --v32-canvas-meta:clamp(14px,.86vw,16px);
+  --v32-canvas-icon:24px;
+  --v32-canvas-icon-tree:28px;
+}
+
+/* ---------- 模块详情页：页头、主标题和正文重新留白 ---------- */
+body.platform_nav-page-open #platform_navPageView{
+  min-height:0!important;
+}
+body.platform_nav-page-open .platform_nav-page-view.open,
+.platform_nav-page-view.open{
+  grid-template-rows:var(--v32-route-head-h) minmax(0,1fr)!important;
+}
+.platform_nav-page-head{
+  min-height:var(--v32-route-head-h)!important;
+  height:auto!important;
+  padding:12px 18px!important;
+  align-items:center!important;
+  gap:14px!important;
+  overflow:visible!important;
+}
+.platform_nav-page-head>div{
+  min-width:0!important;
+}
+.platform_nav-page-head span{
+  display:block!important;
+  font-size:var(--v32-route-kicker)!important;
+  line-height:1.25!important;
+  margin-bottom:4px!important;
+}
+.platform_nav-page-head h2{
+  font-size:var(--v32-route-title)!important;
+  line-height:1.18!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+.platform_nav-page-body{
+  padding:18px!important;
+  scroll-padding-top:18px!important;
+}
+.module-detail-view,
+.agent-role-map-view,
+.workbench-focus-view{
+  gap:16px!important;
+}
+.module-detail-hero{
+  min-height:auto!important;
+  padding:18px 20px!important;
+  align-items:center!important;
+  gap:16px!important;
+  overflow:visible!important;
+}
+.module-detail-hero h3{
+  font-size:clamp(28px,1.7vw,36px)!important;
+  line-height:1.18!important;
+  white-space:normal!important;
+  overflow:visible!important;
+}
+.module-detail-hero p{
+  font-size:clamp(15px,.96vw,18px)!important;
+  line-height:1.6!important;
+  max-width:100%!important;
+}
+
+/* ---------- 工作台画布：卡片内部文字更清楚，图标更克制 ---------- */
+#treeViewport .tree-node,
+#treeViewport .tree-node.flow-canvas-node{
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+  padding:14px 16px 15px!important;
+}
+#treeViewport .tree-node.agent,
+#treeViewport .tree-node.custom-agent{
+  padding-top:15px!important;
+}
+#treeViewport .tree-node em,
+#treeViewport .tree-node.flow-canvas-node em{
+  width:var(--v32-canvas-icon)!important;
+  min-width:var(--v32-canvas-icon)!important;
+  height:var(--v32-canvas-icon)!important;
+  font-size:13px!important;
+  border-radius:7px!important;
+  margin-bottom:6px!important;
+}
+#treeViewport .tree-node h3,
+#treeViewport .tree-node.flow-canvas-node h3{
+  font-size:var(--v32-canvas-title)!important;
+  line-height:1.24!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  margin-bottom:8px!important;
+}
+#treeViewport .tree-node p,
+#treeViewport .tree-node.flow-canvas-node p,
+#treeViewport .node-work-summary{
+  font-size:var(--v32-canvas-body)!important;
+  line-height:1.42!important;
+  white-space:normal!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  display:-webkit-box!important;
+  -webkit-line-clamp:2!important;
+  -webkit-box-orient:vertical!important;
+  margin:4px 0!important;
+}
+#treeViewport .tree-node strong,
+#treeViewport .tree-node small,
+#treeViewport .tree-node .badge,
+#treeViewport .node-enable-toggle{
+  font-size:var(--v32-canvas-meta)!important;
+  line-height:1.25!important;
+}
+#treeViewport .tree-node.agent .badge,
+#treeViewport .tree-node.custom-agent .badge{
+  position:absolute!important;
+  top:12px!important;
+  right:12px!important;
+  max-width:calc(100% - 48px)!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+#treeViewport .tree-node strong,
+#treeViewport .tree-node small{
+  display:inline-flex!important;
+  align-items:center!important;
+  min-height:20px!important;
+  margin-top:6px!important;
+}
+#treeViewport .tree-node small{margin-left:8px!important;}
+
+/* 根节点、建模节点、融合节点也避免被旧 flex 压扁。 */
+#treeViewport .tree-node.root,
+#treeViewport .tree-node.model,
+#treeViewport .tree-node.fusion{
+  align-items:flex-start!important;
+  gap:12px!important;
+}
+#treeViewport .tree-node.root>div,
+#treeViewport .tree-node.model>div,
+#treeViewport .tree-node.fusion>div{
+  min-width:0!important;
+  flex:1 1 auto!important;
+}
+
+/* 多 Agent 决策树放大页：图标稍大，但仍保持文字优先。 */
+body.platform_nav-tree-page #treeViewport .tree-node em,
+body.platform_nav-tree-page #treeViewport .tree-node.flow-canvas-node em{
+  width:var(--v32-canvas-icon-tree)!important;
+  min-width:var(--v32-canvas-icon-tree)!important;
+  height:var(--v32-canvas-icon-tree)!important;
+  font-size:15px!important;
+}
+body.platform_nav-tree-page #treeViewport .tree-node h3{
+  font-size:clamp(21px,1.32vw,26px)!important;
+}
+body.platform_nav-tree-page #treeViewport .tree-node p,
+body.platform_nav-tree-page #treeViewport .node-work-summary{
+  font-size:clamp(16px,1.02vw,19px)!important;
+}
+
+/* 给画布增加滚动容错，不把卡片硬塞进不足空间。 */
+.tree-viewport.canvas-builder,
+#treeViewport.tree-viewport{
+  overflow:auto!important;
+  scroll-behavior:smooth!important;
+}
+.workflow-canvas-size-tag,
+.flow-canvas-hint{
+  max-width:calc(100% - 28px)!important;
+  font-size:clamp(14px,.88vw,16px)!important;
+}
+
+/* 小屏时保持标题可换行，不再缩成看不清的小字。 */
+@media (max-width:1480px){
+  .platform_nav-page-head h2{font-size:clamp(23px,1.72vw,29px)!important;}
+  #treeViewport .tree-node h3{font-size:clamp(18px,1.28vw,22px)!important;}
+  #treeViewport .tree-node p,
+  #treeViewport .node-work-summary{font-size:clamp(14px,1vw,17px)!important;}
+}

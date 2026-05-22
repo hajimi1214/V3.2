@@ -1,0 +1,450 @@
+/* =========================================================
+   智领铜行 · V3.2 新Bug修复增强主题
+   目标：
+   1. 更适合大屏/评委远距离观看
+   2. 顶部标题稳定单行显示
+   3. 决策方式按钮恢复为显性操作区
+   4. 工作台/决策树/审理台视觉和状态同步
+   5. 右侧模块说明区域配色回到统一工业白蓝风格
+========================================================= */
+
+:root{
+  --side: 232px;
+  --v32-font-size: 18px;
+  --v32-title-ink: #102038;
+  --v32-title-sub: #44576d;
+  --v32-strong-blue: #235fde;
+  --v32-soft-blue: #edf4ff;
+  --v32-border: #d6e2ef;
+  --v32-panel: #ffffff;
+  --v32-muted: #56697f;
+  --v32-shadow: 0 14px 34px rgba(15, 23, 42, .08);
+}
+
+html, body{
+  font-size: var(--v32-font-size)!important;
+}
+
+.sidebar{
+  width: var(--side)!important;
+  flex-basis: var(--side)!important;
+  padding: 18px 14px 18px!important;
+}
+
+.main-stage{
+  width: calc(var(--platform-width) - var(--side))!important;
+  padding: 18px 20px 18px!important;
+  gap: 12px!important;
+}
+
+.brand-block{
+  gap: 14px!important;
+}
+
+.brand-title{
+  font-size: 24px!important;
+  white-space: nowrap!important;
+}
+
+.brand-sub{
+  font-size: 15px!important;
+  white-space: nowrap!important;
+}
+
+.brand-ver{
+  font-size: 13px!important;
+}
+
+.refined-nav .nav-item{
+  min-height: 52px!important;
+  height: auto!important;
+  padding: 0 13px!important;
+  font-size: 18px!important;
+}
+
+.refined-nav .nav-item span{
+  font-size: 20px!important;
+}
+
+.platform-card{
+  font-size: 15px!important;
+}
+
+.pc-title{
+  font-size: 16px!important;
+}
+
+.pc-row,
+.pc-row strong{
+  font-size: 14px!important;
+}
+
+.display-mode-control-v32{
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #e3ebf3;
+}
+.display-mode-title{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
+}
+.display-mode-title b{
+  display:block;
+  font-size:15px;
+  color:#16253d;
+  font-weight:950;
+}
+.display-mode-title span{
+  display:block;
+  max-width:105px;
+  text-align:right;
+  color:#607286;
+  font-size:12px;
+  line-height:1.35;
+  font-weight:800;
+}
+.display-mode-buttons{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:7px;
+}
+.display-mode-buttons button{
+  min-height:34px;
+  border:1px solid #d6e2ef;
+  border-radius:10px;
+  background:#f8fbff;
+  color:#516274;
+  font-size:12px;
+  font-weight:950;
+  cursor:pointer;
+}
+.display-mode-buttons button.active{
+  border-color:#b6d0ff;
+  background:linear-gradient(180deg,#2f70f4,#245bdb);
+  color:#fff;
+  box-shadow:0 10px 20px rgba(36,91,219,.18);
+}
+
+.top-header{
+  display:grid!important;
+  grid-template-columns:minmax(920px,1fr) auto!important;
+  column-gap:18px!important;
+  align-items:center!important;
+  min-height:100px!important;
+}
+
+.title-area{
+  width:100%!important;
+  min-width:0!important;
+  overflow:visible!important;
+}
+
+.title-area h1{
+  color:var(--v32-title-ink)!important;
+  white-space:nowrap!important;
+  word-break:keep-all!important;
+  line-height:1.03!important;
+  letter-spacing:-1.2px!important;
+  font-weight:980!important;
+  margin:0!important;
+}
+
+.title-area p{
+  margin-top:11px!important;
+  color:var(--v32-title-sub)!important;
+  font-size:18px!important;
+  line-height:1.35!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+
+.metric-strip.action-only{
+  gap:12px!important;
+  align-self:center!important;
+}
+.dispatch-button,
+.run-button,
+.clear-decision-button{
+  min-height:64px!important;
+  height:64px!important;
+  font-size:19px!important;
+  border-radius:16px!important;
+}
+.dispatch-button{min-width:150px!important;}
+.run-button{min-width:266px!important;}
+.clear-decision-button{min-width:138px!important;}
+
+.panel-head{
+  min-height:60px!important;
+  padding:12px 18px!important;
+}
+.panel-head.compact{
+  min-height:54px!important;
+  padding:12px 16px!important;
+}
+.panel-head h2,
+.panel-head h3{
+  font-size:24px!important;
+}
+.panel-head.compact h3{
+  font-size:21px!important;
+}
+.panel-head p{
+  font-size:16px!important;
+}
+.panel-head span,
+.focus-pill{
+  font-size:15px!important;
+  padding:7px 12px!important;
+}
+
+#tree-panel .panel-head{
+  gap:16px!important;
+}
+#tree-panel .panel-head p{
+  display:none!important;
+}
+
+.workflow-canvas-toolbar,
+.workflow-toolbar-v32{
+  min-height:82px!important;
+  padding:12px 16px!important;
+  gap:12px!important;
+  display:grid!important;
+  grid-template-columns:minmax(430px,auto) minmax(0,1fr)!important;
+  align-items:center!important;
+  background:linear-gradient(180deg,#fbfdff,#f2f7fd)!important;
+  border-top:1px solid #e4ecf5!important;
+  border-bottom:1px solid #dce7f2!important;
+}
+
+.workflow-mode-group,
+.decision-mode-highlight-v32{
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  min-height:54px!important;
+  padding:10px 12px!important;
+  border:1px solid #cfe0ff!important;
+  border-radius:16px!important;
+  background:#ffffff!important;
+  box-shadow:0 10px 22px rgba(36,91,219,.06)!important;
+}
+.workflow-mode-label{
+  font-size:16px!important;
+  color:#17355e!important;
+  font-weight:950!important;
+  min-width:72px!important;
+}
+.workflow-mode-help{
+  display:none!important;
+}
+.workflow-mode-group button,
+.workflow-action-group button,
+.workflow-canvas-toolbar select{
+  min-height:42px!important;
+  height:42px!important;
+  border-radius:12px!important;
+  font-size:16px!important;
+  font-weight:950!important;
+  padding:0 14px!important;
+}
+.workflow-mode-group button{
+  min-width:134px!important;
+  border-color:#cad9eb!important;
+  background:#f8fbff!important;
+  color:#31527d!important;
+}
+.workflow-mode-group button.active{
+  color:#fff!important;
+  background:linear-gradient(180deg,#3475ef,#245bdb)!important;
+  border-color:#245bdb!important;
+  box-shadow:0 12px 22px rgba(36,91,219,.18)!important;
+}
+.workflow-action-group{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  flex-wrap:wrap!important;
+  gap:8px!important;
+}
+.arbitration-mode-select{
+  min-height:42px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  padding:0 12px!important;
+  font-size:15px!important;
+  font-weight:900!important;
+  color:#50647d!important;
+  border:1px solid #d6e2ef!important;
+  border-radius:12px!important;
+  background:#fff!important;
+}
+.workflow-canvas-toolbar select{
+  min-width:148px!important;
+  padding:0 10px!important;
+  color:#214e9b!important;
+  background:#fff!important;
+}
+
+.tree-panel{
+  min-height:560px!important;
+}
+.tree-viewport{
+  min-height:420px!important;
+}
+.flow-canvas-hint{
+  font-size:15px!important;
+  line-height:1.45!important;
+  font-weight:850!important;
+}
+.tree-node h3{
+  font-size:16px!important;
+}
+.tree-node p,
+.tree-node small,
+.tree-node strong,
+.tree-node .badge{
+  font-size:13px!important;
+}
+
+.decision-runtime-console .panel-head p{
+  font-size:16px!important;
+}
+.decision-console-card h4{
+  font-size:18px!important;
+}
+.decision-log-stream p,
+.agent-log-stream p{
+  font-size:15px!important;
+  line-height:1.6!important;
+}
+
+.field-list label{
+  font-size:14px!important;
+}
+.field-list p,
+.agent-workbox li,
+.evidence-list li,
+.matrix-table,
+.matrix-table th,
+.matrix-table td,
+.log-feed p,
+.archive-panel p,
+.archive-panel b,
+.spark-list p,
+.alarm{
+  font-size:16px!important;
+  line-height:1.5!important;
+}
+
+.platform_nav-page-head{
+  min-height:80px!important;
+  padding:14px 18px!important;
+}
+.platform_nav-page-head h2{
+  font-size:30px!important;
+}
+.platform_nav-page-head span{
+  font-size:14px!important;
+}
+.platform_nav-page-body{
+  padding:16px!important;
+}
+
+.module-detail-hero{
+  padding:22px 22px!important;
+}
+.module-detail-hero span{
+  font-size:14px!important;
+}
+.module-detail-hero h3{
+  font-size:34px!important;
+}
+.module-detail-hero p{
+  font-size:18px!important;
+  line-height:1.58!important;
+}
+
+.module-detail-layout{
+  grid-template-columns:minmax(0,1fr) 354px!important;
+  gap:16px!important;
+}
+.module-detail-view.no-side-route .module-detail-layout.side-free{
+  grid-template-columns:minmax(0,1fr)!important;
+}
+
+.module-detail-side{
+  background:linear-gradient(180deg,#fbfdff,#f4f8fd)!important;
+  border:1px solid #d7e3f0!important;
+  box-shadow:var(--v32-shadow)!important;
+  color:#172233!important;
+}
+.module-detail-side h4{
+  color:#15243b!important;
+  font-size:20px!important;
+}
+.module-detail-side li{
+  color:#516274!important;
+  font-size:16px!important;
+  line-height:1.58!important;
+}
+.module-agent-mini p{
+  background:#ffffff!important;
+  border:1px solid #d8e5f2!important;
+  box-shadow:0 10px 20px rgba(15,23,42,.05)!important;
+  border-radius:14px!important;
+  padding:13px 14px!important;
+}
+.module-agent-mini b{
+  color:#235fde!important;
+  font-size:17px!important;
+}
+.module-agent-mini span{
+  color:#586c82!important;
+  font-size:14px!important;
+  line-height:1.55!important;
+}
+
+.agent-role-card,
+.agent-component-card{
+  background:#ffffff!important;
+  border:1px solid #d7e3f0!important;
+  box-shadow:0 12px 24px rgba(15,23,42,.06)!important;
+}
+.agent-role-title b,
+.agent-component-card b{
+  color:#15243b!important;
+}
+.agent-role-main p,
+.agent-component-card small{
+  color:#576a80!important;
+}
+.agent-component-card em{
+  background:#eef5ff!important;
+  color:#245bdb!important;
+  border-color:#cfe0ff!important;
+}
+
+@media(max-width: 1620px){
+  :root{ --side: 218px; --v32-font-size: 17px; }
+  .top-header{grid-template-columns:minmax(760px,1fr) auto!important;}
+  .title-area p{font-size:16px!important;}
+  .dispatch-button,
+  .run-button,
+  .clear-decision-button{font-size:17px!important;}
+  .workflow-canvas-toolbar,
+  .workflow-toolbar-v32{grid-template-columns:1fr!important;}
+  .workflow-action-group{justify-content:flex-start!important;}
+}
+@media(max-width: 1380px){
+  :root{ --side: 206px; --v32-font-size: 16px; }
+  .top-header{grid-template-columns:1fr!important; row-gap:10px!important;}
+  .metric-strip.action-only{justify-content:flex-start!important;}
+  .title-area p{white-space:normal!important;}
+}

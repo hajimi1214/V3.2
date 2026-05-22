@@ -1,0 +1,682 @@
+/*
+ * V3.2 多轮复核终版：纵向决策树 + 双主题统一覆盖。
+ * 设计目标：高对比、主任务突出、少装饰、无文字穿模，符合工业操作台阅读习惯。
+ */
+:root{
+  --review-tree-width:800px;
+  --review-tree-height:1170px;
+  --review-node-title:clamp(18px,1.08vw,23px);
+  --review-node-text:clamp(14px,.86vw,17px);
+  --review-node-meta:clamp(13px,.78vw,16px);
+}
+
+/* 不在顶部提供指令下发按钮。 */
+#dispatchBtn{display:none!important;visibility:hidden!important;pointer-events:none!important;}
+
+/* ===== 决策树：由上至下的四行结构 ===== */
+#treeViewport.tree-viewport{
+  position:relative!important;
+  height:calc(100% - 62px)!important;
+  min-height:0!important;
+  overflow:auto!important;
+  padding:0!important;
+  border-radius:14px!important;
+  scroll-behavior:smooth!important;
+  cursor:grab!important;
+}
+#treeViewport.tree-viewport.is-panning{cursor:grabbing!important;user-select:none!important;}
+#treeViewport.tree-viewport::-webkit-scrollbar{width:10px;height:10px;}
+#treeViewport.tree-viewport::-webkit-scrollbar-thumb{border-radius:999px;}
+.tree-canvas-surface{
+  position:relative!important;
+  width:var(--review-tree-width)!important;
+  min-width:var(--review-tree-width)!important;
+  height:var(--review-tree-height)!important;
+  min-height:var(--review-tree-height)!important;
+  margin:0 auto!important;
+}
+.tree-canvas-surface .tree-lines{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  pointer-events:none!important;
+}
+.tree-canvas-surface .flow-line{
+  fill:none!important;
+  stroke-width:2.5!important;
+  opacity:.82!important;
+  stroke-dasharray:0!important;
+}
+.tree-canvas-surface .flow-line.link-live{stroke-width:3.4!important;stroke-dasharray:10 8!important;opacity:1!important;}
+
+#treeViewport .tree-node,
+#treeViewport .tree-node.flow-canvas-node{
+  position:absolute!important;
+  box-sizing:border-box!important;
+  display:block!important;
+  padding:14px 16px!important;
+  border-radius:13px!important;
+  overflow:hidden!important;
+  transform:none!important;
+}
+#treeViewport .tree-node.root,
+#treeViewport .tree-node.model,
+#treeViewport .tree-node.fusion{
+  display:flex!important;
+  align-items:flex-start!important;
+  gap:11px!important;
+}
+#treeViewport .tree-node > div{min-width:0!important;flex:1 1 auto!important;}
+#treeViewport .tree-node em{
+  display:inline-grid!important;
+  place-items:center!important;
+  width:29px!important;
+  min-width:29px!important;
+  height:29px!important;
+  margin:0 0 8px 0!important;
+  border-radius:8px!important;
+  font-size:15px!important;
+  font-style:normal!important;
+  line-height:1!important;
+}
+#treeViewport .tree-node h3{
+  display:block!important;
+  margin:0 0 8px 0!important;
+  padding:0!important;
+  font-size:var(--review-node-title)!important;
+  line-height:1.22!important;
+  font-weight:900!important;
+  letter-spacing:-.02em!important;
+  white-space:normal!important;
+  word-break:keep-all!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+#treeViewport .tree-node p,
+#treeViewport .node-work-summary{
+  display:block!important;
+  margin:4px 0!important;
+  font-size:var(--review-node-text)!important;
+  line-height:1.33!important;
+  font-weight:650!important;
+  white-space:normal!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  -webkit-line-clamp:unset!important;
+}
+#treeViewport .tree-node.agent p{white-space:nowrap!important;}
+#treeViewport .tree-node .badge{
+  position:static!important;
+  display:inline-flex!important;
+  justify-content:center!important;
+  align-items:center!important;
+  min-width:50px!important;
+  height:25px!important;
+  margin:0 0 7px 0!important;
+  padding:0 9px!important;
+  border-radius:7px!important;
+  font-size:var(--review-node-meta)!important;
+  line-height:1!important;
+  font-weight:900!important;
+}
+#treeViewport .tree-node strong,
+#treeViewport .tree-node small{
+  display:inline-flex!important;
+  align-items:center!important;
+  margin:6px 8px 0 0!important;
+  min-height:20px!important;
+  font-size:var(--review-node-meta)!important;
+  line-height:1.2!important;
+  font-weight:850!important;
+  white-space:nowrap!important;
+}
+#treeViewport .node-enable-toggle,#treeViewport .add-agent,#treeViewport .flow-canvas-hint,#treeViewport .workflow-canvas-size-tag{display:none!important;}
+#treeViewport .tree-node.active::after{
+  content:'当前节点'!important;
+  position:absolute!important;
+  right:11px!important;
+  bottom:10px!important;
+  border-radius:999px!important;
+  padding:3px 9px!important;
+  font-size:12px!important;
+  line-height:1.2!important;
+  font-weight:900!important;
+}
+
+/* 第一行：2 个基础节点 */
+#treeViewport #node-state_capture{left:25px!important;top:28px!important;width:350px!important;height:132px!important;}
+#treeViewport #node-context_model{left:425px!important;top:28px!important;width:350px!important;height:132px!important;}
+/* 第二行：2 个 Agent 审理 */
+#treeViewport #node-vision_quality{left:25px!important;top:205px!important;width:350px!important;height:205px!important;}
+#treeViewport #node-localization_3d{left:425px!important;top:205px!important;width:350px!important;height:205px!important;}
+/* 第三行：2 个 Agent 审理 */
+#treeViewport #node-placement_plan{left:25px!important;top:454px!important;width:350px!important;height:205px!important;}
+#treeViewport #node-hardware_interlock{left:425px!important;top:454px!important;width:350px!important;height:205px!important;}
+/* 第四行：剩余审查 + 仲裁与输出 */
+#treeViewport #node-safety_strategy{left:25px!important;top:703px!important;width:350px!important;height:205px!important;}
+#treeViewport #node-execution_constraint{left:425px!important;top:703px!important;width:350px!important;height:205px!important;}
+#treeViewport #node-fusion_arbitration{left:8px!important;top:966px!important;width:254px!important;height:168px!important;}
+#treeViewport #node-control_task{left:273px!important;top:966px!important;width:254px!important;height:168px!important;}
+#treeViewport #node-archive{left:538px!important;top:966px!important;width:254px!important;height:168px!important;}
+
+body.platform_nav-tree-page #treeViewport.tree-viewport{height:calc(100% - 64px)!important;min-height:720px!important;}
+body.platform_nav-tree-page .tree-canvas-surface{height:var(--review-tree-height)!important;min-height:var(--review-tree-height)!important;}
+body.platform_nav-tree-page #treeViewport .tree-node h3{font-size:clamp(20px,1.2vw,26px)!important;}
+body.platform_nav-tree-page #treeViewport .tree-node p{font-size:clamp(15px,.94vw,19px)!important;}
+
+/* 树标题与信息胶囊分层排布，避免主页标题换行穿模。 */
+body.platform_nav-admin-shell #tree-panel .panel-head,body.platform_nav-tree-page #tree-panel .panel-head{display:flex!important;align-items:center!important;align-content:center!important;flex-wrap:wrap!important;gap:8px 10px!important;min-height:62px!important;height:62px!important;padding:8px 14px!important;}
+body.platform_nav-admin-shell #tree-panel .panel-head>div:first-child,body.platform_nav-tree-page #tree-panel .panel-head>div:first-child{flex:1 1 240px!important;min-width:230px!important;}
+body.platform_nav-admin-shell #tree-panel .panel-head h2,body.platform_nav-tree-page #tree-panel .panel-head h2{font-size:clamp(22px,1.42vw,29px)!important;line-height:1.15!important;white-space:nowrap!important;}
+body.platform_nav-admin-shell #tree-panel .panel-head p,body.platform_nav-tree-page #tree-panel .panel-head p{display:none!important;}
+body.platform_nav-admin-shell #tree-panel .focus-pill,body.platform_nav-tree-page #tree-panel .focus-pill{flex:0 1 auto!important;max-width:100%!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+
+/* 视频区域：给足显示范围，并确保素材完整呈现。 */
+body.platform_nav-admin-shell .detail-grid{
+  grid-template-columns:minmax(330px,.95fr) minmax(330px,.95fr) minmax(345px,1fr) minmax(385px,1.12fr) minmax(560px,1.82fr)!important;
+  gap:12px!important;
+}
+.state-frame-panel .state-frame-body,.state-frame-panel .twin-body{
+  grid-template-columns:minmax(0,2.5fr) minmax(128px,.52fr)!important;
+  gap:12px!important;
+  min-height:232px!important;
+}
+.state-frame-media{display:grid!important;place-items:center!important;overflow:hidden!important;min-height:226px!important;border-radius:12px!important;}
+.state-frame-video,.state-frame-media video{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;}
+
+/* ===== 两套工业主题的完整覆盖：避免局部残留异色 ===== */
+body.zltx-theme-gold{
+  --rv-bg:#15191e;
+  --rv-surface:#20262d;
+  --rv-surface-2:#252d35;
+  --rv-surface-3:#2b343d;
+  --rv-border:#45515e;
+  --rv-line:#758da4;
+  --rv-title:#f3f2ed;
+  --rv-text:#e2e4e6;
+  --rv-muted:#bdc5cc;
+  --rv-accent:#d4ae67;
+  --rv-accent-deep:#6b542f;
+  --rv-pass:#54c58b;
+  --rv-blue:#72a9e9;
+  --rv-shadow:rgba(0,0,0,.22);
+  --classic-line:#7892aa;
+  --classic-line-live:#d4ae67;
+  background:var(--rv-bg)!important;
+  color:var(--rv-text)!important;
+}
+body.zltx-theme-gold .app-bg{background:linear-gradient(135deg,#14191f,#1b222a 54%,#101419)!important;}
+body.zltx-theme-gold .sidebar,
+body.zltx-theme-gold .top-header,
+body.zltx-theme-gold .panel,
+body.zltx-theme-gold .mini-panel,
+body.zltx-theme-gold .platform-card,
+body.zltx-theme-gold .status-bus,
+body.zltx-theme-gold .tree-panel,
+body.zltx-theme-gold #decision-runtime-console,
+body.zltx-theme-gold .decision-console-card,
+body.zltx-theme-gold .field-list>div,
+body.zltx-theme-gold .evidence-box,
+body.zltx-theme-gold .evidence-card,
+body.zltx-theme-gold .archive-list,
+body.zltx-theme-gold .recent-archive,
+body.zltx-theme-gold .permission-matrix,
+body.zltx-theme-gold .model-output,
+body.zltx-theme-gold .state-frame-panel,
+body.zltx-theme-gold .alert-panel,
+body.zltx-theme-gold .workflow-panel,
+body.zltx-theme-gold .config-panel,
+body.zltx-theme-gold .module-overlay .overlay-shell,
+body.zltx-theme-gold .report-print-shell{
+  background:var(--rv-surface)!important;
+  color:var(--rv-text)!important;
+  border-color:var(--rv-border)!important;
+  box-shadow:0 9px 20px var(--rv-shadow)!important;
+}
+body.zltx-theme-gold .panel-head,
+body.zltx-theme-gold .decision-console-head,
+body.zltx-theme-gold .decision-console-card h4,
+body.zltx-theme-gold .mini-panel .panel-head,
+body.zltx-theme-gold .overlay-head,
+body.zltx-theme-gold .report-print-head{
+  background:var(--rv-surface-2)!important;
+  color:var(--rv-title)!important;
+  border-color:var(--rv-border)!important;
+}
+body.zltx-theme-gold #treeViewport.tree-viewport{
+  background:
+    linear-gradient(90deg,rgba(126,148,168,.09) 1px,transparent 1px),
+    linear-gradient(0deg,rgba(126,148,168,.08) 1px,transparent 1px),
+    #181f26!important;
+  background-size:38px 38px,38px 38px,100% 100%!important;
+  border-color:#4b5b6a!important;
+}
+body.zltx-theme-gold .tree-canvas-surface .flow-line{stroke:#7e98af!important;}
+body.zltx-theme-gold .tree-canvas-surface .flow-line.link-live{stroke:var(--rv-accent)!important;}
+body.zltx-theme-gold #arrow path{fill:#7e98af!important;}
+body.zltx-theme-gold #treeViewport .tree-node{
+  background:linear-gradient(180deg,#29323b,#232a32)!important;
+  border:1.5px solid #526272!important;
+  color:var(--rv-text)!important;
+  box-shadow:0 7px 14px rgba(0,0,0,.18),inset 4px 0 0 var(--rv-accent)!important;
+}
+body.zltx-theme-gold #treeViewport .tree-node h3{color:var(--rv-title)!important;}
+body.zltx-theme-gold #treeViewport .tree-node p,
+body.zltx-theme-gold #treeViewport .node-work-summary,
+body.zltx-theme-gold #treeViewport .tree-node small{color:var(--rv-muted)!important;}
+body.zltx-theme-gold #treeViewport .tree-node strong{color:#eae8df!important;}
+body.zltx-theme-gold #treeViewport .tree-node em{background:#343e48!important;border:1px solid #657686!important;color:#e1bc77!important;}
+body.zltx-theme-gold #treeViewport .tree-node .badge,
+body.zltx-theme-gold .badge{background:#213b30!important;border:1px solid #4b956e!important;color:#88e4ae!important;}
+body.zltx-theme-gold #treeViewport .tree-node.active::after{background:#725a32!important;color:#fff2d2!important;}
+body.zltx-theme-gold .decision-log-stream,
+body.zltx-theme-gold .log-feed,
+body.zltx-theme-gold #taskJson,
+body.zltx-theme-gold pre,
+body.zltx-theme-gold .matrix-table,
+body.zltx-theme-gold .state-frame-metrics,
+body.zltx-theme-gold .workflow-canvas-toolbar,
+body.zltx-theme-gold .module-tag-bar,
+body.zltx-theme-gold #platform_navTagsBar,
+body.zltx-theme-gold .focus-pill{
+  background:var(--rv-surface-2)!important;
+  border-color:var(--rv-border)!important;
+  color:var(--rv-text)!important;
+}
+body.zltx-theme-gold .decision-log-stream p,
+body.zltx-theme-gold .log-feed p,
+body.zltx-theme-gold .archive-list p,
+body.zltx-theme-gold .recent-archive p,
+body.zltx-theme-gold .alarm,
+body.zltx-theme-gold .matrix-table td,
+body.zltx-theme-gold .matrix-table th{
+  background:var(--rv-surface-3)!important;
+  color:var(--rv-text)!important;
+  border-color:#4a5865!important;
+}
+body.zltx-theme-gold h1,body.zltx-theme-gold h2,body.zltx-theme-gold h3,body.zltx-theme-gold h4,
+body.zltx-theme-gold .brand-title,body.zltx-theme-gold .pc-title{color:var(--rv-title)!important;}
+body.zltx-theme-gold p,body.zltx-theme-gold label,body.zltx-theme-gold li,body.zltx-theme-gold .title-area p{color:var(--rv-muted)!important;}
+body.zltx-theme-gold b,body.zltx-theme-gold strong{color:#f0d392!important;}
+body.zltx-theme-gold .nav-item{background:#1a2027!important;border-color:#35424f!important;color:#e2d3ac!important;}
+body.zltx-theme-gold .nav-item.active{background:#302a21!important;border-color:#b49354!important;color:#f4dfad!important;}
+body.zltx-theme-gold .run-button:not(.gated),
+body.zltx-theme-gold .presentation-theme-toggle,
+body.zltx-theme-gold button.primary{
+  background:#38434d!important;border-color:#b28c4b!important;color:#f3dfb0!important;
+}
+body.zltx-theme-gold input,body.zltx-theme-gold select,body.zltx-theme-gold textarea{
+  background:#283139!important;border-color:#556474!important;color:#f2f0e8!important;
+}
+body.zltx-theme-gold .state-frame-media{background:#121820!important;border-color:#45515e!important;}
+body.zltx-theme-gold #treeViewport.tree-viewport::-webkit-scrollbar-thumb{background:#667788!important;border:2px solid #20262d!important;}
+body.zltx-theme-gold #treeViewport.tree-viewport::-webkit-scrollbar-track{background:#20262d!important;}
+
+body.zltx-theme-light{
+  --rv-bg:#edf2f6;
+  --rv-surface:#ffffff;
+  --rv-surface-2:#f4f7fa;
+  --rv-surface-3:#f7f9fc;
+  --rv-border:#b7c7d7;
+  --rv-title:#101c2b;
+  --rv-text:#182b40;
+  --rv-muted:#516a83;
+  --rv-accent:#2368ca;
+  --rv-pass:#0d7d43;
+  background:var(--rv-bg)!important;
+  color:var(--rv-text)!important;
+  --classic-line:#7794b4;
+  --classic-line-live:#2368ca;
+}
+body.zltx-theme-light .app-bg{background:linear-gradient(135deg,#eaf0f5,#f4f7fa 62%,#e6edf4)!important;}
+body.zltx-theme-light .sidebar,body.zltx-theme-light .top-header,body.zltx-theme-light .panel,body.zltx-theme-light .mini-panel,
+body.zltx-theme-light .platform-card,body.zltx-theme-light .status-bus,body.zltx-theme-light #decision-runtime-console,
+body.zltx-theme-light .decision-console-card,body.zltx-theme-light .field-list>div,body.zltx-theme-light .evidence-box,
+body.zltx-theme-light .archive-list,body.zltx-theme-light .recent-archive,body.zltx-theme-light .permission-matrix,
+body.zltx-theme-light .model-output,body.zltx-theme-light .state-frame-panel,body.zltx-theme-light .alert-panel{
+  background:var(--rv-surface)!important;color:var(--rv-text)!important;border-color:var(--rv-border)!important;
+  box-shadow:0 8px 18px rgba(25,48,70,.08)!important;
+}
+body.zltx-theme-light .panel-head,body.zltx-theme-light .decision-console-head,body.zltx-theme-light .decision-console-card h4{
+  background:var(--rv-surface-2)!important;color:var(--rv-title)!important;border-color:var(--rv-border)!important;
+}
+body.zltx-theme-light #treeViewport.tree-viewport{
+  background:linear-gradient(90deg,rgba(104,139,178,.10) 1px,transparent 1px),linear-gradient(0deg,rgba(104,139,178,.09) 1px,transparent 1px),#f5f8fb!important;
+  background-size:38px 38px,38px 38px,100% 100%!important;border-color:#b4c7da!important;
+}
+body.zltx-theme-light #treeViewport .tree-node{background:#fff!important;border:1.5px solid #afc3d8!important;box-shadow:0 7px 14px rgba(30,58,87,.08),inset 4px 0 0 #357fe1!important;color:var(--rv-text)!important;}
+body.zltx-theme-light #treeViewport .tree-node h3,body.zltx-theme-light h1,body.zltx-theme-light h2,body.zltx-theme-light h3,body.zltx-theme-light h4{color:var(--rv-title)!important;}
+body.zltx-theme-light #treeViewport .tree-node p,body.zltx-theme-light #treeViewport .tree-node small,body.zltx-theme-light p,body.zltx-theme-light label{color:var(--rv-muted)!important;}
+body.zltx-theme-light #treeViewport .tree-node em{background:#eaf2fb!important;border:1px solid #afc6dd!important;color:#2060b5!important;}
+body.zltx-theme-light #treeViewport .tree-node .badge,body.zltx-theme-light .badge{background:#eaf8f1!important;border:1px solid #63ba88!important;color:#08793c!important;}
+body.zltx-theme-light #treeViewport .tree-node.active::after{background:#2368ca!important;color:#fff!important;}
+body.zltx-theme-light .decision-log-stream,body.zltx-theme-light .log-feed,body.zltx-theme-light #taskJson,body.zltx-theme-light pre,
+body.zltx-theme-light .matrix-table,body.zltx-theme-light .state-frame-metrics,body.zltx-theme-light .workflow-canvas-toolbar,
+body.zltx-theme-light .module-tag-bar,body.zltx-theme-light #platform_navTagsBar,body.zltx-theme-light .focus-pill{
+  background:var(--rv-surface-2)!important;border-color:var(--rv-border)!important;color:var(--rv-text)!important;
+}
+body.zltx-theme-light .decision-log-stream p,body.zltx-theme-light .log-feed p,body.zltx-theme-light .archive-list p,
+body.zltx-theme-light .recent-archive p,body.zltx-theme-light .alarm,body.zltx-theme-light .matrix-table td,body.zltx-theme-light .matrix-table th{
+  background:var(--rv-surface-3)!important;color:var(--rv-text)!important;border-color:#d6e0ea!important;
+}
+body.zltx-theme-light .nav-item{background:#fff!important;border-color:transparent!important;color:#1d344b!important;}
+body.zltx-theme-light .nav-item.active{background:#e8f1ff!important;border-color:#6c9fea!important;color:#124ea7!important;}
+body.zltx-theme-light .state-frame-media{background:#e5edf5!important;border-color:#b7c7d7!important;}
+body.zltx-theme-light #treeViewport.tree-viewport::-webkit-scrollbar-thumb{background:#91a9c1!important;border:2px solid #edf2f6!important;}
+body.zltx-theme-light #treeViewport.tree-viewport::-webkit-scrollbar-track{background:#e4ebf2!important;}
+
+@media(max-width:1500px){
+  :root{--review-tree-width:780px;--review-tree-height:1170px;--review-node-title:16px;--review-node-text:13px;}
+  #treeViewport #node-state_capture,#treeViewport #node-vision_quality,#treeViewport #node-placement_plan,#treeViewport #node-safety_strategy{left:16px!important;width:344px!important;}
+  #treeViewport #node-context_model,#treeViewport #node-localization_3d,#treeViewport #node-hardware_interlock,#treeViewport #node-execution_constraint{left:420px!important;width:344px!important;}
+  #treeViewport #node-fusion_arbitration{left:8px!important;width:246px!important;}
+  #treeViewport #node-control_task{left:267px!important;width:246px!important;}
+  #treeViewport #node-archive{left:526px!important;width:246px!important;}
+  body.platform_nav-admin-shell .detail-grid{grid-template-columns:repeat(2,minmax(360px,1fr))!important;}
+  .state-frame-panel{grid-column:span 2!important;min-height:328px!important;}
+  .state-frame-media{min-height:260px!important;}
+}
+
+/* 工业白下仍保留深色流程标题栏，保证投影环境下标题识别度。 */
+body.zltx-theme-light #tree-panel .panel-head{background:#14314b!important;border-color:#274962!important;}
+body.zltx-theme-light #tree-panel .panel-head h2{color:#ffffff!important;}
+body.zltx-theme-light #tree-panel .focus-pill{background:#ffffff!important;color:#14314b!important;border-color:#c1d2e3!important;}
+
+/* ===== 第四轮复核修正：标题与节点文字不碰撞、顶部动作区完整显示 ===== */
+body.platform_nav-admin-shell{
+  --v3_2-header-h:100px!important;
+}
+body.platform_nav-admin-shell .top-header{
+  min-height:100px!important;
+  height:100px!important;
+  overflow:visible!important;
+}
+body.platform_nav-admin-shell .metric-strip.action-only{
+  align-self:center!important;
+  flex-wrap:nowrap!important;
+}
+body.platform_nav-admin-shell .metric-strip.action-only .run-button,
+body.platform_nav-admin-shell .metric-strip.action-only .clear-decision-button{
+  height:58px!important;
+  min-height:58px!important;
+  font-size:17px!important;
+}
+body.platform_nav-admin-shell .metric-strip.action-only .run-button{min-width:224px!important;}
+body.platform_nav-admin-shell .metric-strip.action-only .clear-decision-button{min-width:118px!important;}
+
+body.platform_nav-admin-shell #tree-panel .panel-head,
+body.platform_nav-tree-page #tree-panel .panel-head{
+  display:grid!important;
+  grid-template-columns:minmax(245px,1fr) auto!important;
+  grid-template-rows:1fr 1fr!important;
+  align-items:center!important;
+  gap:5px 12px!important;
+  min-height:84px!important;
+  height:84px!important;
+  padding:9px 14px!important;
+}
+body.platform_nav-admin-shell #tree-panel .panel-head>div:first-child,
+body.platform_nav-tree-page #tree-panel .panel-head>div:first-child{
+  grid-column:1!important;
+  grid-row:1 / 3!important;
+  align-self:center!important;
+  min-width:0!important;
+}
+body.platform_nav-admin-shell #tree-panel .panel-head h2,
+body.platform_nav-tree-page #tree-panel .panel-head h2{
+  font-size:clamp(22px,1.34vw,27px)!important;
+  line-height:1.14!important;
+}
+body.platform_nav-admin-shell #tree-panel .focus-pill,
+body.platform_nav-tree-page #tree-panel .focus-pill{
+  grid-column:2!important;
+  grid-row:1!important;
+  justify-self:end!important;
+  font-size:13px!important;
+  padding:5px 10px!important;
+}
+body.platform_nav-admin-shell #tree-panel .agent-map-trigger,
+body.platform_nav-tree-page #tree-panel .agent-map-trigger{
+  grid-column:2!important;
+  grid-row:2!important;
+  justify-self:end!important;
+  align-self:center!important;
+  max-width:100%!important;
+  height:31px!important;
+  min-height:31px!important;
+  padding:0 12px!important;
+  border-radius:999px!important;
+  font-size:14px!important;
+  white-space:nowrap!important;
+}
+#treeViewport.tree-viewport{
+  height:auto!important;
+  flex:1 1 auto!important;
+}
+
+/* Agent 卡片采用固定标题行：图标、标题、结论互不压叠。 */
+#treeViewport .tree-node.agent{
+  padding:14px 16px!important;
+}
+#treeViewport .tree-node.agent em{
+  position:absolute!important;
+  left:16px!important;
+  top:14px!important;
+  margin:0!important;
+}
+#treeViewport .tree-node.agent h3{
+  min-height:31px!important;
+  padding:2px 0 0 40px!important;
+  margin:0 0 9px 0!important;
+  line-height:1.22!important;
+}
+#treeViewport .tree-node.agent .badge{
+  position:static!important;
+  margin:0 0 8px 0!important;
+}
+
+/* 深色主题内的控件与提示标签也统一为石墨金，不保留大块白色突兀区域。 */
+body.zltx-theme-gold .clear-decision-button,
+body.zltx-theme-gold .presentation-theme-toggle,
+body.zltx-theme-gold .agent-map-trigger,
+body.zltx-theme-gold .decision-console-head>span,
+body.zltx-theme-gold .module-drawer-toggle{
+  background:#29313a!important;
+  border:1px solid #776142!important;
+  color:#ead39b!important;
+  box-shadow:none!important;
+}
+body.zltx-theme-gold .agent-map-trigger b,
+body.zltx-theme-gold .module-drawer-toggle b,
+body.zltx-theme-gold .module-drawer-toggle span{color:#e5c57b!important;}
+body.zltx-theme-gold .module-drawer-toggle em{color:#b8c0c9!important;}
+body.zltx-theme-gold .platform_nav-tags-bar{
+  background:#202830!important;
+  border-color:#3c4b58!important;
+}
+body.zltx-theme-gold .platform_nav-tags-bar button,
+body.zltx-theme-gold .platform_nav-tags-bar span{
+  background:#27313a!important;
+  border-color:#445361!important;
+  color:#d6dde4!important;
+}
+body.zltx-theme-gold .platform_nav-tags-bar .active,
+body.zltx-theme-gold .platform_nav-tags-bar span.active{
+  background:#3d3426!important;
+  border-color:#a7864a!important;
+  color:#f3d58f!important;
+}
+body.zltx-theme-gold .platform_nav-tags-bar::before{color:#aab4bf!important;}
+body.zltx-theme-gold .detail-grid .panel-head.compact>span,
+body.zltx-theme-gold .bottom-grid .panel-head.compact>span,
+body.zltx-theme-gold .agent-review .panel-head span,
+body.zltx-theme-gold .matrix-panel .panel-head span,
+body.zltx-theme-gold .task-panel .panel-head span{
+  background:#29313a!important;
+  border-color:#566473!important;
+  color:#d8dee5!important;
+}
+
+/* 第五轮复核修正：底部状态视频必须在主页视口内完整可见。 */
+body.platform_nav-admin-shell{
+  --v3_2-status-h:0px!important;
+  --v3_2-detail-h:220px!important;
+  --v3_2-toggle-h:32px!important;
+}
+body.platform_nav-admin-shell .main-stage{
+  grid-template-rows:100px 0px 36px minmax(400px,1fr) 32px 220px 0px!important;
+  gap:8px!important;
+}
+body.platform_nav-admin-shell #tree-panel{min-height:400px!important;}
+body.platform_nav-admin-shell .detail-grid{
+  display:grid!important;
+  grid-template-columns:minmax(0,.90fr) minmax(0,1.05fr) minmax(0,1.00fr) minmax(0,1.05fr) minmax(0,1.52fr)!important;
+  gap:10px!important;
+  min-width:0!important;
+  overflow:hidden!important;
+}
+body.platform_nav-admin-shell .detail-grid>.panel{min-width:0!important;overflow:hidden!important;}
+.state-frame-panel .state-frame-body,.state-frame-panel .twin-body{
+  min-height:148px!important;
+  height:148px!important;
+  grid-template-columns:minmax(0,2.15fr) minmax(98px,.76fr)!important;
+  gap:8px!important;
+}
+.state-frame-media{min-height:142px!important;height:142px!important;}
+.state-frame-panel .panel-head.compact{min-height:48px!important;height:48px!important;padding:8px 10px!important;}
+.state-frame-panel .panel-head.compact h3{font-size:clamp(15px,.98vw,18px)!important;}
+.state-frame-metrics{min-width:0!important;font-size:clamp(11px,.72vw,13px)!important;}
+body.platform_nav-admin-shell .top-header{
+  display:grid!important;
+  grid-template-columns:minmax(650px,1fr) auto!important;
+  grid-template-rows:100px!important;
+  column-gap:16px!important;
+  align-items:center!important;
+}
+body.platform_nav-admin-shell .title-area{grid-column:1!important;grid-row:1!important;}
+body.platform_nav-admin-shell .metric-strip.action-only{
+  grid-column:2!important;
+  grid-row:1!important;
+  justify-content:flex-end!important;
+}
+@media(max-width:1220px){
+  body.platform_nav-admin-shell .top-header{
+    grid-template-columns:1fr!important;
+    grid-template-rows:auto auto!important;
+    height:auto!important;
+    min-height:156px!important;
+  }
+  body.platform_nav-admin-shell .metric-strip.action-only{grid-column:1!important;grid-row:2!important;justify-content:flex-start!important;}
+}
+body.zltx-theme-gold .state-frame-body,
+body.zltx-theme-gold .state-frame-empty{
+  background:#20262d!important;
+  color:#e2e4e6!important;
+}
+body.zltx-theme-gold .state-frame-empty::before{
+  background:#323a42!important;
+  border-color:#756242!important;
+  color:#dcb66f!important;
+  box-shadow:none!important;
+}
+body.zltx-theme-gold .state-frame-empty span{color:#bcc5ce!important;}
+body.zltx-theme-gold .click-tip{
+  background:#29313a!important;
+  border-color:#566473!important;
+  color:#d8dee5!important;
+}
+.state-frame-panel .state-frame-metrics{
+  min-height:0!important;
+  height:142px!important;
+  overflow:hidden!important;
+  padding:0!important;
+}
+.state-frame-panel .state-frame-metrics li{
+  min-height:0!important;
+  height:27px!important;
+  margin:0!important;
+  padding:0!important;
+  font-size:clamp(11px,.74vw,13px)!important;
+  line-height:27px!important;
+  align-items:center!important;
+}
+/* 第六轮复核修正：底部五板块在主屏内完整可读，不让标题与状态标签互相挤压。 */
+body.platform_nav-admin-shell .detail-grid{
+  grid-template-columns:minmax(0,.98fr) minmax(0,1.12fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.62fr)!important;
+}
+body.platform_nav-admin-shell .detail-grid .panel-head.compact{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  flex-wrap:nowrap!important;
+  min-height:48px!important;
+  height:48px!important;
+  gap:6px!important;
+  padding:8px 10px!important;
+}
+body.platform_nav-admin-shell .detail-grid .panel-head.compact h3{
+  min-width:0!important;
+  font-size:clamp(13px,.84vw,16px)!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.platform_nav-admin-shell .detail-grid .panel-head.compact>span{
+  flex:0 1 auto!important;
+  max-width:92px!important;
+  min-width:0!important;
+  font-size:clamp(11px,.71vw,13px)!important;
+  line-height:1!important;
+  padding:5px 8px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.platform_nav-admin-shell #agentStatusTag{max-width:84px!important;}
+/* 第七轮复核修正：高分辨率下保留大字号，增加卡片纵向空间而非压缩文字。 */
+:root{--review-tree-height:1195px;}
+#treeViewport #node-vision_quality{top:202px!important;height:218px!important;}
+#treeViewport #node-localization_3d{top:202px!important;height:218px!important;}
+#treeViewport #node-placement_plan{top:459px!important;height:218px!important;}
+#treeViewport #node-hardware_interlock{top:459px!important;height:218px!important;}
+#treeViewport #node-safety_strategy{top:716px!important;height:218px!important;}
+#treeViewport #node-execution_constraint{top:716px!important;height:218px!important;}
+#treeViewport #node-fusion_arbitration{top:980px!important;height:184px!important;}
+#treeViewport #node-control_task{top:980px!important;height:184px!important;}
+#treeViewport #node-archive{top:980px!important;height:184px!important;}
+/* 窄屏回退：不隐藏工业状态视频，改为下方跨列显示并允许页面滚动查看。 */
+@media(max-width:1480px){
+  body.platform_nav-admin-shell .detail-grid{
+    grid-template-columns:repeat(2,minmax(320px,1fr))!important;
+    overflow:visible!important;
+  }
+  body.platform_nav-admin-shell .detail-grid .state-frame-panel,
+  body.platform_nav-admin-shell .detail-grid .twin-panel{
+    display:block!important;
+    grid-column:span 2!important;
+    min-height:220px!important;
+  }
+}
+/* 最终复核：标准操作按钮保持可见，动作下发由页面正常安全流程触发。 */
+#dispatchBtn{
+  display:inline-flex!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-width:116px!important;
+  height:58px!important;
+  min-height:58px!important;
+  padding:0 14px!important;
+  font-size:15px!important;
+  font-weight:700!important;
+  white-space:nowrap!important;
+}
+body.platform_nav-admin-shell .top-header .run-button{min-width:184px!important;font-size:15px!important;}
+body.platform_nav-admin-shell .top-header .clear-decision-button{min-width:104px!important;font-size:15px!important;}
+body.platform_nav-admin-shell .top-header .presentation-theme-toggle{min-width:118px!important;font-size:15px!important;}
+@media(max-width:1680px){
+  body.platform_nav-admin-shell .top-header .title-area h1{font-size:clamp(29px,2.05vw,35px)!important;}
+}

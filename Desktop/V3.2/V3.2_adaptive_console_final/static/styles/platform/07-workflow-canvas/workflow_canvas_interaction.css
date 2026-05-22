@@ -1,0 +1,199 @@
+
+.arbitration-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end;max-width:960px}
+.arbitration-mode-select{display:inline-flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid rgba(24,231,255,.28);border-radius:8px;background:rgba(6,31,56,.72);color:#9fc4dc;font-size:12px;font-weight:800}
+.arbitration-mode-select select{background:#061426;color:#dff7ff;border:1px solid rgba(24,231,255,.28);border-radius:6px;padding:5px 8px;font-weight:900;outline:none}
+.agent-component-library{width:460px;max-height:72%;overflow:auto}
+.agent-lib-section{padding:8px 10px;border-top:1px solid rgba(24,231,255,.12)}
+.agent-lib-section h4{margin:4px 0 8px;color:#18e7ff;letter-spacing:.12em;font-size:12px}
+.agent-component-library .agent-lib-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.node-delete-btn{position:absolute;right:8px;top:8px;z-index:8;width:22px;height:22px;border-radius:7px;border:1px solid rgba(255,94,128,.5);background:rgba(74,14,32,.72);color:#ff89a2;font-weight:1000;line-height:18px;cursor:pointer;box-shadow:0 0 12px rgba(255,94,128,.22)}
+.node-delete-btn:hover{background:#ff4770;color:#061426;box-shadow:0 0 18px rgba(255,94,128,.55)}
+.tree-node.custom-agent{padding-right:34px}
+.tree-node.module-node{border-color:rgba(135,207,255,.38);background:linear-gradient(135deg,rgba(12,50,82,.78),rgba(4,22,42,.78))}
+.tree-node.module-node .badge{background:rgba(24,231,255,.14);color:#18e7ff;border-color:rgba(24,231,255,.35)}
+.arbitration-mode-mark{display:inline-block;margin-top:4px;color:#ffd166;font-size:10px;font-weight:900;letter-spacing:.08em}
+.module-role-card{border-color:rgba(135,207,255,.22);background:rgba(8,26,48,.72)}
+.module-role-card .agent-role-index{background:linear-gradient(135deg,#16466d,#0a2742);color:#a9d8ff}
+.module-role-card .agent-role-title span{background:rgba(135,207,255,.12);border-color:rgba(135,207,255,.24);color:#a9d8ff}
+.flow-canvas-line{opacity:.88;transition:opacity .25s,filter .25s}
+.tree-node.future-node{opacity:0;pointer-events:none;transform:scale(.88);filter:blur(1px)}
+.tree-node.revealed-node{opacity:1;pointer-events:auto;transform:scale(1);filter:none;transition:opacity .35s ease, transform .35s ease, filter .35s ease, box-shadow .25s ease}
+.flow-canvas-hint::before{content:'提示：';color:#18e7ff;font-weight:1000}
+
+
+.tree-panel.workflow-canvas-mode{
+  display:grid;
+  grid-template-rows:auto auto minmax(0, 1fr);
+  gap:8px;
+}
+.tree-panel.workflow-canvas-mode .panel-head{
+  min-height:38px;
+  height:auto;
+  align-items:center;
+  gap:12px;
+  padding:8px 12px;
+  flex-wrap:nowrap;
+}
+.tree-panel.workflow-canvas-mode .panel-head .focus-pill{
+  flex:0 0 auto;
+  max-width:360px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.workflow-canvas-toolbar{
+  margin:0 8px;
+  min-height:46px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:7px 10px;
+  border:1px solid rgba(24,231,255,.22);
+  border-radius:10px;
+  background:linear-gradient(90deg,rgba(8,40,68,.72),rgba(2,14,28,.74));
+  box-shadow:inset 0 0 18px rgba(24,231,255,.035);
+  position:relative;
+  z-index:95;
+}
+.workflow-mode-group,
+.workflow-action-group{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+}
+.workflow-mode-label{
+  color:#79a9c7;
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:.1em;
+  white-space:nowrap;
+}
+.workflow-canvas-toolbar button,
+.workflow-canvas-toolbar select{
+  height:30px;
+  border:1px solid rgba(24,231,255,.30);
+  border-radius:8px;
+  background:rgba(5,24,44,.86);
+  color:#daf8ff;
+  font-size:11px;
+  font-weight:950;
+  padding:0 10px;
+  cursor:pointer;
+  white-space:nowrap;
+  box-shadow:none;
+}
+.workflow-canvas-toolbar button:hover,
+.workflow-canvas-toolbar button.active{
+  border-color:#18e7ff;
+  color:#18e7ff;
+  box-shadow:0 0 16px rgba(24,231,255,.20);
+}
+.workflow-canvas-toolbar button.primary{
+  background:linear-gradient(135deg,#12d8ff,#1f86ff);
+  color:#031426;
+  border-color:rgba(80,240,255,.70);
+}
+.workflow-canvas-toolbar button.secondary{
+  background:rgba(65,241,122,.10);
+  border-color:rgba(65,241,122,.34);
+  color:#7af89a;
+}
+.workflow-canvas-toolbar button.danger{
+  background:rgba(255,82,121,.09);
+  border-color:rgba(255,82,121,.28);
+  color:#ff91aa;
+}
+.workflow-canvas-toolbar select{min-width:132px;color:#ffd166;}
+.tree-panel.workflow-canvas-mode .tree-viewport{
+  margin:0 8px 8px;
+  min-height:0;
+}
+.tree-viewport.workflow-canvas-empty::before{
+  content:'空白流程画布';
+  position:absolute;
+  left:50%;
+  top:42%;
+  transform:translate(-50%,-50%);
+  color:rgba(185,221,244,.34);
+  font-size:28px;
+  font-weight:1000;
+  letter-spacing:.18em;
+  pointer-events:none;
+  z-index:2;
+}
+.tree-viewport.workflow-canvas-empty::after{
+  content:'默认模式为“手动添加”。请点击“添加Agent/仲裁组件”，拖动节点并开启连线模式，自定义多Agent决策流程。';
+  position:absolute;
+  left:50%;
+  top:52%;
+  transform:translateX(-50%);
+  width:min(760px,80%);
+  text-align:center;
+  color:rgba(126,180,214,.72);
+  font-size:13px;
+  line-height:1.6;
+  font-weight:850;
+  pointer-events:none;
+  z-index:2;
+  background:none;
+  opacity:1;
+}
+.workflow-node-hidden{
+  display:none!important;
+}
+.node-enable-toggle{
+  top:6px!important;
+  left:7px!important;
+  right:auto!important;
+  padding:2px 6px!important;
+  z-index:10!important;
+}
+.node-delete-btn{
+  top:6px!important;
+  right:7px!important;
+  left:auto!important;
+  z-index:12!important;
+}
+.tree-node.custom-agent .node-enable-toggle + .node-delete-btn{margin-left:0;}
+.tree-node.custom-agent h3{padding-right:26px;padding-left:0;}
+.tree-node.custom-agent{
+  padding-top:32px!important;
+  min-width:210px!important;
+  width:230px!important;
+  height:150px!important;
+  max-height:150px!important;
+}
+.flow-agent-library.workflow-agent-library{
+  right:14px;
+  top:62px;
+  width:min(520px, calc(100% - 28px));
+  max-height:calc(100% - 86px);
+  z-index:140;
+}
+.workflow-agent-library .agent-lib-list{
+  max-height:260px;
+}
+.flow-canvas-hint{
+  left:14px!important;
+  bottom:10px!important;
+  max-width:68%!important;
+  z-index:120!important;
+}
+.workflow-mode-help{
+  color:#7eaecb;
+  font-size:11px;
+  font-weight:800;
+  margin-left:4px;
+  white-space:nowrap;
+}
+.workflow-template-running .workflow-canvas-toolbar{opacity:.82;pointer-events:none;}
+@media(max-width:1460px){
+  .workflow-canvas-toolbar{align-items:flex-start;flex-direction:column;gap:7px;min-height:78px;}
+  .workflow-action-group{width:100%;}
+  .workflow-canvas-toolbar button,.workflow-canvas-toolbar select{height:27px;font-size:10px;padding:0 7px;}
+  .tree-panel.workflow-canvas-mode{grid-template-rows:auto auto minmax(0,1fr);}
+  .flow-agent-library.workflow-agent-library{top:92px;}
+}
+

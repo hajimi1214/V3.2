@@ -1,0 +1,248 @@
+/* =====================================================================
+   智领铜行 V3.2 稳定工作台布局
+   目标：
+   1. 左侧大画布，右侧智能决策输出日志；
+   2. 恢复下方辅助板块上拉/收起；
+   3. 树页使用同一棵树的放大视图；
+   4. 模块页不残留右侧异常块；
+   5. 提升树节点文字和日志文字的远距可读性。
+   ===================================================================== */
+:root{
+  --v32-workbench-log-w:clamp(390px,31vw,560px);
+  --v32-workbench-gap:14px;
+  --v32-console-title:clamp(20px,1.3vw,26px);
+  --v32-console-body:clamp(15px,1vw,18px);
+  --v32-tree-title:clamp(17px,1.1vw,21px);
+  --v32-tree-text:clamp(14px,.92vw,17px);
+  --v32-tree-meta:clamp(13px,.84vw,15px);
+}
+
+/* 初次进入避免静态 HTML 先闪出一整棵示例树。 */
+body.boot-empty-tree #treeViewport .tree-node:not(#node-state_capture),
+body.boot-empty-tree #treeViewport .add-agent,
+body.boot-empty-tree #treeViewport .flow-line{
+  opacity:0!important;
+  visibility:hidden!important;
+}
+
+/* 主工作台改为左右核心布局。 */
+body.platform_nav-admin-shell .main-stage{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) var(--v32-workbench-log-w)!important;
+  grid-template-rows:var(--v3_2-header-h) var(--v3_2-status-h) var(--v3_2-tags-h) minmax(520px,1fr) var(--v3_2-toggle-h) var(--v3_2-detail-h) var(--v3_2-bottom-h)!important;
+  gap:var(--v32-workbench-gap)!important;
+  overflow:hidden!important;
+}
+body.platform_nav-admin-shell .top-header,
+body.platform_nav-admin-shell .status-bus,
+body.platform_nav-admin-shell #platform_navTagsBar,
+body.platform_nav-admin-shell #moduleDrawerToggle,
+body.platform_nav-admin-shell .detail-grid,
+body.platform_nav-admin-shell .bottom-grid{
+  grid-column:1 / -1!important;
+}
+body.platform_nav-admin-shell .top-header{grid-row:1!important;}
+body.platform_nav-admin-shell .status-bus{grid-row:2!important;}
+body.platform_nav-admin-shell #platform_navTagsBar{grid-row:3!important;}
+body.platform_nav-admin-shell #tree-panel{
+  grid-column:1!important;
+  grid-row:4!important;
+  min-width:0!important;
+  min-height:0!important;
+  height:100%!important;
+  overflow:hidden!important;
+}
+body.platform_nav-admin-shell #decision-runtime-console{
+  grid-column:2!important;
+  grid-row:4!important;
+  min-width:0!important;
+  min-height:0!important;
+  height:100%!important;
+  margin:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:hidden!important;
+}
+body.platform_nav-admin-shell #moduleDrawerToggle{grid-row:5!important;}
+body.platform_nav-admin-shell .detail-grid{grid-row:6!important;}
+body.platform_nav-admin-shell .bottom-grid{grid-row:7!important;}
+
+/* 下方辅助板块默认收起，上拉展开保持有效。 */
+body.platform_nav-admin-shell:not(.dashboard-drawer-open) .bottom-grid{
+  display:none!important;
+  min-height:0!important;
+  height:0!important;
+  overflow:hidden!important;
+}
+body.platform_nav-admin-shell.dashboard-drawer-open .bottom-grid{
+  display:grid!important;
+}
+.module-drawer-toggle{
+  min-height:34px!important;
+  height:34px!important;
+  font-size:15px!important;
+}
+.module-drawer-toggle b{font-size:15px!important;}
+.module-drawer-toggle em{font-size:13px!important;}
+
+/* 右侧输出日志改为上下两块，日志占满高度。 */
+#decision-runtime-console .panel-head{
+  flex:0 0 auto!important;
+  min-height:74px!important;
+  height:auto!important;
+  padding:14px 16px!important;
+}
+#decision-runtime-console .panel-head h3{
+  font-size:var(--v32-console-title)!important;
+  line-height:1.18!important;
+}
+#decision-runtime-console .panel-head p{
+  font-size:15px!important;
+  line-height:1.45!important;
+  margin-top:6px!important;
+}
+#decision-runtime-console .decision-console-grid{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  grid-template-rows:minmax(0,1fr) minmax(0,1.08fr)!important;
+  gap:12px!important;
+  padding:12px 14px 14px!important;
+  flex:1 1 auto!important;
+  min-height:0!important;
+}
+#decision-runtime-console .decision-console-card{
+  min-height:0!important;
+  padding:13px 14px!important;
+}
+#decision-runtime-console .decision-console-card h4{
+  font-size:18px!important;
+  line-height:1.25!important;
+  margin-bottom:10px!important;
+}
+#decision-runtime-console .decision-log-stream{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:auto!important;
+  padding-right:5px!important;
+}
+#decision-runtime-console .decision-log-stream p{
+  font-size:var(--v32-console-body)!important;
+  line-height:1.62!important;
+  margin:0 0 10px!important;
+  padding:10px 12px!important;
+  white-space:normal!important;
+  word-break:break-word!important;
+}
+
+/* 决策树：图标收小，文字放大。 */
+#treeViewport .tree-node em{
+  width:28px!important;
+  height:28px!important;
+  min-width:28px!important;
+  font-size:15px!important;
+  border-radius:8px!important;
+}
+#treeViewport .tree-node h3{
+  font-size:var(--v32-tree-title)!important;
+  line-height:1.28!important;
+}
+#treeViewport .tree-node p{
+  font-size:var(--v32-tree-text)!important;
+  line-height:1.46!important;
+}
+#treeViewport .tree-node strong,
+#treeViewport .tree-node small,
+#treeViewport .tree-node .badge{
+  font-size:var(--v32-tree-meta)!important;
+  line-height:1.3!important;
+}
+#treeViewport .tree-node.agent,
+#treeViewport .tree-node.custom-agent{
+  padding-top:30px!important;
+}
+
+/* 多Agent决策树页：仅放大同一画布，不显示右侧日志。 */
+body.platform_nav-tree-page .main-stage{
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:var(--v3_2-header-h) var(--v3_2-status-h) var(--v3_2-tags-h) minmax(0,1fr)!important;
+}
+body.platform_nav-tree-page #tree-panel{
+  grid-column:1 / -1!important;
+  grid-row:4!important;
+  min-height:min(78vh,940px)!important;
+  height:100%!important;
+}
+body.platform_nav-tree-page #decision-runtime-console,
+body.platform_nav-tree-page .detail-grid,
+body.platform_nav-tree-page .bottom-grid,
+body.platform_nav-tree-page #moduleDrawerToggle{
+  display:none!important;
+}
+body.platform_nav-tree-page #treeViewport .tree-node em{
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  font-size:18px!important;
+}
+body.platform_nav-tree-page #treeViewport .tree-node h3{
+  font-size:clamp(19px,1.2vw,23px)!important;
+}
+
+/* 模块详情页不能残留工作台日志或右侧奇怪附加块。 */
+body.platform_nav-page-open #tree-panel,
+body.platform_nav-page-open #decision-runtime-console,
+body.platform_nav-page-open .detail-grid,
+body.platform_nav-page-open .bottom-grid,
+body.platform_nav-page-open #moduleDrawerToggle{
+  display:none!important;
+}
+body.platform_nav-page-open #platform_navPageView{
+  grid-column:1 / -1!important;
+  grid-row:4 / 8!important;
+  width:100%!important;
+  max-width:100%!important;
+}
+body.platform_nav-page-open .platform_nav-page-body,
+body.platform_nav-page-open .module-detail-view,
+body.platform_nav-page-open .module-detail-layout,
+body.platform_nav-page-open .module-detail-primary{
+  width:100%!important;
+  max-width:100%!important;
+}
+body.platform_nav-page-open .module-detail-side,
+body.platform_nav-page-open .module-agent-mini,
+body.platform_nav-page-open .route-side-panel{
+  display:none!important;
+}
+
+/* 工具栏与主标题适当加大，不挤占画布。 */
+.workflow-canvas-toolbar button,
+.workflow-canvas-toolbar select,
+.workflow-mode-group button,
+.workflow-action-group button{
+  min-height:34px!important;
+  font-size:14px!important;
+}
+.title-area h1{
+  font-size:clamp(34px,2.55vw,50px)!important;
+  line-height:1.08!important;
+  white-space:nowrap!important;
+}
+.title-area p{
+  font-size:16px!important;
+}
+
+/* 低宽度屏幕时改为上下结构，保证不白屏、不挤压。 */
+@media (max-width:1480px){
+  body.platform_nav-admin-shell .main-stage{
+    grid-template-columns:1fr!important;
+    grid-template-rows:var(--v3_2-header-h) var(--v3_2-status-h) var(--v3_2-tags-h) minmax(470px,1fr) minmax(360px,.78fr) var(--v3_2-toggle-h) var(--v3_2-detail-h) var(--v3_2-bottom-h)!important;
+    overflow:auto!important;
+  }
+  body.platform_nav-admin-shell #tree-panel{grid-column:1!important;grid-row:4!important;}
+  body.platform_nav-admin-shell #decision-runtime-console{grid-column:1!important;grid-row:5!important;min-height:360px!important;}
+  body.platform_nav-admin-shell #moduleDrawerToggle{grid-row:6!important;}
+  body.platform_nav-admin-shell .detail-grid{grid-row:7!important;}
+  body.platform_nav-admin-shell .bottom-grid{grid-row:8!important;}
+}

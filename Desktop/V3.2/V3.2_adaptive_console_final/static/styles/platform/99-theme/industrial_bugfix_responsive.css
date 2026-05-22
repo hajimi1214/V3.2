@@ -1,0 +1,177 @@
+/* =========================================================
+   智领铜行 · V3.2 CSS 响应式修复版
+   修复原则：
+   1. 不缩放 app-shell / 根容器；
+   2. 自动根据视口宽高做 CSS 重排；
+   3. 重点放大重要信息，减少小字密度；
+   4. 中小屏允许主内容纵向滚动，避免遮挡与“白屏”；
+   5. 决策树区域占比在不同屏幕下自动调整。
+========================================================= */
+:root{
+  --side:232px;
+  --v32-title-size:clamp(34px,2.7vw,54px);
+  --v32-subtitle-size:clamp(16px,1.08vw,20px);
+  --v32-panel-title-size:clamp(22px,1.45vw,28px);
+  --v32-card-title-size:clamp(18px,1.18vw,24px);
+  --v32-body-size:clamp(16px,1vw,19px);
+  --v32-small-size:clamp(13px,.84vw,16px);
+  --v32-tree-min:420px;
+  --v32-detail-min:280px;
+  --v32-bottom-min:230px;
+}
+
+/* 关键兜底：确保 V3.2 的根缩放逻辑不会再次生效 */
+.app-shell{
+  transform:none!important;
+  width:100vw!important;
+  height:100vh!important;
+  min-width:0!important;
+  opacity:1!important;
+  visibility:visible!important;
+}
+.sidebar{
+  width:var(--side)!important;
+  flex:0 0 var(--side)!important;
+  min-width:188px!important;
+  max-width:264px!important;
+  height:100vh!important;
+}
+.main-stage{
+  width:calc(100vw - var(--side))!important;
+  height:100vh!important;
+  min-width:0!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  grid-template-rows:auto auto minmax(var(--v32-tree-min),1.58fr) minmax(var(--v32-detail-min),.92fr) minmax(var(--v32-bottom-min),.72fr)!important;
+}
+
+/* 视口密度自动切换，仅影响 CSS，不进行页面变焦 */
+html[data-auto-density="presentation"]{--side:252px;--v32-tree-min:450px;--v32-detail-min:310px;--v32-bottom-min:250px;}
+html[data-auto-density="standard"]{--side:232px;}
+html[data-auto-density="compact"]{--side:206px;--v32-tree-min:390px;--v32-detail-min:260px;--v32-bottom-min:220px;}
+
+/* 标题与核心按钮：远距离可读 */
+.title-area h1{
+  font-size:var(--v32-title-size)!important;
+  line-height:1.08!important;
+  white-space:nowrap!important;
+  word-break:keep-all!important;
+}
+.title-area p{
+  font-size:var(--v32-subtitle-size)!important;
+  line-height:1.42!important;
+  margin-top:10px!important;
+}
+.dispatch-button,.run-button,.clear-decision-button{
+  font-size:clamp(17px,1.14vw,21px)!important;
+  min-height:58px!important;
+  padding-left:18px!important;
+  padding-right:18px!important;
+}
+
+/* 左侧导航自适配 */
+.brand-title{font-size:clamp(22px,1.45vw,26px)!important;}
+.brand-sub{font-size:clamp(14px,.92vw,17px)!important;}
+.brand-ver{font-size:clamp(12px,.78vw,15px)!important;}
+.refined-nav .nav-item{font-size:clamp(16px,1vw,19px)!important;min-height:52px!important;}
+.refined-nav .nav-item span{font-size:clamp(18px,1.15vw,22px)!important;}
+.platform-card,.pc-row,.pc-row strong{font-size:clamp(13px,.84vw,15px)!important;}
+.pc-title{font-size:clamp(15px,.94vw,18px)!important;}
+
+/* 面板层级 */
+.panel-head h2{font-size:var(--v32-panel-title-size)!important;}
+.panel-head h3,.panel-head.compact h3{font-size:var(--v32-card-title-size)!important;}
+.panel-head p{font-size:var(--v32-small-size)!important;line-height:1.42!important;}
+.panel-head span,.focus-pill{font-size:var(--v32-small-size)!important;}
+
+/* 头部自动换位，不以缩放解决挤压 */
+.top-header{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  align-items:center!important;
+  column-gap:18px!important;
+  row-gap:14px!important;
+  min-width:0!important;
+}
+.metric-strip.action-only{
+  min-width:0!important;
+  display:flex!important;
+  flex-wrap:wrap!important;
+  justify-content:flex-end!important;
+  align-items:center!important;
+  gap:12px!important;
+}
+
+/* 决策树区域：按屏幕比例保持空间，减少过密小字 */
+.tree-panel{min-height:var(--v32-tree-min)!important;}
+.tree-viewport{min-height:calc(var(--v32-tree-min) - 72px)!important;}
+.tree-node h3{font-size:clamp(14px,.94vw,17px)!important;}
+.tree-node p{font-size:clamp(11px,.74vw,14px)!important;line-height:1.35!important;}
+.tree-node small,.tree-node strong,.badge{font-size:clamp(11px,.7vw,13px)!important;}
+body.compact-workflow-flow .tree-viewport.canvas-builder .tree-node h3{font-size:clamp(14px,.92vw,16px)!important;}
+body.compact-workflow-flow .tree-viewport.canvas-builder .tree-node p,
+body.compact-workflow-flow .tree-viewport.canvas-builder .tree-node .node-work-summary{font-size:clamp(11px,.72vw,13px)!important;}
+
+/* 详情和底部信息区：宽屏多列，窄屏自动换列，允许阅读 */
+.detail-grid{
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  min-height:var(--v32-detail-min)!important;
+  gap:12px!important;
+}
+.bottom-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  min-height:var(--v32-bottom-min)!important;
+  gap:12px!important;
+}
+.field-list p,.agent-workbox li,.matrix-table,.code-panel pre,.archive-panel p,.log-feed p,.alarm,.spark-list p{
+  font-size:clamp(13px,.84vw,16px)!important;
+  line-height:1.42!important;
+}
+.code-panel pre{overflow:auto!important;}
+
+/* 关键文本换行，避免遮挡 */
+.title-area,.title-area h1,.title-area p,
+.panel,.panel-head,.field-list div,.archive-panel,.state-frame-empty,.decision-console-card,.workflow-canvas-toolbar,.workflow-mode-group,.workflow-action-group{min-width:0!important;}
+.field-list p,.agent-workbox li,.module-detail-hero p,.archive-panel p,.log-feed p,.alarm,.matrix-table td,.matrix-table th,.recent-archive p,.state-frame-empty span,.pc-row strong{
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+}
+
+/* 宽度下降时：侧栏变窄，布局逐级收敛 */
+@media(max-width:1820px){
+  :root{--side:224px;}
+  .top-header{grid-template-columns:minmax(0,1fr)!important;}
+  .metric-strip.action-only{justify-content:flex-start!important;}
+  .detail-grid{grid-template-columns:repeat(3,minmax(300px,1fr))!important;}
+  .bottom-grid{grid-template-columns:repeat(2,minmax(320px,1fr))!important;}
+  .main-stage{overflow-y:auto!important;grid-template-rows:auto auto minmax(420px,auto) auto auto!important;}
+}
+@media(max-width:1540px){
+  :root{--side:208px;}
+  .sidebar{padding-left:12px!important;padding-right:12px!important;}
+  .detail-grid{grid-template-columns:repeat(2,minmax(320px,1fr))!important;}
+  .bottom-grid{grid-template-columns:repeat(2,minmax(300px,1fr))!important;}
+  .workflow-canvas-toolbar,.workflow-toolbar-v32{grid-template-columns:minmax(0,1fr)!important;gap:12px!important;}
+  .workflow-action-group{justify-content:flex-start!important;}
+  .title-area h1{font-size:clamp(30px,2.42vw,42px)!important;}
+}
+@media(max-width:1280px){
+  :root{--side:192px;}
+  .main-stage{padding-left:14px!important;padding-right:14px!important;}
+  .detail-grid,.bottom-grid{grid-template-columns:minmax(0,1fr)!important;}
+  .metric-strip.action-only{gap:10px!important;}
+  .dispatch-button,.run-button,.clear-decision-button{width:100%!important;justify-content:center!important;}
+}
+
+/* 高度下降时：保留树与关键信息，主区域滚动 */
+@media(max-height:900px){
+  .main-stage{overflow-y:auto!important;grid-template-rows:auto auto minmax(390px,auto) auto auto!important;}
+  .tree-panel{min-height:390px!important;}
+  .tree-viewport{min-height:318px!important;}
+}
+@media(max-height:760px){
+  .main-stage{padding-top:12px!important;padding-bottom:12px!important;gap:10px!important;}
+  .tree-panel{min-height:360px!important;}
+  .tree-viewport{min-height:288px!important;}
+  .dispatch-button,.run-button,.clear-decision-button{min-height:52px!important;}
+}

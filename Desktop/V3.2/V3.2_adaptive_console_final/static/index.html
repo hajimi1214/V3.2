@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>人工智能机械臂多Agent智能决策平台 V3.2</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="boot-empty-tree">
+  <div class="app-bg"></div>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-block">
+        <div class="brand-logo"><img src="/static/assets/brand_logo.png" alt="智领铜行平台标识"></div>
+        <div>
+          <div class="brand-title">智领铜行</div>
+          <div class="brand-sub">工业智能体平台</div>
+          <div class="brand-ver">V3.2</div>
+        </div>
+      </div>
+      <nav class="nav-list refined-nav" aria-label="平台导航">
+        <a class="nav-item active" href="#workbench"><span>⌂</span><b>决策工作台</b></a>
+        <a class="nav-item" href="#tree-panel"><span>⌘</span><b>多Agent决策树</b></a>
+        <a class="nav-item" href="#agent-review"><span>♙</span><b>当前Agent审理台</b></a>
+        <a class="nav-item" href="#control-task"><span>✜</span><b>控制任务中心</b></a>
+        <a class="nav-item" href="#state-snapshot"><span>◇</span><b>工业状态帧</b></a>
+        <a class="nav-item" href="#model-import"><span>⇪</span><b>模型导入</b></a>
+        <a class="nav-item" href="#archive"><span>▤</span><b>Trace与报告归档</b></a>
+        <a class="nav-item" href="#config"><span>⚙</span><b>系统配置</b></a>
+      </nav>
+      <div class="platform-card">
+        <div class="pc-title">平台运行状态</div>
+        <div class="pc-row"><span>运行时长</span><strong id="sideRuntime">72天 00:00:00</strong></div>
+        <div class="pc-row"><span>启动时间</span><strong>2026-03-05 09:46:00</strong></div>
+        <div class="pc-row"><span>版本号</span><strong>V3.2</strong></div>
+      </div>
+    </aside>
+
+    <main id="workbench" class="main-stage">
+      <header class="top-header">
+        <div class="title-area">
+          <h1>人工智能机械臂多Agent智能决策平台</h1>
+          <p>模型接入 → 多Agent审查 → 安全仲裁 → 控制任务</p>
+        </div>
+        <div class="runtime-meta-cache" hidden aria-hidden="true">
+          <b id="frameId">FRM-20260509-001245</b>
+          <b id="decisionId">DEC-20260509-00187</b>
+          <b id="currentTask">无设备连接</b>
+          <b id="runtimeTop">72天 00:00:00</b>
+        </div>
+        <div class="metric-strip action-only">
+          <button id="startBtn" class="run-button gated"><span>⚠</span>暂无设备连接</button>
+          <button id="clearDecisionBtn" class="clear-decision-button" type="button" title="清理已保存的本轮决策、日志和控制任务">清理决策</button>
+        </div>
+      </header>
+
+      <section class="status-bus status-bus-hidden">
+        <span><i id="plcDot" class="dot gray"></i>PLC链路：<b id="plcState">未连接</b></span>
+        <span><i id="sensorDot" class="dot gray"></i>传感器总线：<b id="sensorState">未连接</b></span>
+        <span><i id="agvDot" class="dot gray"></i>AGV链路：<b id="agvState">未连接</b></span>
+        <span><i id="crcDot" class="dot gray"></i>CRC校验：<b id="crcState">未连接</b></span>
+        <span><i id="armDot" class="dot gray"></i>机械臂就绪：<b id="armState">未连接</b></span>
+        <span><i class="dot cyan"></i>Agent总线：<b id="agentBus">未连接</b></span>
+      </section>
+
+      <section id="tree-panel" class="panel tree-panel">
+        <div class="panel-head">
+          <div>
+            <h2>多Agent协同决策树</h2>
+            <p>主干流程 · 专家并行审查 · 融合仲裁 · 控制任务生成</p>
+          </div>
+          <div class="focus-pill">当前聚焦节点：<b id="focusLabel">等待状态帧采集</b></div>
+        </div>
+
+        <div id="treeViewport" class="tree-viewport">
+          <svg class="tree-lines" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M0 0 L10 5 L0 10 Z" fill="#8dcfff"/>
+              </marker>
+              <filter id="lineGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <path id="line-state_capture-context_model" class="flow-line primary" d="M235 46 L450 46" marker-end="url(#arrow)"/>
+            <path id="line-context_model-branch" class="flow-line" d="M570 82 C570 103 570 103 570 120"/>
+            <path id="line-branch-bus" class="flow-line" d="M92 120 H905"/>
+            <path id="line-agent-stems" class="flow-line" d="M92 120 V 3.2 M255 120 V 3.2 M418 120 V 3.2 M581 120 V 3.2 M744 120 V 3.2 M905 120 V 3.2"/>
+            <path id="line-merge-bus" class="flow-line merge" d="M92 232 V 3.2 H498 M255 232 V 3.2 M418 232 V 3.2 M581 232 V 3.2 M744 232 V 3.2 M905 232 V 3.2 H498"/>
+            <path id="line-fusion-control" class="flow-line primary" d="M622 268 H720" marker-end="url(#arrow)"/>
+            <path id="line-control-archive" class="flow-line primary" d="M845 268 H920" marker-end="url(#arrow)"/>
+            <path id="line-add-agent" class="flow-line dashed" d="M930 142 H982 V 3.2"/>
+          </svg>
+
+          <article id="node-state_capture" class="tree-node root status-waiting active" data-node="state_capture">
+            <em>▣</em><div><h3>工业状态帧采集</h3><p>状态帧触发 · 非人工指定</p><span class="badge">DONE</span><small>00:00:12</small></div>
+          </article>
+          <article id="node-context_model" class="tree-node model status-waiting future-node" data-node="context_model">
+            <em>⌘</em><div><h3>任务上下文建模 / 流程规划</h3><p>场景理解 · 任务分析 · 流程拆解</p><span class="badge">DONE</span><small>00:00:18</small></div>
+          </article>
+
+          <article id="node-vision_quality" class="tree-node agent status-waiting future-node" data-node="vision_quality">
+            <em>◉</em><h3>视觉质量Agent</h3><span class="badge">PASS</span><p>输入摘要：相机帧#1245</p><p>证据：2D检测置信度0.98</p><p>输出结论：视觉质量合格</p><strong>风险 LOW</strong><small>46ms</small>
+          </article>
+          <article id="node-localization_3d" class="tree-node agent status-waiting future-node" data-node="localization_3d">
+            <em>◇</em><h3>三维定位Agent</h3><span class="badge">PASS</span><p>输入摘要：点云#0891</p><p>证据：定位RMSE 0.21mm</p><p>输出结论：定位精度达标</p><strong>风险 LOW</strong><small>98ms</small>
+          </article>
+          <article id="node-placement_plan" class="tree-node agent status-waiting future-node" data-node="placement_plan">
+            <em>◎</em><h3>放置规划Agent</h3><span class="badge">PASS</span><p>输入摘要：工件姿态+目标位</p><p>证据：路径可行率98%</p><p>输出结论：最优路径可执行</p><strong>风险 LOW</strong><small>112ms</small>
+          </article>
+          <article id="node-hardware_interlock" class="tree-node agent status-waiting future-node" data-node="hardware_interlock">
+            <em>▣</em><h3>硬件联锁Agent</h3><span class="badge">PASS</span><p>输入摘要：I/O状态+联锁链</p><p>证据：安全门/光栅/急停均正常</p><p>输出结论：联锁校验通过</p><strong>风险 LOW</strong><small>74ms</small>
+          </article>
+          <article id="node-safety_strategy" class="tree-node agent status-waiting future-node" data-node="safety_strategy">
+            <em>◈</em><h3>安全策略Agent</h3><span class="badge">PASS</span><p>输入摘要：风险评估请求</p><p>证据：策略匹配置信0.95</p><p>输出结论：风险可控</p><strong>风险 LOW</strong><small>88ms</small>
+          </article>
+          <article id="node-execution_constraint" class="tree-node agent status-waiting future-node" data-node="execution_constraint">
+            <em>⌁</em><h3>执行约束Agent</h3><span class="badge">PASS</span><p>输入摘要：关节预检</p><p>证据：关节扭矩裕度正常</p><p>输出结论：执行条件满足</p><strong>风险 LOW</strong><small>64ms</small>
+          </article>
+          <article class="tree-node add-agent future-node"><b>+</b><span>添加/启用<br/>Agent</span></article>
+
+          <article id="node-fusion_arbitration" class="tree-node fusion status-waiting future-node" data-node="fusion_arbitration">
+            <em>⚖</em><div><h3>融合仲裁 / 最终仲裁Agent</h3><p>综合评估 · 权重投票 · 决策仲裁</p><span class="badge">WAITING</span></div>
+          </article>
+          <article id="node-control_task" class="tree-node fusion status-waiting future-node" data-node="control_task">
+            <em>⚙</em><div><h3>控制任务生成</h3><p>动作序列 · 权限校验 · 指令生成</p><span class="badge">WAITING</span></div>
+          </article>
+          <article id="node-archive" class="tree-node fusion status-waiting future-node" data-node="archive">
+            <em>▤</em><div><h3>报告归档</h3><p>结果归档 · 证据固存 · 可追溯</p><span class="badge">WAITING</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="decision-runtime-console" class="panel decision-runtime-console" data-no-overlay>
+        <div class="panel-head compact decision-console-head">
+          <div>
+            <h3>智能决策过程输出</h3>
+            <p>按状态帧、模型调用、Agent审查、仲裁与任务生成逐步输出。</p>
+          </div>
+          <span>LIVE TRACE</span>
+        </div>
+        <div class="decision-console-grid">
+          <article class="decision-console-card">
+            <h4>决策主流程日志</h4>
+            <div id="decisionProcessLog" class="decision-log-stream">
+              <p>等待启动：设备接入后，平台将按状态帧采集、模型调用、Agent并行审查、安全仲裁和控制任务生成逐步输出。</p>
+            </div>
+          </article>
+          <article class="decision-console-card emphasis">
+            <h4>模型与Agent审查日志</h4>
+            <div id="agentDecisionLog" class="decision-log-stream agent-log-stream">
+              <p>等待首个审查阶段：后续将输出模型输入、命中规则、证据依据与决策建议。</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="detail-grid">
+        <section id="agent-review" class="panel agent-review">
+          <div class="panel-head compact"><h3>当前Agent审理台</h3><span id="agentStatusTag">等待状态帧采集Agent WAITING</span></div>
+          <div class="field-list">
+            <div><label>输入摘要</label><p id="agentInput">等待双目相机、AGV视觉和PLC联锁状态帧</p></div>
+            <div><label>命中规则</label><p id="agentRule">WAIT_FOR_INDUSTRIAL_STATE_FRAME</p></div>
+            <div><label>证据理由</label><p id="agentEvidence">尚未启动Agent审理，等待状态帧触发</p></div>
+            <div><label>处理建议</label><p id="agentSuggestion">点击启动按钮后由状态帧触发决策流程</p></div>
+            <div><label>工具调用</label><p id="agentTool">CameraBus / PLCBus / AgentOrchestrator</p></div>
+          </div>
+          <div class="agent-workbox">
+            <label>Agent正在做什么</label>
+            <ul id="agentWork">
+              <li>等待工业状态帧采集</li>
+              <li>等待上游算法输出接入</li>
+              <li>等待多Agent协同审查启动</li>
+            </ul>
+          </div>
+          <div class="review-footer"><span>风险等级 <b id="agentRisk">MEDIUM</b></span><span>耗时 <b id="agentLatency">312ms</b></span><span class="progress-mini"><i id="agentProgress"></i></span></div>
+        </section>
+
+        <section id="evidence" class="panel evidence-panel">
+          <div class="panel-head compact"><h3>证据链 / 决策依据</h3><span>链路视图</span></div>
+          <ol id="evidenceList" class="evidence-list">
+            <li><b>1</b><span>等待设备状态帧<br><em>NO_DEVICE_FRAME</em></span><time>--:--:--</time><i>○</i></li>
+            <li><b>2</b><span>等待相机/点云链路<br><em>WAIT_SENSOR_BUS</em></span><time>--:--:--</time><i>○</i></li>
+            <li><b>3</b><span>等待模型输入<br><em>WAIT_MODEL_INPUT</em></span><time>--:--:--</time><i>○</i></li>
+            <li><b>4</b><span>等待设备连接<br><em>DEVICE_REQUIRED</em></span><time>--:--:--</time><i>○</i></li>
+            <li class="active"><b>5</b><span>决策链路锁定<br><em>LOCKED_BY_NO_DEVICE</em></span><time>--:--:--</time><i>◇</i></li>
+          </ol>
+        </section>
+
+        <section id="matrix" class="panel matrix-panel">
+          <div class="panel-head compact"><h3>动作权限矩阵</h3><span>Policy</span></div>
+          <table class="matrix-table">
+            <thead><tr><th>动作指令</th><th>状态</th><th>约束条件</th><th>来源Agent</th></tr></thead>
+            <tbody>
+              <tr><td>INIT_ARM</td><td class="block">LOCKED</td><td>无设备连接</td><td>硬件联锁Agent</td></tr>
+              <tr><td>PICK_PLACE</td><td class="block">LOCKED</td><td>无设备连接</td><td>执行约束Agent</td></tr>
+              <tr><td>STOP_EMG</td><td class="block">BLOCK</td><td>安全门未关</td><td>硬件联锁Agent</td></tr>
+              <tr><td>RECHECK_VISION</td><td class="block">LOCKED</td><td>无设备连接</td><td>视觉质量Agent</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="control-task" class="panel code-panel">
+          <div class="panel-head compact"><h3>控制任务生成（预览）</h3><span>JSON</span></div>
+          <pre id="taskJson">{
+  "task_id": "TASK_20260509_00187",
+  "type": "WAIT_DEVICE",
+  "arm_id": "NO_DEVICE",
+  "trajectory": [
+    {"step": 1, "action": "MOVEJ"},
+    {"step": 2, "action": "MOVEL"},
+    {"step": 3, "action": "PICK"}
+  ],
+  "speed_scale": 1.0,
+  "safety_mode": "LOCKED"
+}</pre>
+        </section>
+
+        <section id="state-snapshot" class="panel twin-panel state-frame-panel">
+          <div class="panel-head compact"><h3>工业状态帧快照</h3><span data-state-frame-label>设备未连接</span></div>
+          <div class="twin-body state-frame-body" data-state-frame-root>
+            <div class="state-frame-media" aria-label="工业状态帧实时视频区域">
+              <div class="state-frame-empty" data-state-empty>
+                <b>暂无设备连接</b>
+                <span>请先进入系统配置完成设备接入；接入后自动循环播放现场状态视频。</span>
+              </div>
+              <video class="state-frame-video" data-state-video data-src="/static/assets/industrial_state_loop.mp4" poster="/static/assets/platform_copper_scene.png" muted loop playsinline preload="none"></video>
+            </div>
+            <ul class="state-frame-metrics">
+              <li><span>安全门</span><b data-online-value="关">未连接</b></li><li><span>光栅</span><b data-online-value="正常">未连接</b></li><li><span>急停</span><b data-online-value="释放">未连接</b></li><li><span>气压</span><b data-online-value="0.48MPa">未连接</b></li><li><span>电源</span><b data-online-value="正常">未连接</b></li>
+            </ul>
+          </div>
+        </section>
+      </section>
+
+      <section class="bottom-grid">
+        <section id="model-output" class="panel mini-panel"><h3>算法模型输出概览</h3><div class="spark-list"><p><span>视觉模型</span><i></i><b>0.98</b></p><p><span>定位模型</span><i></i><b>0.94</b></p><p><span>规划模型</span><i></i><b>0.92</b></p><p><span>策略模型</span><i></i><b>0.95</b></p><p><span>约束模型</span><i></i><b>0.87</b></p></div></section>
+        <section id="alarm" class="panel mini-panel"><h3>告警中心</h3><div class="alarm-tabs"><b>全部 8</b><b>高危 2</b><b>中危 3</b><b>低危 3</b></div><p class="alarm">16:12:01 联锁检查记录：安全门状态确认通过</p><p class="alarm high">16:11:43 执行约束记录：关节扭矩裕度正常</p><p class="alarm low">16:10:58 通信检查记录：AGV_LINK链路稳定</p></section>
+        <section id="trace" class="panel mini-panel"><h3>决策Trace / 运行日志</h3><div id="logFeed" class="log-feed"><p>16:12:31 [放置规划Agent] 正在生成第3候选路径...</p><p>16:12:28 [三维定位Agent] 定位精度达标(RMSE 0.21mm)</p><p>16:12:26 [视觉质量Agent] 视觉质量合格</p></div></section>
+        <section id="archive" class="panel mini-panel archive-panel">
+          <h3>Trace与报告归档摘要</h3>
+          <div class="archive-actions">
+            <button data-action="show-report-log">查看完整归档</button>
+            <button data-action="print-archive-pdf">打印 / 另存为PDF</button>
+          </div>
+          <div class="archive-kpi-grid">
+            <p><span>本轮决策</span><b>DEC-20260509-00187</b></p>
+            <p><span>证据条目</span><b>15</b></p>
+            <p><span>工具调用</span><b>7</b></p>
+            <p><span>Trace日志</span><b>12</b></p>
+          </div>
+          <div class="archive-list rich">
+            <p>最终动作 <b>PICK_AND_PLACE</b></p>
+            <p>执行策略 <b class="pass">安全校验通过 / 标准执行</b></p>
+            <p>复核重点 <b>联锁校验、执行约束与通信状态</b></p>
+            <p>归档状态 <b>已固化，可打印</b></p>
+          </div>
+          <div class="recent-archive expanded">
+            <p>16:12:48 <b>报告归档Agent</b> 固化证据链、权限矩阵与控制任务摘要</p>
+            <p>16:12:31 <b>融合仲裁Agent</b> 安全仲裁通过并生成控制任务</p>
+            <p>16:12:06 <b>执行约束Agent</b> 关节扭矩裕度正常，执行条件满足</p>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div id="moduleOverlay" class="module-overlay" aria-hidden="true">
+    <div class="overlay-shell">
+      <div class="overlay-head">
+        <div>
+          <span>模块聚焦视图</span>
+          <h2 id="overlayTitle">决策工作台</h2>
+        </div>
+        <button id="overlayClose" class="overlay-close">退出放大</button>
+      </div>
+      <div id="overlayContent" class="overlay-content"></div>
+    </div>
+  </div>
+
+  <div id="reportPrintModal" class="report-print-modal" aria-hidden="true">
+    <div class="report-print-shell">
+      <div class="report-print-head">
+        <div><span>ARCHIVE LOG PRINT</span><h2>报告归档日志打印</h2></div>
+        <div class="report-print-actions">
+          <button data-action="print-archive-pdf">打印 / 另存为PDF</button>
+          <button data-action="close-report-log">关闭</button>
+        </div>
+      </div>
+      <div id="printableArchiveReport" class="printable-archive-report"></div>
+    </div>
+  </div>
+
+  <div id="deviceConnectModal" class="device-connect-modal" aria-hidden="true">
+    <div class="connect-card">
+      <div class="connect-spinner" id="connectSpinner"></div>
+      <h3 id="connectTitle">设备连接中</h3>
+      <p id="connectMessage">正在建立工业设备链路，请稍候...</p>
+      <div class="connect-progress"><i id="connectProgress"></i></div>
+    </div>
+  </div>
+  <script src="/static/app.js"></script>
+  <script src="/static/model_adapter.js"></script>
+  <script src="/static/workflow_config.js"></script>
+</body>
+</html>

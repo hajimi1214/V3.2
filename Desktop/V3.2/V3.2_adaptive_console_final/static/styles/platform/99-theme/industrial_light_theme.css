@@ -1,0 +1,1097 @@
+/* ======================================================================
+   智领铜行 V3.2 - 白色工业风主题覆盖
+   设计目标：
+   1. 去除深色赛博背景、荧光发光和强对比霓虹边框；
+   2. 保留多Agent决策树、状态标签、业务交互的识别度；
+   3. 统一为“白底 + 浅灰分区 + 工程蓝 + 工业状态色”的风格；
+   4. 作为最终加载的覆盖层，便于一行 import 回退。
+   ====================================================================== */
+
+:root{
+  color-scheme: light;
+
+  --bg0:#f3f6fa;
+  --bg1:#edf2f7;
+  --bg2:#e7edf5;
+
+  --panel:#ffffff;
+  --panel2:#f7f9fc;
+
+  --cyan:#2f6bff;
+  --cyan2:#4b84ff;
+  --blue:#245bdb;
+  --green:#17945f;
+  --orange:#c78118;
+  --red:#ce4747;
+
+  --text:#1e293b;
+  --muted:#64748b;
+  --line:rgba(76,96,122,.18);
+
+  --industrial-border:#d9e2ec;
+  --industrial-border-strong:#c7d3e1;
+  --industrial-soft:#f7f9fc;
+  --industrial-soft-blue:#edf4ff;
+  --industrial-soft-green:#eaf8f1;
+  --industrial-soft-orange:#fff5e5;
+  --industrial-soft-red:#fdecec;
+  --industrial-ink:#0f172a;
+  --industrial-shadow:0 12px 30px rgba(15,23,42,.08),0 2px 6px rgba(15,23,42,.05);
+  --industrial-shadow-soft:0 8px 20px rgba(15,23,42,.06),0 1px 3px rgba(15,23,42,.05);
+  --industrial-focus:0 0 0 3px rgba(47,107,255,.15);
+  --shadow:var(--industrial-shadow);
+}
+
+*{
+  scrollbar-color:#bac7d7 #eef3f8;
+}
+
+html,body{
+  background:var(--bg0)!important;
+  color:var(--text)!important;
+}
+
+body{
+  accent-color:var(--blue);
+}
+
+::selection{
+  background:rgba(47,107,255,.18);
+  color:var(--industrial-ink);
+}
+
+/* ----------------------------------------------------------------------
+   页面背景：保留工业面板感，移除大面积霓虹、扫描线与赛博网格
+   ---------------------------------------------------------------------- */
+.app-bg{
+  background:
+    radial-gradient(circle at 22% 18%,rgba(47,107,255,.055),transparent 28%),
+    radial-gradient(circle at 84% 72%,rgba(23,148,95,.045),transparent 26%),
+    linear-gradient(180deg,#f8fafc 0%,#f1f5f9 48%,#eef3f8 100%)!important;
+}
+.app-bg:before{
+  background-image:
+    linear-gradient(rgba(148,163,184,.09) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(148,163,184,.09) 1px,transparent 1px)!important;
+  background-size:48px 48px,48px 48px!important;
+  opacity:.22!important;
+}
+.app-bg:after{
+  opacity:0!important;
+  background:none!important;
+}
+
+/* ----------------------------------------------------------------------
+   全局容器、左侧导航与品牌区
+   ---------------------------------------------------------------------- */
+.sidebar{
+  background:linear-gradient(180deg,#ffffff 0%,#f7f9fc 100%)!important;
+  border-right:1px solid var(--industrial-border)!important;
+  box-shadow:6px 0 22px rgba(15,23,42,.06)!important;
+}
+.sidebar:before{
+  opacity:0!important;
+  background:none!important;
+}
+.brand-block{
+  border-bottom:1px solid #e2e8f0!important;
+}
+.brand-logo{
+  background:#ffffff!important;
+  border:1px solid #dbe4ee!important;
+  box-shadow:var(--industrial-shadow-soft)!important;
+}
+.brand-title{
+  color:var(--industrial-ink)!important;
+}
+.brand-sub{
+  color:#475569!important;
+}
+.brand-ver{
+  color:#64748b!important;
+}
+
+.nav-item{
+  color:#475569!important;
+  border:1px solid transparent!important;
+}
+.nav-item span{
+  color:var(--blue)!important;
+}
+.nav-item i{
+  background:var(--red)!important;
+  color:#fff!important;
+  box-shadow:none!important;
+}
+.nav-item:hover{
+  color:#173b85!important;
+  background:#eef4ff!important;
+  border-color:#d5e4ff!important;
+  box-shadow:none!important;
+}
+.nav-item.active{
+  color:#173b85!important;
+  background:linear-gradient(90deg,#e8f0ff,#f4f8ff)!important;
+  border-color:#cfe0ff!important;
+  box-shadow:inset 3px 0 0 var(--blue)!important;
+}
+.nav-subitem{
+  color:#52637a!important;
+  background:#f8fafc!important;
+  border-color:#e2e8f0!important;
+}
+.nav-subitem span{
+  color:var(--blue)!important;
+}
+.nav-subitem:hover,
+.nav-subitem.active{
+  color:#173b85!important;
+  background:#eef4ff!important;
+  border-color:#cfe0ff!important;
+  box-shadow:none!important;
+}
+
+.platform-card{
+  background:#ffffff!important;
+  border-color:var(--industrial-border)!important;
+  box-shadow:var(--industrial-shadow-soft)!important;
+}
+.pc-title{
+  color:#334155!important;
+}
+.pc-row{
+  color:#64748b!important;
+}
+.pc-row strong{
+  color:#0f172a!important;
+}
+
+/* ----------------------------------------------------------------------
+   顶部标题、指标卡、主动作按钮
+   ---------------------------------------------------------------------- */
+.title-area h1{
+  color:#0f172a!important;
+  text-shadow:none!important;
+}
+.title-area p{
+  color:#64748b!important;
+}
+
+.metric,
+.status-bus{
+  background:#ffffff!important;
+  border-color:var(--industrial-border)!important;
+  box-shadow:var(--industrial-shadow-soft)!important;
+}
+.metric span{
+  color:#64748b!important;
+}
+.metric b{
+  color:#0f172a!important;
+}
+
+.run-button,
+.device-confirm,
+.system-notice button,
+.report-print-actions button:first-child,
+.model-import-btn,
+.import-primary,
+.agent-component-drawer-head button,
+.runtime-docs-panel button{
+  background:linear-gradient(135deg,#2f6bff,#245bdb)!important;
+  color:#ffffff!important;
+  border-color:transparent!important;
+  box-shadow:0 10px 22px rgba(47,107,255,.18)!important;
+}
+.run-button:hover,
+.device-confirm:hover,
+.system-notice button:hover,
+.model-import-btn:hover,
+.import-primary:hover,
+.runtime-docs-panel button:hover{
+  filter:brightness(1.02)!important;
+}
+.run-button span{
+  background:rgba(255,255,255,.22)!important;
+  color:#fff!important;
+}
+.run-button.gated{
+  background:linear-gradient(135deg,#d99a32,#c78118)!important;
+  color:#fff!important;
+  box-shadow:0 10px 22px rgba(199,129,24,.18)!important;
+}
+.run-button.gated span{
+  background:rgba(255,255,255,.22)!important;
+  color:#fff!important;
+}
+
+.dispatch-button{
+  background:linear-gradient(135deg,#334155,#1f2937)!important;
+  color:#fff!important;
+  border-color:transparent!important;
+  box-shadow:0 10px 22px rgba(15,23,42,.16)!important;
+}
+.dispatch-button span{
+  background:rgba(255,255,255,.18)!important;
+  color:#fff!important;
+}
+.dispatch-button.ok{
+  background:linear-gradient(135deg,#22a06b,#16824f)!important;
+}
+.dispatch-button.warn,
+.dispatch-button.gated{
+  background:linear-gradient(135deg,#d99a32,#c78118)!important;
+}
+.dispatch-button.dispatching{
+  background:linear-gradient(135deg,#2f6bff,#245bdb)!important;
+}
+
+.status-bus{
+  color:#334155!important;
+  box-shadow:none!important;
+}
+.status-bus b{
+  color:#334155!important;
+}
+.status-bus b.bus-on,
+.status-bus .bus-on,
+.status-bus b#agentBus:not(.bus-off){
+  color:var(--green)!important;
+}
+.status-bus b.bus-off{
+  color:#64748b!important;
+}
+.dot{
+  box-shadow:none!important;
+}
+.dot.gray{
+  background:#a8b4c4!important;
+  color:#a8b4c4!important;
+}
+.dot.cyan{
+  background:var(--blue)!important;
+  color:var(--blue)!important;
+}
+.dot.green{
+  background:var(--green)!important;
+  color:var(--green)!important;
+}
+
+/* ----------------------------------------------------------------------
+   通用面板、标题和可点击卡片
+   ---------------------------------------------------------------------- */
+.panel,
+.mini-panel,
+.config-detail-card,
+.device-card,
+.agent-decision-card,
+.model-import-card,
+.import-card,
+.agent-component-card,
+.v3_2-lib-section,
+.governance-real-ops article,
+.runtime-docs-panel,
+.module-detail-side,
+.agent-role-card,
+.module-agent-mini,
+.workflow-node-preview,
+.policy-mode-card,
+.control-focus-panel,
+.archive-focus-panel,
+.report-print-shell,
+.connect-card,
+.overlay-shell,
+.flow-agent-library,
+.agent-component-drawer,
+.platform_nav-page-view,
+.platform_nav-tags-bar,
+.module-drawer-toggle{
+  background:#ffffff!important;
+  border-color:var(--industrial-border)!important;
+  box-shadow:var(--industrial-shadow)!important;
+  color:var(--text)!important;
+}
+
+.panel:before,
+.config-hero:after,
+.device-card-head:after,
+.overlay-head:before,
+.platform_nav-tags-bar::after{
+  opacity:0!important;
+  background:none!important;
+}
+
+.panel-head,
+.panel-head.compact,
+.device-card-head,
+.config-detail-head,
+.report-print-head,
+.overlay-head,
+.agent-component-drawer-head,
+.flow-agent-library-head,
+.platform_nav-page-head{
+  background:#f8fafc!important;
+  border-color:#e2e8f0!important;
+}
+.panel-head h2,
+.panel-head h3,
+.device-card-head h3,
+.config-detail-head h3,
+.overlay-head h2,
+.platform_nav-page-head h2,
+.report-print-head h2,
+.agent-detail-title-row h3,
+.module-detail-hero h3,
+.config-hero h3,
+.model-import-hero h3,
+.runtime-docs-main h4,
+.connect-card h3,
+.device-empty h4{
+  color:#0f172a!important;
+}
+.panel-head p,
+.device-empty,
+.device-card-head p,
+.config-detail-head p,
+.config-hero p,
+.config-tile p,
+.module-detail-hero p,
+.agent-detail-title-row p,
+.model-import-hero p,
+.runtime-docs-main p,
+.connect-card p,
+.module-detail-side li,
+.agent-role-main p,
+.agent-component-card small,
+.governance-real-ops p,
+.governance-real-ops li{
+  color:#64748b!important;
+}
+.panel-head span,
+.focus-pill,
+.device-badge,
+.config-chip-row span,
+.config-tile span,
+.model-pill,
+.platform_nav-page-head span,
+.module-detail-hero span,
+.model-import-hero span,
+.runtime-docs-main span,
+.agent-detail-title-row span,
+.overlay-head span,
+.report-print-head span{
+  background:#edf4ff!important;
+  border-color:#cfe0ff!important;
+  color:#245bdb!important;
+  box-shadow:none!important;
+}
+.focus-pill b{
+  color:#245bdb!important;
+}
+.clickable-panel:hover,
+.config-tile:hover,
+.agent-component-card:hover,
+.agent-decision-card:hover,
+.detail-action-btn:hover,
+.agent-map-trigger:hover,
+.back-agent-map:hover{
+  border-color:#bdd3ff!important;
+  box-shadow:0 12px 26px rgba(47,107,255,.10)!important;
+}
+.click-tip,
+.agent-click-hint,
+.no-device-hint{
+  color:#64748b!important;
+  background:#f8fafc!important;
+  border-color:#e2e8f0!important;
+}
+
+/* ----------------------------------------------------------------------
+   决策树与工作流画布：白色节点、浅网格、工程蓝高亮
+   ---------------------------------------------------------------------- */
+.tree-viewport,
+.tree-viewport.canvas-builder,
+.workflow-canvas-viewport,
+.manual-workflow-canvas{
+  background:
+    linear-gradient(rgba(148,163,184,.11) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(148,163,184,.11) 1px,transparent 1px),
+    #f8fafc!important;
+  background-size:28px 28px,28px 28px,auto!important;
+  border-color:var(--industrial-border)!important;
+}
+.tree-viewport::after,
+.tree-viewport.canvas-builder::before,
+.state-frame-empty::before{
+  opacity:.05!important;
+}
+
+.flow-line,
+.flow-canvas-line,
+body.execution-step-flow .flow-canvas-line.execution-step-line{
+  stroke:#94a3b8!important;
+  filter:none!important;
+}
+.flow-line.primary{
+  stroke:#64748b!important;
+}
+.flow-line.merge,
+.flow-canvas-line.merge{
+  stroke:#7c8ea8!important;
+}
+.flow-line.dashed,
+.flow-canvas-line.dashed{
+  stroke:#c78118!important;
+}
+.flow-line.active-line,
+.flow-canvas-line.active-line,
+body.execution-step-flow .flow-canvas-line.execution-step-line.active-line{
+  stroke:#2f6bff!important;
+  filter:none!important;
+}
+#arrow path{
+  fill:#64748b!important;
+}
+
+.tree-node,
+.tree-node.flow-canvas-node,
+.flow-canvas-node,
+.workflow-node-card,
+.custom-agent{
+  background:#ffffff!important;
+  border-color:#cdd8e5!important;
+  box-shadow:var(--industrial-shadow-soft)!important;
+  color:#1e293b!important;
+}
+.tree-node h3,
+.tree-node.flow-canvas-node h3,
+.workflow-node-card h3{
+  color:#0f172a!important;
+}
+.tree-node p,
+.tree-node small,
+.node-work-summary,
+.workflow-node-card p{
+  color:#64748b!important;
+}
+.tree-node em,
+.tree-node.flow-canvas-node em,
+.agent-role-index,
+.agent-role-index.large,
+.config-tile em,
+.agent-component-card i{
+  background:#edf4ff!important;
+  color:#245bdb!important;
+  border-color:#d5e4ff!important;
+  box-shadow:none!important;
+}
+.tree-node strong,
+.agent-role-main strong,
+.module-agent-mini b,
+.device-link-state b,
+.control-note-grid span,
+.state-frame-metrics b.online,
+.archive-list b,
+.recent-archive b{
+  color:var(--green)!important;
+}
+.tree-node.active,
+.tree-node.flow-canvas-node.active,
+body.compact-workflow-flow .tree-viewport.canvas-builder .tree-node.active{
+  border-color:#2f6bff!important;
+  box-shadow:0 0 0 3px rgba(47,107,255,.12),0 14px 28px rgba(47,107,255,.12)!important;
+  animation:none!important;
+}
+.tree-node.status-running::before,
+.tree-node.active::after,
+.particle-burst{
+  opacity:.18!important;
+}
+.add-agent{
+  background:#f8fafc!important;
+  border-color:#b9c8da!important;
+  color:#475569!important;
+}
+.add-agent b{
+  color:#245bdb!important;
+}
+.badge,
+.tree-node .badge,
+.workflow-node-card .badge{
+  background:#edf2f7!important;
+  color:#475569!important;
+  border:1px solid #dbe4ee!important;
+}
+.status-pass,
+.status-done{
+  border-color:#b9e4cc!important;
+}
+.status-pass .badge,
+.status-done .badge{
+  background:var(--industrial-soft-green)!important;
+  border-color:#b9e4cc!important;
+  color:#16824f!important;
+}
+.status-running .badge,
+.status-waiting.active .badge{
+  background:var(--industrial-soft-blue)!important;
+  border-color:#cfe0ff!important;
+  color:#245bdb!important;
+}
+.status-limited{
+  border-color:#f1d2a0!important;
+}
+.status-limited .badge{
+  background:var(--industrial-soft-orange)!important;
+  border-color:#f1d2a0!important;
+  color:#b26a09!important;
+}
+.status-blocked{
+  border-color:#efb8b8!important;
+}
+.status-blocked .badge{
+  background:var(--industrial-soft-red)!important;
+  border-color:#efb8b8!important;
+  color:#c53030!important;
+}
+.status-waiting .badge{
+  background:#eef2f7!important;
+  border-color:#dbe4ee!important;
+  color:#64748b!important;
+}
+
+/* ----------------------------------------------------------------------
+   审理台、证据链、矩阵、代码预览、底部概览卡
+   ---------------------------------------------------------------------- */
+.field-list div,
+.decision-data-cell,
+.device-param,
+.control-note-grid p,
+.runtime-docs-grid p,
+.governance-real-ops pre,
+.agent-workbox,
+.report-record-card,
+.archive-report-preview,
+.workflow-stat-card{
+  background:#f8fafc!important;
+  border-color:#e2e8f0!important;
+  color:#334155!important;
+}
+.field-list label,
+.device-param span,
+.control-note-grid b,
+.runtime-docs-grid span,
+.agent-workbox label,
+.model-row span,
+.model-meta span,
+.decision-data-cell span{
+  color:#64748b!important;
+}
+.field-list p,
+.device-param b,
+.runtime-docs-grid strong,
+.decision-data-cell b,
+.agent-workbox li,
+.model-row b,
+.model-meta b,
+.agent-decision-card h4,
+.agent-decision-card h5,
+.module-detail-side h4,
+.governance-real-ops h4{
+  color:#0f172a!important;
+}
+.agent-workbox li:before{
+  background:var(--blue)!important;
+}
+.review-footer,
+.evidence-list li,
+.matrix-table th,
+.matrix-table td,
+.log-feed p,
+.archive-list p,
+.recent-archive p,
+.spark-list p,
+.alarm-tabs b,
+.archive-log-inline p,
+.decision-evidence-list li,
+.decision-rule-list li,
+.decision-tool-list li,
+.device-link-state p{
+  color:#475569!important;
+  border-color:#e2e8f0!important;
+}
+.evidence-list li.active{
+  background:#edf4ff!important;
+}
+.evidence-list b{
+  color:#245bdb!important;
+}
+.evidence-list em{
+  color:#475569!important;
+}
+.evidence-list i{
+  color:var(--green)!important;
+}
+.matrix-table th{
+  color:#64748b!important;
+  background:#f8fafc!important;
+}
+.matrix-table td{
+  background:#ffffff!important;
+}
+.allow{
+  color:#16824f!important;
+}
+.limited{
+  color:#b26a09!important;
+}
+.block{
+  color:#c53030!important;
+}
+.code-panel pre,
+.large-task-code,
+.governance-real-ops pre{
+  background:#f8fafc!important;
+  border-color:#dbe4ee!important;
+  color:#334155!important;
+  box-shadow:none!important;
+}
+.progress-mini,
+.connect-progress{
+  background:#e2e8f0!important;
+}
+.progress-mini i,
+.connect-progress i{
+  background:linear-gradient(90deg,#2f6bff,#17945f)!important;
+}
+.spark-list i{
+  background:linear-gradient(135deg,rgba(47,107,255,.18),rgba(23,148,95,.22))!important;
+}
+.spark-list b{
+  color:#0f172a!important;
+}
+.alarm-tabs b{
+  background:#f8fafc!important;
+  border-color:#e2e8f0!important;
+}
+.alarm{
+  background:var(--industrial-soft-orange)!important;
+  color:#7c4a03!important;
+  border-left-color:var(--orange)!important;
+}
+.alarm.high{
+  background:var(--industrial-soft-red)!important;
+  color:#991b1b!important;
+  border-left-color:var(--red)!important;
+}
+.alarm.low{
+  background:var(--industrial-soft-green)!important;
+  color:#166534!important;
+  border-left-color:var(--green)!important;
+}
+.donut{
+  background:conic-gradient(#2f6bff 0 68%,#c78118 68% 86%,#ce4747 86% 94%,#17945f 94% 100%)!important;
+}
+.donut span{
+  background:#ffffff!important;
+}
+.archive-list .warn,
+.recent-archive .warn{
+  color:#b26a09!important;
+}
+.archive-actions button,
+.archive-focus-actions button,
+.detail-action-btn,
+.agent-map-trigger,
+.back-agent-map,
+.device-reset,
+.report-print-actions button:last-child,
+.config-detail-head button,
+.flow-builder-toolbar button,
+.workflow-canvas-toolbar button,
+.platform_nav-back-home,
+.flow-agent-library-head button,
+.runtime-docs-paths b{
+  background:#ffffff!important;
+  color:#245bdb!important;
+  border-color:#cfe0ff!important;
+  box-shadow:none!important;
+}
+.archive-actions button:hover,
+.archive-focus-actions button:hover,
+.detail-action-btn:hover,
+.agent-map-trigger:hover,
+.device-reset:hover,
+.config-detail-head button:hover,
+.flow-builder-toolbar button:hover,
+.workflow-canvas-toolbar button:hover,
+.platform_nav-back-home:hover,
+.flow-agent-library-head button:hover{
+  background:#edf4ff!important;
+  border-color:#bdd3ff!important;
+}
+
+/* ----------------------------------------------------------------------
+   系统配置、设备配置与提示弹窗
+   ---------------------------------------------------------------------- */
+.device-config-page,
+.config-center-page,
+.config-detail-page,
+.model-import-view,
+.agent-decision-detail-view,
+.module-detail-view,
+.agent-role-map-view,
+.workbench-focus-view{
+  color:var(--text)!important;
+}
+.device-field label{
+  color:#475569!important;
+}
+.device-field input,
+.device-field select,
+.device-field textarea,
+.arbitration-mode-select,
+.policy-select,
+.model-import-field input,
+.model-import-field select,
+.model-import-field textarea{
+  background:#ffffff!important;
+  color:#0f172a!important;
+  border-color:#cbd5e1!important;
+  box-shadow:none!important;
+}
+.device-field input:focus,
+.device-field select:focus,
+.device-field textarea:focus,
+.arbitration-mode-select:focus,
+.policy-select:focus,
+.model-import-field input:focus,
+.model-import-field select:focus,
+.model-import-field textarea:focus{
+  border-color:#2f6bff!important;
+  box-shadow:var(--industrial-focus)!important;
+}
+.device-status-top{
+  background:var(--industrial-soft-green)!important;
+  border-color:#b9e4cc!important;
+}
+.device-status-top b{
+  color:#16824f!important;
+}
+.device-id{
+  color:#245bdb!important;
+}
+.device-link-state p{
+  background:#f8fafc!important;
+  border-color:#e2e8f0!important;
+}
+.device-connect-modal,
+.report-print-modal,
+.module-overlay,
+.agent-component-drawer-mask,
+#agentLibraryBackdrop{
+  background:rgba(15,23,42,.28)!important;
+  backdrop-filter:blur(4px)!important;
+}
+.connect-spinner{
+  border-color:#dbe4ee!important;
+  border-top-color:#2f6bff!important;
+  box-shadow:none!important;
+}
+.connect-spinner.success{
+  border-color:#b9e4cc!important;
+  background:var(--industrial-soft-green)!important;
+}
+.connect-spinner.success:after{
+  color:#16824f!important;
+}
+.system-notice{
+  background:#ffffff!important;
+  border-color:#f1d2a0!important;
+  box-shadow:0 18px 48px rgba(15,23,42,.15)!important;
+}
+.system-notice b{
+  color:#9a5c08!important;
+}
+.system-notice p{
+  color:#475569!important;
+}
+.config-hero,
+.model-import-hero,
+.module-detail-hero,
+.agent-detail-hero{
+  background:linear-gradient(135deg,#ffffff,#f4f8ff)!important;
+  border-color:var(--industrial-border)!important;
+  box-shadow:var(--industrial-shadow)!important;
+}
+.config-hero b,
+.model-import-hero b,
+.module-detail-hero b{
+  background:var(--industrial-soft-green)!important;
+  border-color:#b9e4cc!important;
+  color:#16824f!important;
+}
+.config-hero b.warn{
+  background:var(--industrial-soft-orange)!important;
+  border-color:#f1d2a0!important;
+  color:#a66207!important;
+}
+.config-hero b.ok{
+  background:var(--industrial-soft-green)!important;
+  border-color:#b9e4cc!important;
+  color:#16824f!important;
+}
+.config-tile{
+  background:#ffffff!important;
+  border-color:var(--industrial-border)!important;
+  color:#0f172a!important;
+  box-shadow:var(--industrial-shadow-soft)!important;
+}
+.config-tile.primary{
+  background:linear-gradient(135deg,#edf4ff,#ffffff)!important;
+  border-color:#bdd3ff!important;
+}
+.config-detail-row{
+  border-color:#e2e8f0!important;
+  background:#ffffff!important;
+}
+.config-detail-row b{
+  color:#64748b!important;
+}
+.config-detail-row strong,
+.config-detail-row p{
+  color:#0f172a!important;
+}
+
+/* ----------------------------------------------------------------------
+   模型导入、Agent 库与工作流治理
+   ---------------------------------------------------------------------- */
+.empty-model-library,
+.model-source-row,
+.model-registry-row,
+.import-empty-state,
+.flow-agent-library .agent-lib-section,
+.flow-agent-library .agent-lib-list button,
+.v3_2-empty-lib,
+.governance-real-note,
+.agent-component-drawer-info,
+.agent-component-card em,
+.agent-component-card small,
+.agent-component-card b{
+  border-color:#e2e8f0!important;
+}
+.flow-agent-library .agent-lib-section,
+.model-source-row,
+.model-registry-row,
+.import-empty-state,
+.empty-model-library,
+.v3_2-empty-lib,
+.agent-component-drawer-info,
+.governance-real-note{
+  background:#f8fafc!important;
+  color:#475569!important;
+}
+.flow-agent-library .agent-lib-section h4,
+.v3_2-lib-section h4,
+.agent-component-drawer-head b,
+.flow-agent-library-head b,
+.agent-component-card b{
+  color:#0f172a!important;
+}
+.flow-agent-library .agent-lib-list button,
+.agent-component-card{
+  background:#ffffff!important;
+  border-color:#dbe4ee!important;
+  color:#334155!important;
+}
+.flow-agent-library .agent-lib-list button:hover{
+  background:#edf4ff!important;
+  border-color:#bdd3ff!important;
+}
+.flow-agent-library .agent-lib-list button span,
+.agent-component-card em,
+.workflow-canvas-size-tag{
+  color:#245bdb!important;
+}
+.flow-agent-library .agent-lib-list button small,
+.flow-agent-library > p,
+.flow-canvas-hint,
+.workflow-canvas-size-tag{
+  color:#64748b!important;
+}
+.flow-builder-toolbar,
+.workflow-canvas-toolbar{
+  background:#f8fafc!important;
+  border-color:#e2e8f0!important;
+}
+.flow-builder-toolbar button.active,
+.workflow-canvas-toolbar button.active,
+.workflow-mode-group button.active{
+  background:#2f6bff!important;
+  border-color:#2f6bff!important;
+  color:#ffffff!important;
+}
+.node-enable-toggle,
+.node-delete-btn{
+  background:#ffffff!important;
+  color:#475569!important;
+  border-color:#dbe4ee!important;
+  box-shadow:none!important;
+}
+.node-enable-toggle:hover{
+  color:#16824f!important;
+  border-color:#b9e4cc!important;
+  background:var(--industrial-soft-green)!important;
+}
+.node-delete-btn:hover{
+  color:#c53030!important;
+  border-color:#efb8b8!important;
+  background:var(--industrial-soft-red)!important;
+}
+
+/* ----------------------------------------------------------------------
+   导航壳与二级页面
+   ---------------------------------------------------------------------- */
+.platform_nav-tags-bar{
+  background:#ffffff!important;
+  border-color:var(--industrial-border)!important;
+  box-shadow:var(--industrial-shadow-soft)!important;
+}
+.platform_nav-tags-bar::before{
+  color:#64748b!important;
+}
+.platform_nav-tags-bar button,
+.platform_nav-tags-bar span{
+  background:#f8fafc!important;
+  color:#475569!important;
+  border-color:#e2e8f0!important;
+}
+.platform_nav-tags-bar .active,
+.platform_nav-tags-bar span.active{
+  background:#2f6bff!important;
+  color:#ffffff!important;
+  border-color:#2f6bff!important;
+}
+.platform_nav-page-body{
+  background:#ffffff!important;
+}
+.module-drawer-toggle{
+  background:#ffffff!important;
+  color:#334155!important;
+  border-color:var(--industrial-border)!important;
+  box-shadow:var(--industrial-shadow-soft)!important;
+}
+.module-drawer-toggle span{
+  background:#edf4ff!important;
+  color:#245bdb!important;
+}
+.module-drawer-toggle em{
+  color:#64748b!important;
+}
+
+/* ----------------------------------------------------------------------
+   工业状态帧与媒体模块
+   ---------------------------------------------------------------------- */
+.state-frame-media,
+.state-frame-empty,
+.state-frame-panel .state-frame-body{
+  background:#f8fafc!important;
+  border-color:#e2e8f0!important;
+}
+.state-frame-empty b{
+  color:#0f172a!important;
+}
+.state-frame-empty span{
+  color:#64748b!important;
+}
+.state-frame-video,
+.twin-body img{
+  border-color:#dbe4ee!important;
+  box-shadow:none!important;
+}
+.state-frame-metrics li,
+.twin-body li{
+  color:#475569!important;
+  border-color:#e2e8f0!important;
+}
+.state-frame-metrics b.offline{
+  color:#64748b!important;
+}
+
+/* ----------------------------------------------------------------------
+   弹层、放大视图与打印视图
+   ---------------------------------------------------------------------- */
+.overlay-close,
+.report-print-actions button,
+.report-print-actions button:last-child{
+  background:#ffffff!important;
+  color:#245bdb!important;
+  border-color:#cfe0ff!important;
+}
+.overlay-close:hover,
+.report-print-actions button:hover{
+  background:#edf4ff!important;
+}
+.printable-archive-report,
+.report-print-shell{
+  color:#1e293b!important;
+}
+.report-print-shell{
+  background:#ffffff!important;
+}
+
+/* ----------------------------------------------------------------------
+   运行时文档卡与品牌图标
+   ---------------------------------------------------------------------- */
+.runtime-docs-paths b{
+  background:#f8fafc!important;
+  color:#334155!important;
+  border-color:#dbe4ee!important;
+}
+.runtime-docs-grid p{
+  background:#f8fafc!important;
+}
+
+/* ----------------------------------------------------------------------
+   通用细节修饰
+   ---------------------------------------------------------------------- */
+a{
+  color:inherit;
+}
+button{
+  transition:background .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease,filter .18s ease;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible{
+  outline:3px solid rgba(47,107,255,.20)!important;
+  outline-offset:2px!important;
+}
+
+/* 让 compact 模式节点在白底下保持轻盈，不出现原始深色内阴影 */
+body.compact-workflow-flow .tree-viewport.canvas-builder .tree-node{
+  box-shadow:var(--industrial-shadow-soft)!important;
+}
+
+/* 流程执行态去掉过度荧光 */
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node{
+  background:#ffffff!important;
+  border-color:#cdd8e5!important;
+}
+body.execution-step-flow .tree-viewport.canvas-builder .tree-node em{
+  background:#edf4ff!important;
+  color:#245bdb!important;
+}
+body.no-device-execution-flow .tree-viewport.workflow-canvas-empty::before,
+body.no-device-execution-flow .tree-viewport.workflow-canvas-empty::after{
+  color:#64748b!important;
+}
+
+/* 小屏一致性 */
+@media(max-width:1100px){
+  .config-grid{
+    grid-template-columns:1fr!important;
+  }
+}
