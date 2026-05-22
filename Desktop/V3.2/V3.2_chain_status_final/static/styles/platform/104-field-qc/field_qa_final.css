@@ -1,0 +1,336 @@
+/*
+ * V3.2 现场终检覆盖层
+ * - 决策树采用 3 列 × 2 行专家审理排布，卡片紧凑但文字完整；
+ * - 小屏不挤压变形，改为画布横向滚动；
+ * - 工业状态帧详情页可独立进入并完整呈现视频；
+ * - 自动下发状态仅在链路已具备条件时以绿色表示“就绪”。
+ */
+
+/* ===== 决策树：输入 -> 两行六Agent -> 仲裁/任务/归档 ===== */
+#treeViewport.tree-viewport{
+  overflow:auto!important;
+  padding:10px 10px 14px!important;
+}
+#treeViewport .tree-canvas-surface{
+  display:grid!important;
+  position:relative!important;
+  grid-template-columns:repeat(3, minmax(218px, 1fr))!important;
+  grid-template-areas:
+    "capture context context"
+    "vision localization planning"
+    "interlock safety execution"
+    "fusion control archive"!important;
+  gap:22px 16px!important;
+  width:min(100%, 1060px)!important;
+  min-width:712px!important;
+  min-height:0!important;
+  height:auto!important;
+  align-content:start!important;
+  align-items:stretch!important;
+  margin:0 auto!important;
+  padding:14px 14px 18px!important;
+  box-sizing:border-box!important;
+}
+#treeViewport .tree-canvas-surface .tree-lines{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  pointer-events:none!important;
+  z-index:0!important;
+}
+#treeViewport #node-state_capture,
+#treeViewport #node-context_model,
+#treeViewport #node-vision_quality,
+#treeViewport #node-localization_3d,
+#treeViewport #node-placement_plan,
+#treeViewport #node-hardware_interlock,
+#treeViewport #node-safety_strategy,
+#treeViewport #node-execution_constraint,
+#treeViewport #node-fusion_arbitration,
+#treeViewport #node-control_task,
+#treeViewport #node-archive{
+  position:relative!important;
+  inset:auto!important;
+  left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+  transform:none!important;
+  width:auto!important;height:auto!important;max-height:none!important;
+  min-width:0!important;margin:0!important;
+  align-self:stretch!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+  z-index:1!important;
+  padding:10px 11px!important;
+}
+#treeViewport #node-state_capture{grid-area:capture!important;min-height:98px!important;}
+#treeViewport #node-context_model{grid-area:context!important;min-height:98px!important;}
+#treeViewport #node-vision_quality{grid-area:vision!important;min-height:142px!important;}
+#treeViewport #node-localization_3d{grid-area:localization!important;min-height:142px!important;}
+#treeViewport #node-placement_plan{grid-area:planning!important;min-height:142px!important;}
+#treeViewport #node-hardware_interlock{grid-area:interlock!important;min-height:142px!important;}
+#treeViewport #node-safety_strategy{grid-area:safety!important;min-height:142px!important;}
+#treeViewport #node-execution_constraint{grid-area:execution!important;min-height:142px!important;}
+#treeViewport #node-fusion_arbitration{grid-area:fusion!important;min-height:96px!important;}
+#treeViewport #node-control_task{grid-area:control!important;min-height:96px!important;}
+#treeViewport #node-archive{grid-area:archive!important;min-height:96px!important;}
+#treeViewport .tree-node.add-agent{display:none!important;}
+
+#treeViewport .tree-node.root,
+#treeViewport .tree-node.model,
+#treeViewport .tree-node.fusion{
+  display:grid!important;
+  grid-template-columns:27px minmax(0,1fr)!important;
+  column-gap:8px!important;
+  align-content:start!important;
+  align-items:start!important;
+}
+#treeViewport .tree-node.root em,
+#treeViewport .tree-node.model em,
+#treeViewport .tree-node.fusion em{
+  grid-column:1!important;grid-row:1/span 4!important;
+  position:static!important;margin:0!important;
+  width:25px!important;height:25px!important;font-size:14px!important;
+}
+#treeViewport .tree-node.root>div,
+#treeViewport .tree-node.model>div,
+#treeViewport .tree-node.fusion>div{grid-column:2!important;min-width:0!important;}
+#treeViewport .tree-node h3{
+  margin:0 0 5px!important;
+  padding:0!important;
+  font-size:clamp(14px,.88vw,16px)!important;
+  line-height:1.27!important;
+  font-weight:800!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+  overflow:visible!important;
+}
+#treeViewport .tree-node.root p,
+#treeViewport .tree-node.model p,
+#treeViewport .tree-node.fusion p{
+  margin:2px 0 4px!important;
+  font-size:12.5px!important;line-height:1.28!important;
+  white-space:normal!important;overflow-wrap:anywhere!important;
+}
+#treeViewport .tree-node.agent{
+  display:grid!important;
+  grid-template-columns:24px minmax(0,1fr) auto!important;
+  grid-template-rows:auto auto auto auto auto!important;
+  column-gap:7px!important;row-gap:2px!important;
+  align-content:start!important;
+}
+#treeViewport .tree-node.agent em{
+  position:static!important;grid-column:1!important;grid-row:1!important;
+  width:23px!important;height:23px!important;margin:0!important;font-size:13px!important;
+}
+#treeViewport .tree-node.agent h3{
+  grid-column:2!important;grid-row:1!important;
+  min-height:24px!important;margin:0!important;padding:2px 0 0!important;
+}
+#treeViewport .tree-node.agent .badge{
+  position:static!important;grid-column:3!important;grid-row:1!important;
+  align-self:start!important;min-width:40px!important;
+  height:21px!important;padding:0 5px!important;margin:1px 0 0!important;
+  font-size:11.5px!important;line-height:19px!important;white-space:nowrap!important;
+}
+#treeViewport .tree-node.agent p{
+  grid-column:1/4!important;
+  display:block!important;
+  max-width:100%!important;
+  margin:1px 0!important;
+  font-size:12px!important;
+  line-height:1.27!important;
+  white-space:normal!important;
+  word-break:break-word!important;
+  overflow-wrap:anywhere!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+#treeViewport .tree-node.agent strong{
+  grid-column:1/3!important;margin-top:3px!important;
+  font-size:11.5px!important;line-height:1.25!important;white-space:nowrap!important;
+}
+#treeViewport .tree-node.agent small{
+  grid-column:3!important;justify-self:end!important;margin-top:3px!important;
+  font-size:11.5px!important;line-height:1.25!important;white-space:nowrap!important;
+}
+#treeViewport .tree-node.root .badge,
+#treeViewport .tree-node.model .badge,
+#treeViewport .tree-node.fusion .badge{
+  height:21px!important;line-height:19px!important;font-size:11.5px!important;padding:0 7px!important;
+}
+/* 主页窄栏也维持两行六 Agent，不压缩到文字重叠；必要时可横向拖动查看。 */
+@media (max-width:1480px){
+  #treeViewport .tree-canvas-surface{
+    width:max(100%,760px)!important;
+    min-width:760px!important;
+    grid-template-columns:repeat(3,minmax(232px,1fr))!important;
+    gap:18px 14px!important;
+  }
+}
+@media (max-width:900px){
+  #treeViewport .tree-canvas-surface{min-width:748px!important;}
+}
+
+/* ===== 工业状态帧：详情页可进入、完整视频呈现 ===== */
+body.platform_nav-page-open #platform_navPageBody .state-frame-panel[data-route-state-frame],
+body.platform_nav-page-open #platform_navPageBody .focused-clone-panel[data-route-state-frame]{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:100%!important;
+  min-height:0!important;
+}
+body.platform_nav-page-open #platform_navPageBody .state-frame-panel[data-route-state-frame] .state-frame-body{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 182px!important;
+  gap:16px!important;
+  min-height:min(58vh,520px)!important;
+  height:auto!important;
+}
+body.platform_nav-page-open #platform_navPageBody .state-frame-panel[data-route-state-frame] .state-frame-media{
+  display:block!important;
+  min-height:360px!important;
+  aspect-ratio:16/9!important;
+  width:100%!important;
+  height:auto!important;
+}
+body.platform_nav-page-open #platform_navPageBody .state-frame-panel[data-route-state-frame] .state-frame-video{
+  width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;
+}
+
+/* ===== 自动执行状态：绿色只表示链路就绪或真实完成 ===== */
+.auto-dispatch-state[data-state="healthy"]{
+  border-color:#53ad7b!important;
+  color:#087846!important;
+  background:#e9f7ef!important;
+}
+.auto-dispatch-state[data-state="healthy"]::before{background:#1ea567!important;box-shadow:0 0 0 4px rgba(30,165,103,.14)!important;}
+body.zltx-theme-gold .auto-dispatch-state[data-state="healthy"]{
+  border-color:#48755d!important;color:#a3dcbc!important;background:#1d2c26!important;
+}
+
+/* 决策运行视图不占用卡片空间展示编辑开关，保留节点判断信息与工作摘要。 */
+#treeViewport .tree-node .node-enable-toggle{display:none!important;}
+#treeViewport .tree-node .node-work-summary{
+  display:block!important;
+  position:static!important;
+  max-width:100%!important;
+  margin:4px 0 0!important;
+  padding:4px 6px!important;
+  border-radius:5px!important;
+  font-size:11px!important;
+  line-height:1.22!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+}
+#treeViewport .tree-node.root .node-work-summary,
+#treeViewport .tree-node.model .node-work-summary,
+#treeViewport .tree-node.fusion .node-work-summary{grid-column:1/3!important;}
+#treeViewport .tree-node.agent .node-work-summary{grid-column:1/4!important;}
+
+/* 石墨金模块详情页：清除路由页白色大卡片，保持低眩光和明确对比。 */
+body.zltx-theme-gold .module-detail-view,
+body.zltx-theme-gold .module-detail-hero,
+body.zltx-theme-gold .module-detail-primary,
+body.zltx-theme-gold .state-snapshot-narrative,
+body.zltx-theme-gold .state-summary-grid article{
+  background:#232d35!important;
+  color:#dce5ea!important;
+  border-color:#46535d!important;
+}
+body.zltx-theme-gold .module-detail-hero span,
+body.zltx-theme-gold .state-summary-head span{color:#d2b36c!important;}
+body.zltx-theme-gold .module-detail-hero h3,
+body.zltx-theme-gold .state-summary-head h3,
+body.zltx-theme-gold .state-summary-grid h4{color:#f1f4f6!important;}
+body.zltx-theme-gold .module-detail-hero p,
+body.zltx-theme-gold .state-summary-head p,
+body.zltx-theme-gold .state-summary-grid p{color:#b7c4cc!important;}
+body.zltx-theme-gold .module-detail-hero .detail-action-btn{
+  background:#2d3841!important;border-color:#596773!important;color:#e6edf1!important;
+}
+/* 工业白页面也避免过白刺眼，形成柔和模块层级。 */
+body.zltx-theme-light .module-detail-hero,
+body.zltx-theme-light .state-snapshot-narrative,
+body.zltx-theme-light .state-summary-grid article{
+  background:#f4f7f9!important;border-color:#ccd6df!important;color:#182c3c!important;
+}
+
+/* 独立决策树页也使用相同信息密度，不因进入大图模式再次放大到堆叠。 */
+body.platform_nav-tree-page #treeViewport .tree-node,
+body.platform_nav-tree-page #treeViewport .tree-node.flow-canvas-node{padding:10px 11px!important;}
+body.platform_nav-tree-page #treeViewport .tree-node h3{font-size:clamp(14px,.90vw,17px)!important;line-height:1.28!important;margin:0 0 5px!important;}
+body.platform_nav-tree-page #treeViewport .tree-node p{font-size:12px!important;line-height:1.28!important;margin:1px 0!important;}
+body.platform_nav-tree-page #treeViewport .tree-node .node-work-summary{font-size:11px!important;line-height:1.22!important;margin:4px 0 0!important;padding:4px 6px!important;}
+body.platform_nav-tree-page #treeViewport .tree-node strong,
+body.platform_nav-tree-page #treeViewport .tree-node small,
+body.platform_nav-tree-page #treeViewport .tree-node .badge{font-size:11.5px!important;}
+body.platform_nav-tree-page #treeViewport #node-state_capture,
+body.platform_nav-tree-page #treeViewport #node-context_model{min-height:92px!important;}
+body.platform_nav-tree-page #treeViewport #node-vision_quality,
+body.platform_nav-tree-page #treeViewport #node-localization_3d,
+body.platform_nav-tree-page #treeViewport #node-placement_plan,
+body.platform_nav-tree-page #treeViewport #node-hardware_interlock,
+body.platform_nav-tree-page #treeViewport #node-safety_strategy,
+body.platform_nav-tree-page #treeViewport #node-execution_constraint{min-height:136px!important;}
+body.platform_nav-tree-page #treeViewport #node-fusion_arbitration,
+body.platform_nav-tree-page #treeViewport #node-control_task,
+body.platform_nav-tree-page #treeViewport #node-archive{min-height:90px!important;}
+
+/* 独立决策树为运行观察视图，收起配置工具栏，把纵向空间让给审查流程。 */
+body.platform_nav-tree-page #tree-panel .workflow-canvas-toolbar{display:none!important;}
+body.platform_nav-tree-page #tree-panel .panel-head{margin-bottom:6px!important;}
+body.platform_nav-tree-page #treeViewport.tree-viewport{
+  height:calc(100% - 74px)!important;
+  padding-top:8px!important;
+}
+body.platform_nav-tree-page #treeViewport .tree-canvas-surface{
+  gap:14px 14px!important;
+  padding:8px 12px 12px!important;
+}
+
+/* 审查树保留输入、证据、结论、风险与耗时；收起重复的运行提示行，避免信息重复挤占首屏。 */
+#treeViewport .tree-node .node-work-summary{display:none!important;}
+
+/* 覆盖旧版高优先级树页高度：让完整四层流程在常用大屏首屏可见。 */
+body.platform_nav-admin-shell.platform_nav-tree-page #tree-panel .panel-head{
+  min-height:52px!important;height:52px!important;padding:6px 14px!important;
+}
+body.platform_nav-admin-shell.platform_nav-tree-page #tree-panel .panel-head h2{font-size:clamp(19px,1.15vw,23px)!important;}
+body.platform_nav-admin-shell.platform_nav-tree-page #treeViewport.tree-viewport{
+  height:calc(100% - 62px)!important;
+  min-height:0!important;
+  overflow:auto!important;
+}
+body.platform_nav-admin-shell.platform_nav-tree-page #treeViewport .tree-canvas-surface{padding-bottom:10px!important;}
+body.platform_nav-admin-shell.platform_nav-tree-page #tree-panel.workflow-canvas-mode{
+  display:grid!important;
+  grid-template-rows:52px minmax(0,1fr)!important;
+}
+body.platform_nav-admin-shell.platform_nav-tree-page #treeViewport.tree-viewport{
+  height:auto!important;
+  margin:0 10px 10px!important;
+}
+
+/* 最终主题复核：深色模式中移除详情页标签和视频状态胶囊的亮底残留。 */
+body.zltx-theme-gold .module-detail-hero span,
+body.zltx-theme-gold .model-import-hero span{
+  background:transparent!important;
+  color:#d6b875!important;
+  border-color:transparent!important;
+}
+body.zltx-theme-gold .state-frame-panel .panel-head [data-state-frame-label]{
+  background:#1f3a31!important;
+  border:1px solid #315f48!important;
+  color:#71d8a5!important;
+  box-shadow:none!important;
+}
+body.zltx-theme-gold .state-frame-panel.state-device-connected .panel-head [data-state-frame-label]{
+  color:#71d8a5!important;
+}
+body.zltx-theme-gold .platform_nav-page-head span{
+  background:transparent!important;
+  color:#d6b875!important;
+  border-color:transparent!important;
+}
