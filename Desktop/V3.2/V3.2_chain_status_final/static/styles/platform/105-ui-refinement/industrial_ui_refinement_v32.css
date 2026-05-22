@@ -1,0 +1,1205 @@
+/*
+ * V3.2 工业级平台 UI 优化增强
+ * 目标：
+ * 1. 白天模式：纯净白色底色(#FFFFFF) + 深灰文字(#333333) + 科技蓝(#165DFF)
+ * 2. 夜间模式：深黑底色(#0F0F0F) + 鎏金色主题(#D4AF37/#F5E7A0)
+ * 3. 字体放大：基础16px，正文16-18px，二级标题20px，一级标题24px
+ * 4. 行高1.6倍，防止文字穿模重叠
+ * 5. 表格斑马纹和悬停高亮效果
+ * 6. 卡片式布局优化，合理留白和间距
+ */
+
+/* ===== 基础变量定义 ===== */
+:root {
+  /* 基础字号 */
+  --ui-font-base: 16px;
+  --ui-font-body: 16px;
+  --ui-font-body-lg: 18px;
+  --ui-font-h2: 20px;
+  --ui-font-h1: 24px;
+  --ui-font-h1-lg: 28px;
+  --ui-line-height: 1.6;
+  
+  /* 间距 */
+  --ui-gap-sm: 8px;
+  --ui-gap-md: 12px;
+  --ui-gap-lg: 16px;
+  --ui-gap-xl: 20px;
+  
+  /* 圆角 */
+  --ui-radius-sm: 6px;
+  --ui-radius-md: 10px;
+  --ui-radius-lg: 14px;
+}
+
+/* ===== 白天模式（科技蓝主题） ===== */
+body.zltx-theme-light {
+  /* 核心配色 */
+  --light-bg: #FFFFFF;
+  --light-bg-secondary: #F5F7FA;
+  --light-bg-tertiary: #F0F2F5;
+  --light-text-primary: #333333;
+  --light-text-secondary: #5A5A5A;
+  --light-text-muted: #8C8C8C;
+  --light-primary: #165DFF;
+  --light-primary-light: #E8F1FF;
+  --light-primary-dark: #0D47A1;
+  --light-border: #E0E4EA;
+  --light-border-hover: #C5CBD6;
+  --light-success: #00B42A;
+  --light-warning: #FF7D00;
+  --light-error: #F53F3F;
+  --light-shadow: rgba(0, 0, 0, 0.08);
+  --light-shadow-hover: rgba(0, 0, 0, 0.12);
+  
+  background: var(--light-bg) !important;
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-base) !important;
+  line-height: var(--ui-line-height) !important;
+}
+
+/* 白天模式 - 背景 */
+body.zltx-theme-light .app-bg {
+  background: linear-gradient(180deg, #F5F7FA 0%, #FFFFFF 100%) !important;
+}
+body.zltx-theme-light .app-bg::before,
+body.zltx-theme-light .app-bg::after {
+  display: none !important;
+}
+
+/* 白天模式 - 侧边栏 */
+body.zltx-theme-light .sidebar {
+  background: var(--light-bg) !important;
+  border-right: 1px solid var(--light-border) !important;
+  box-shadow: 2px 0 12px var(--light-shadow) !important;
+}
+
+/* 白天模式 - 品牌区域 */
+body.zltx-theme-light .brand-block {
+  border-bottom: 1px solid var(--light-border) !important;
+}
+body.zltx-theme-light .brand-title {
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-h1) !important;
+  font-weight: 700 !important;
+}
+body.zltx-theme-light .brand-sub {
+  color: var(--light-text-secondary) !important;
+  font-size: var(--ui-font-body) !important;
+}
+body.zltx-theme-light .brand-ver {
+  color: var(--light-text-muted) !important;
+  font-size: 14px !important;
+}
+body.zltx-theme-light .brand-logo {
+  background: linear-gradient(135deg, var(--light-primary), var(--light-primary-dark)) !important;
+  box-shadow: 0 4px 16px rgba(22, 93, 255, 0.25) !important;
+}
+
+/* 白天模式 - 导航项 */
+body.zltx-theme-light .nav-item {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: var(--ui-radius-md) !important;
+  color: var(--light-text-secondary) !important;
+  font-size: var(--ui-font-body) !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+body.zltx-theme-light .nav-item:hover {
+  background: var(--light-primary-light) !important;
+  color: var(--light-primary) !important;
+}
+body.zltx-theme-light .nav-item.active {
+  background: var(--light-primary-light) !important;
+  border-color: var(--light-primary) !important;
+  color: var(--light-primary) !important;
+  box-shadow: inset 3px 0 0 var(--light-primary) !important;
+}
+body.zltx-theme-light .nav-item span {
+  color: var(--light-primary) !important;
+}
+
+/* 白天模式 - 平台状态卡片 */
+body.zltx-theme-light .platform-card {
+  background: var(--light-bg-secondary) !important;
+  border: 1px solid var(--light-border) !important;
+  border-radius: var(--ui-radius-lg) !important;
+}
+body.zltx-theme-light .pc-title {
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-body-lg) !important;
+  font-weight: 700 !important;
+}
+body.zltx-theme-light .pc-row {
+  color: var(--light-text-secondary) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-light .pc-row strong {
+  color: var(--light-text-primary) !important;
+}
+
+/* 白天模式 - 主内容区标题 */
+body.zltx-theme-light .title-area h1 {
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-h1-lg) !important;
+  font-weight: 800 !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.5px !important;
+}
+body.zltx-theme-light .title-area p {
+  color: var(--light-text-secondary) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+  margin-top: 8px !important;
+}
+
+/* 白天模式 - 面板和卡片 */
+body.zltx-theme-light .panel,
+body.zltx-theme-light .mini-panel {
+  background: var(--light-bg) !important;
+  border: 1px solid var(--light-border) !important;
+  border-radius: var(--ui-radius-lg) !important;
+  box-shadow: 0 4px 16px var(--light-shadow) !important;
+  overflow: hidden !important;
+}
+body.zltx-theme-light .panel::before {
+  display: none !important;
+}
+body.zltx-theme-light .panel:hover,
+body.zltx-theme-light .mini-panel:hover {
+  box-shadow: 0 6px 20px var(--light-shadow-hover) !important;
+}
+
+/* 白天模式 - 面板头部 */
+body.zltx-theme-light .panel-head {
+  background: var(--light-bg-secondary) !important;
+  border-bottom: 1px solid var(--light-border) !important;
+  padding: var(--ui-gap-md) var(--ui-gap-lg) !important;
+}
+body.zltx-theme-light .panel-head h2 {
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-h1) !important;
+  font-weight: 700 !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-light .panel-head h3,
+body.zltx-theme-light .panel-head.compact h3 {
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-h2) !important;
+  font-weight: 700 !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-light .panel-head p {
+  color: var(--light-text-secondary) !important;
+  font-size: 14px !important;
+  line-height: var(--ui-line-height) !important;
+  margin-top: 4px !important;
+}
+body.zltx-theme-light .panel-head span,
+body.zltx-theme-light .focus-pill {
+  background: var(--light-primary-light) !important;
+  border: 1px solid rgba(22, 93, 255, 0.2) !important;
+  border-radius: var(--ui-radius-sm) !important;
+  color: var(--light-primary) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  padding: 6px 12px !important;
+}
+
+/* 白天模式 - mini-panel标题 */
+body.zltx-theme-light .mini-panel h3 {
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-h2) !important;
+  font-weight: 700 !important;
+  line-height: var(--ui-line-height) !important;
+  margin-bottom: var(--ui-gap-md) !important;
+  padding-bottom: var(--ui-gap-sm) !important;
+  border-bottom: 1px solid var(--light-border) !important;
+}
+
+/* 白天模式 - 状态栏 */
+body.zltx-theme-light .status-bus {
+  background: var(--light-bg-secondary) !important;
+  border: 1px solid var(--light-border) !important;
+  border-radius: var(--ui-radius-md) !important;
+  color: var(--light-text-secondary) !important;
+  font-size: var(--ui-font-body) !important;
+}
+body.zltx-theme-light .status-bus b {
+  color: var(--light-success) !important;
+  font-weight: 600 !important;
+}
+body.zltx-theme-light .dot.green {
+  background: var(--light-success) !important;
+  box-shadow: 0 0 8px rgba(0, 180, 42, 0.4) !important;
+}
+body.zltx-theme-light .dot.cyan {
+  background: var(--light-primary) !important;
+  box-shadow: 0 0 8px rgba(22, 93, 255, 0.4) !important;
+}
+
+/* 白天模式 - 按钮 */
+body.zltx-theme-light .run-button {
+  background: linear-gradient(135deg, var(--light-primary), var(--light-primary-dark)) !important;
+  border: none !important;
+  border-radius: var(--ui-radius-md) !important;
+  color: #FFFFFF !important;
+  font-size: var(--ui-font-body-lg) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 16px rgba(22, 93, 255, 0.3) !important;
+  transition: all 0.2s ease !important;
+}
+body.zltx-theme-light .run-button:hover:not(.gated) {
+  box-shadow: 0 6px 20px rgba(22, 93, 255, 0.4) !important;
+  transform: translateY(-1px) !important;
+}
+body.zltx-theme-light .run-button.gated {
+  background: var(--light-bg-tertiary) !important;
+  color: var(--light-text-muted) !important;
+  box-shadow: none !important;
+}
+body.zltx-theme-light .clear-decision-button,
+body.zltx-theme-light .archive-actions button {
+  background: var(--light-bg) !important;
+  border: 1px solid var(--light-border) !important;
+  border-radius: var(--ui-radius-md) !important;
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-body) !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+body.zltx-theme-light .clear-decision-button:hover,
+body.zltx-theme-light .archive-actions button:hover {
+  border-color: var(--light-primary) !important;
+  color: var(--light-primary) !important;
+  background: var(--light-primary-light) !important;
+}
+
+/* 白天模式 - 决策树节点 */
+body.zltx-theme-light #treeViewport.tree-viewport {
+  background: var(--light-bg-secondary) !important;
+  border: 1px solid var(--light-border) !important;
+}
+body.zltx-theme-light #treeViewport .tree-node {
+  background: var(--light-bg) !important;
+  border: 1px solid var(--light-border) !important;
+  border-radius: var(--ui-radius-md) !important;
+  box-shadow: 0 4px 12px var(--light-shadow), inset 3px 0 0 var(--light-primary) !important;
+}
+body.zltx-theme-light #treeViewport .tree-node h3 {
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-body-lg) !important;
+  font-weight: 700 !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-light #treeViewport .tree-node p {
+  color: var(--light-text-secondary) !important;
+  font-size: 14px !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-light #treeViewport .tree-node small {
+  color: var(--light-text-muted) !important;
+  font-size: 13px !important;
+}
+body.zltx-theme-light #treeViewport .tree-node strong {
+  color: var(--light-success) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+body.zltx-theme-light #treeViewport .tree-node em {
+  background: var(--light-primary-light) !important;
+  border: 1px solid rgba(22, 93, 255, 0.2) !important;
+  color: var(--light-primary) !important;
+}
+body.zltx-theme-light #treeViewport .tree-node .badge {
+  background: #E8F8EE !important;
+  border: 1px solid rgba(0, 180, 42, 0.3) !important;
+  color: var(--light-success) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+body.zltx-theme-light #treeViewport .tree-node.active::after {
+  background: var(--light-primary) !important;
+  color: #FFFFFF !important;
+}
+
+/* 白天模式 - 流程线 */
+body.zltx-theme-light .flow-line,
+body.zltx-theme-light .flow-canvas-line {
+  stroke: #B0C4DE !important;
+}
+body.zltx-theme-light .flow-line.link-live,
+body.zltx-theme-light .flow-canvas-line.active-line {
+  stroke: var(--light-primary) !important;
+}
+body.zltx-theme-light #arrow path {
+  fill: #B0C4DE !important;
+}
+
+/* 白天模式 - 字段列表 */
+body.zltx-theme-light .field-list > div {
+  background: var(--light-bg-secondary) !important;
+  border: 1px solid var(--light-border) !important;
+  border-radius: var(--ui-radius-sm) !important;
+  padding: var(--ui-gap-sm) var(--ui-gap-md) !important;
+}
+body.zltx-theme-light .field-list label {
+  color: var(--light-text-muted) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-light .field-list p {
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-body) !important;
+  font-weight: 500 !important;
+  line-height: var(--ui-line-height) !important;
+  margin-top: 4px !important;
+}
+
+/* 白天模式 - Agent工作框 */
+body.zltx-theme-light .agent-workbox {
+  background: var(--light-bg-secondary) !important;
+  border: 1px solid var(--light-border) !important;
+  border-radius: var(--ui-radius-sm) !important;
+}
+body.zltx-theme-light .agent-workbox label {
+  color: var(--light-text-muted) !important;
+  font-size: 13px !important;
+}
+body.zltx-theme-light .agent-workbox li {
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-light .agent-workbox li::before {
+  color: var(--light-primary) !important;
+}
+
+/* 白天模式 - 证据列表 */
+body.zltx-theme-light .evidence-list li {
+  border-bottom: 1px solid var(--light-border) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-light .evidence-list b {
+  color: var(--light-primary) !important;
+}
+body.zltx-theme-light .evidence-list span {
+  color: var(--light-text-primary) !important;
+}
+body.zltx-theme-light .evidence-list em {
+  color: var(--light-text-muted) !important;
+  font-size: 13px !important;
+}
+body.zltx-theme-light .evidence-list time {
+  color: var(--light-text-muted) !important;
+}
+body.zltx-theme-light .evidence-list i {
+  color: var(--light-success) !important;
+}
+body.zltx-theme-light .evidence-list li.active {
+  background: var(--light-primary-light) !important;
+}
+
+/* 白天模式 - 表格（斑马纹 + 悬停高亮） */
+body.zltx-theme-light .matrix-table {
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+  border-collapse: collapse !important;
+}
+body.zltx-theme-light .matrix-table th {
+  background: var(--light-bg-secondary) !important;
+  color: var(--light-text-muted) !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  padding: var(--ui-gap-md) !important;
+  border-bottom: 2px solid var(--light-border) !important;
+  text-align: left !important;
+}
+body.zltx-theme-light .matrix-table td {
+  color: var(--light-text-primary) !important;
+  padding: var(--ui-gap-md) !important;
+  border-bottom: 1px solid var(--light-border) !important;
+  vertical-align: middle !important;
+}
+body.zltx-theme-light .matrix-table tbody tr:nth-child(even) {
+  background: var(--light-bg-secondary) !important;
+}
+body.zltx-theme-light .matrix-table tbody tr:hover {
+  background: var(--light-primary-light) !important;
+}
+body.zltx-theme-light .matrix-table .allow {
+  color: var(--light-success) !important;
+}
+body.zltx-theme-light .matrix-table .limited {
+  color: var(--light-warning) !important;
+}
+body.zltx-theme-light .matrix-table .block {
+  color: var(--light-error) !important;
+}
+
+/* 白天模式 - 代码预览 */
+body.zltx-theme-light #taskJson,
+body.zltx-theme-light pre {
+  background: var(--light-bg-tertiary) !important;
+  border: 1px solid var(--light-border) !important;
+  border-radius: var(--ui-radius-sm) !important;
+  color: var(--light-text-primary) !important;
+  font-size: 14px !important;
+  line-height: var(--ui-line-height) !important;
+  padding: var(--ui-gap-md) !important;
+}
+
+/* 白天模式 - 日志和告警 */
+body.zltx-theme-light .log-feed p {
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+  border-bottom: 1px solid var(--light-border) !important;
+  padding: var(--ui-gap-sm) 0 !important;
+}
+body.zltx-theme-light .alarm {
+  background: #FFF7E6 !important;
+  border-left: 3px solid var(--light-warning) !important;
+  border-radius: 0 var(--ui-radius-sm) var(--ui-radius-sm) 0 !important;
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+  padding: var(--ui-gap-sm) var(--ui-gap-md) !important;
+  margin-bottom: var(--ui-gap-sm) !important;
+}
+body.zltx-theme-light .alarm.high {
+  background: #FFEDED !important;
+  border-color: var(--light-error) !important;
+}
+body.zltx-theme-light .alarm.low {
+  background: #E8F8EE !important;
+  border-color: var(--light-success) !important;
+}
+
+/* 白天模式 - 归档面板 */
+body.zltx-theme-light .archive-list p,
+body.zltx-theme-light .recent-archive p {
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+  padding: var(--ui-gap-sm) 0 !important;
+  border-bottom: 1px solid var(--light-border) !important;
+}
+body.zltx-theme-light .archive-list b,
+body.zltx-theme-light .recent-archive b {
+  color: var(--light-success) !important;
+}
+body.zltx-theme-light .archive-list .warn,
+body.zltx-theme-light .recent-archive .warn {
+  color: var(--light-warning) !important;
+}
+
+/* 白天模式 - Spark列表 */
+body.zltx-theme-light .spark-list p {
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-light .spark-list b {
+  color: var(--light-primary) !important;
+}
+body.zltx-theme-light .spark-list i {
+  background: linear-gradient(135deg, rgba(22, 93, 255, 0.1), rgba(0, 180, 42, 0.2)) !important;
+}
+
+/* 白天模式 - 工业状态帧 */
+body.zltx-theme-light .state-frame-media {
+  background: var(--light-bg-secondary) !important;
+  border: 1px solid var(--light-border) !important;
+  border-radius: var(--ui-radius-md) !important;
+}
+body.zltx-theme-light .state-frame-empty b {
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-body-lg) !important;
+}
+body.zltx-theme-light .state-frame-empty span {
+  color: var(--light-text-muted) !important;
+  font-size: var(--ui-font-body) !important;
+}
+body.zltx-theme-light .state-frame-metrics li {
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-light .state-frame-metrics span {
+  color: var(--light-text-muted) !important;
+}
+body.zltx-theme-light .state-frame-metrics b {
+  color: var(--light-text-primary) !important;
+}
+
+/* 白天模式 - 决策运行控制台 */
+body.zltx-theme-light .decision-console-card {
+  background: var(--light-bg) !important;
+  border: 1px solid var(--light-border) !important;
+  border-radius: var(--ui-radius-md) !important;
+}
+body.zltx-theme-light .decision-console-card h4 {
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-body-lg) !important;
+  font-weight: 700 !important;
+  border-bottom: 1px solid var(--light-border) !important;
+  padding-bottom: var(--ui-gap-sm) !important;
+  margin-bottom: var(--ui-gap-md) !important;
+}
+body.zltx-theme-light .decision-log-stream p {
+  color: var(--light-text-primary) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+}
+
+/* 白天模式 - 滚动条 */
+body.zltx-theme-light ::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+body.zltx-theme-light ::-webkit-scrollbar-track {
+  background: var(--light-bg-secondary) !important;
+  border-radius: 4px !important;
+}
+body.zltx-theme-light ::-webkit-scrollbar-thumb {
+  background: var(--light-border-hover) !important;
+  border-radius: 4px !important;
+}
+body.zltx-theme-light ::-webkit-scrollbar-thumb:hover {
+  background: var(--light-text-muted) !important;
+}
+
+
+/* ===== 夜间模式（鎏金主题） ===== */
+body.zltx-theme-gold {
+  /* 核心配色 - 深黑 + 鎏金 */
+  --gold-bg: #0F0F0F;
+  --gold-bg-secondary: #1A1A1A;
+  --gold-bg-tertiary: #252525;
+  --gold-bg-elevated: #2A2A2A;
+  --gold-text-primary: #F5E7A0;
+  --gold-text-secondary: #C9B86C;
+  --gold-text-muted: #8B7B4A;
+  --gold-primary: #D4AF37;
+  --gold-primary-light: rgba(212, 175, 55, 0.15);
+  --gold-primary-dark: #A68828;
+  --gold-border: #3D3D3D;
+  --gold-border-gold: rgba(212, 175, 55, 0.3);
+  --gold-success: #5EBA7D;
+  --gold-warning: #E8A838;
+  --gold-error: #E55A5A;
+  --gold-shadow: rgba(0, 0, 0, 0.5);
+  
+  background: var(--gold-bg) !important;
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-base) !important;
+  line-height: var(--ui-line-height) !important;
+}
+
+/* 夜间模式 - 背景 */
+body.zltx-theme-gold .app-bg {
+  background: radial-gradient(ellipse at 20% 10%, rgba(212, 175, 55, 0.08), transparent 50%),
+              radial-gradient(ellipse at 80% 90%, rgba(212, 175, 55, 0.05), transparent 50%),
+              linear-gradient(180deg, #0F0F0F 0%, #151515 100%) !important;
+}
+body.zltx-theme-gold .app-bg::before,
+body.zltx-theme-gold .app-bg::after {
+  display: none !important;
+}
+
+/* 夜间模式 - 侧边栏 */
+body.zltx-theme-gold .sidebar {
+  background: linear-gradient(180deg, var(--gold-bg-secondary), var(--gold-bg)) !important;
+  border-right: 1px solid var(--gold-border-gold) !important;
+  box-shadow: 2px 0 20px var(--gold-shadow) !important;
+}
+
+/* 夜间模式 - 品牌区域 */
+body.zltx-theme-gold .brand-block {
+  border-bottom: 1px solid var(--gold-border-gold) !important;
+}
+body.zltx-theme-gold .brand-title {
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-h1) !important;
+  font-weight: 700 !important;
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.3) !important;
+}
+body.zltx-theme-gold .brand-sub {
+  color: var(--gold-text-secondary) !important;
+  font-size: var(--ui-font-body) !important;
+}
+body.zltx-theme-gold .brand-ver {
+  color: var(--gold-text-muted) !important;
+  font-size: 14px !important;
+}
+body.zltx-theme-gold .brand-logo {
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-primary-dark)) !important;
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.35) !important;
+}
+
+/* 夜间模式 - 导航项 */
+body.zltx-theme-gold .nav-item {
+  background: var(--gold-bg) !important;
+  border: 1px solid transparent !important;
+  border-radius: var(--ui-radius-md) !important;
+  color: var(--gold-text-secondary) !important;
+  font-size: var(--ui-font-body) !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+body.zltx-theme-gold .nav-item:hover {
+  background: var(--gold-primary-light) !important;
+  color: var(--gold-text-primary) !important;
+}
+body.zltx-theme-gold .nav-item.active {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1)) !important;
+  border-color: var(--gold-primary) !important;
+  color: var(--gold-text-primary) !important;
+  box-shadow: inset 3px 0 0 var(--gold-primary), 0 0 15px rgba(212, 175, 55, 0.2) !important;
+}
+body.zltx-theme-gold .nav-item span {
+  color: var(--gold-primary) !important;
+}
+
+/* 夜间模式 - 平台状态卡片 */
+body.zltx-theme-gold .platform-card {
+  background: var(--gold-bg-secondary) !important;
+  border: 1px solid var(--gold-border-gold) !important;
+  border-radius: var(--ui-radius-lg) !important;
+}
+body.zltx-theme-gold .pc-title {
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-body-lg) !important;
+  font-weight: 700 !important;
+}
+body.zltx-theme-gold .pc-row {
+  color: var(--gold-text-secondary) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-gold .pc-row strong {
+  color: var(--gold-text-primary) !important;
+}
+
+/* 夜间模式 - 主内容区标题 */
+body.zltx-theme-gold .title-area h1 {
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-h1-lg) !important;
+  font-weight: 800 !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.5px !important;
+  text-shadow: 0 0 30px rgba(212, 175, 55, 0.25) !important;
+}
+body.zltx-theme-gold .title-area p {
+  color: var(--gold-text-secondary) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+  margin-top: 8px !important;
+}
+
+/* 夜间模式 - 面板和卡片 */
+body.zltx-theme-gold .panel,
+body.zltx-theme-gold .mini-panel {
+  background: var(--gold-bg-secondary) !important;
+  border: 1px solid var(--gold-border) !important;
+  border-radius: var(--ui-radius-lg) !important;
+  box-shadow: 0 4px 20px var(--gold-shadow) !important;
+  overflow: hidden !important;
+}
+body.zltx-theme-gold .panel::before {
+  background: linear-gradient(90deg, transparent, var(--gold-primary), transparent) !important;
+  opacity: 0.3 !important;
+}
+body.zltx-theme-gold .panel:hover,
+body.zltx-theme-gold .mini-panel:hover {
+  border-color: var(--gold-border-gold) !important;
+}
+
+/* 夜间模式 - 面板头部 */
+body.zltx-theme-gold .panel-head {
+  background: var(--gold-bg-tertiary) !important;
+  border-bottom: 1px solid var(--gold-border) !important;
+  padding: var(--ui-gap-md) var(--ui-gap-lg) !important;
+}
+body.zltx-theme-gold .panel-head h2 {
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-h1) !important;
+  font-weight: 700 !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-gold .panel-head h3,
+body.zltx-theme-gold .panel-head.compact h3 {
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-h2) !important;
+  font-weight: 700 !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-gold .panel-head p {
+  color: var(--gold-text-muted) !important;
+  font-size: 14px !important;
+  line-height: var(--ui-line-height) !important;
+  margin-top: 4px !important;
+}
+body.zltx-theme-gold .panel-head span,
+body.zltx-theme-gold .focus-pill {
+  background: var(--gold-primary-light) !important;
+  border: 1px solid var(--gold-border-gold) !important;
+  border-radius: var(--ui-radius-sm) !important;
+  color: var(--gold-primary) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  padding: 6px 12px !important;
+}
+
+/* 夜间模式 - mini-panel标题 */
+body.zltx-theme-gold .mini-panel h3 {
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-h2) !important;
+  font-weight: 700 !important;
+  line-height: var(--ui-line-height) !important;
+  margin-bottom: var(--ui-gap-md) !important;
+  padding-bottom: var(--ui-gap-sm) !important;
+  border-bottom: 1px solid var(--gold-border) !important;
+}
+
+/* 夜间模式 - 状态栏 */
+body.zltx-theme-gold .status-bus {
+  background: var(--gold-bg-secondary) !important;
+  border: 1px solid var(--gold-border) !important;
+  border-radius: var(--ui-radius-md) !important;
+  color: var(--gold-text-secondary) !important;
+  font-size: var(--ui-font-body) !important;
+}
+body.zltx-theme-gold .status-bus b {
+  color: var(--gold-success) !important;
+  font-weight: 600 !important;
+}
+body.zltx-theme-gold .dot.green {
+  background: var(--gold-success) !important;
+  box-shadow: 0 0 8px rgba(94, 186, 125, 0.5) !important;
+}
+body.zltx-theme-gold .dot.cyan {
+  background: var(--gold-primary) !important;
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.5) !important;
+}
+
+/* 夜间模式 - 按钮 */
+body.zltx-theme-gold .run-button {
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-primary-dark)) !important;
+  border: none !important;
+  border-radius: var(--ui-radius-md) !important;
+  color: #1A1A1A !important;
+  font-size: var(--ui-font-body-lg) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.35) !important;
+  transition: all 0.2s ease !important;
+}
+body.zltx-theme-gold .run-button:hover:not(.gated) {
+  box-shadow: 0 6px 25px rgba(212, 175, 55, 0.5) !important;
+  transform: translateY(-1px) !important;
+}
+body.zltx-theme-gold .run-button.gated {
+  background: var(--gold-bg-tertiary) !important;
+  color: var(--gold-text-muted) !important;
+  box-shadow: none !important;
+}
+body.zltx-theme-gold .clear-decision-button,
+body.zltx-theme-gold .archive-actions button {
+  background: var(--gold-bg-secondary) !important;
+  border: 1px solid var(--gold-border) !important;
+  border-radius: var(--ui-radius-md) !important;
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-body) !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+body.zltx-theme-gold .clear-decision-button:hover,
+body.zltx-theme-gold .archive-actions button:hover {
+  border-color: var(--gold-primary) !important;
+  color: var(--gold-primary) !important;
+  background: var(--gold-primary-light) !important;
+}
+
+/* 夜间模式 - 决策树节点 */
+body.zltx-theme-gold #treeViewport.tree-viewport {
+  background: var(--gold-bg) !important;
+  border: 1px solid var(--gold-border) !important;
+}
+body.zltx-theme-gold #treeViewport .tree-node {
+  background: linear-gradient(180deg, var(--gold-bg-tertiary), var(--gold-bg-secondary)) !important;
+  border: 1px solid var(--gold-border) !important;
+  border-radius: var(--ui-radius-md) !important;
+  box-shadow: 0 4px 16px var(--gold-shadow), inset 3px 0 0 var(--gold-primary) !important;
+}
+body.zltx-theme-gold #treeViewport .tree-node h3 {
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-body-lg) !important;
+  font-weight: 700 !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-gold #treeViewport .tree-node p {
+  color: var(--gold-text-secondary) !important;
+  font-size: 14px !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-gold #treeViewport .tree-node small {
+  color: var(--gold-text-muted) !important;
+  font-size: 13px !important;
+}
+body.zltx-theme-gold #treeViewport .tree-node strong {
+  color: var(--gold-success) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+body.zltx-theme-gold #treeViewport .tree-node em {
+  background: var(--gold-primary-light) !important;
+  border: 1px solid var(--gold-border-gold) !important;
+  color: var(--gold-primary) !important;
+}
+body.zltx-theme-gold #treeViewport .tree-node .badge {
+  background: rgba(94, 186, 125, 0.15) !important;
+  border: 1px solid rgba(94, 186, 125, 0.3) !important;
+  color: var(--gold-success) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+body.zltx-theme-gold #treeViewport .tree-node.active::after {
+  background: var(--gold-primary) !important;
+  color: #1A1A1A !important;
+}
+
+/* 夜间模式 - 流程线 */
+body.zltx-theme-gold .flow-line,
+body.zltx-theme-gold .flow-canvas-line {
+  stroke: #5A5A5A !important;
+}
+body.zltx-theme-gold .flow-line.link-live,
+body.zltx-theme-gold .flow-canvas-line.active-line {
+  stroke: var(--gold-primary) !important;
+}
+body.zltx-theme-gold #arrow path {
+  fill: #5A5A5A !important;
+}
+
+/* 夜间模式 - 字段列表 */
+body.zltx-theme-gold .field-list > div {
+  background: var(--gold-bg-tertiary) !important;
+  border: 1px solid var(--gold-border) !important;
+  border-radius: var(--ui-radius-sm) !important;
+  padding: var(--ui-gap-sm) var(--ui-gap-md) !important;
+}
+body.zltx-theme-gold .field-list label {
+  color: var(--gold-text-muted) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-gold .field-list p {
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-body) !important;
+  font-weight: 500 !important;
+  line-height: var(--ui-line-height) !important;
+  margin-top: 4px !important;
+}
+
+/* 夜间模式 - Agent工作框 */
+body.zltx-theme-gold .agent-workbox {
+  background: var(--gold-bg-tertiary) !important;
+  border: 1px solid var(--gold-border) !important;
+  border-radius: var(--ui-radius-sm) !important;
+}
+body.zltx-theme-gold .agent-workbox label {
+  color: var(--gold-text-muted) !important;
+  font-size: 13px !important;
+}
+body.zltx-theme-gold .agent-workbox li {
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-gold .agent-workbox li::before {
+  color: var(--gold-primary) !important;
+}
+
+/* 夜间模式 - 证据列表 */
+body.zltx-theme-gold .evidence-list li {
+  border-bottom: 1px solid var(--gold-border) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-gold .evidence-list b {
+  color: var(--gold-primary) !important;
+}
+body.zltx-theme-gold .evidence-list span {
+  color: var(--gold-text-primary) !important;
+}
+body.zltx-theme-gold .evidence-list em {
+  color: var(--gold-text-muted) !important;
+  font-size: 13px !important;
+}
+body.zltx-theme-gold .evidence-list time {
+  color: var(--gold-text-muted) !important;
+}
+body.zltx-theme-gold .evidence-list i {
+  color: var(--gold-success) !important;
+}
+body.zltx-theme-gold .evidence-list li.active {
+  background: var(--gold-primary-light) !important;
+}
+
+/* 夜间模式 - 表格（斑马纹 + 悬停高亮） */
+body.zltx-theme-gold .matrix-table {
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+  border-collapse: collapse !important;
+}
+body.zltx-theme-gold .matrix-table th {
+  background: var(--gold-bg-tertiary) !important;
+  color: var(--gold-text-muted) !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  padding: var(--ui-gap-md) !important;
+  border-bottom: 2px solid var(--gold-border) !important;
+  text-align: left !important;
+}
+body.zltx-theme-gold .matrix-table td {
+  color: var(--gold-text-primary) !important;
+  padding: var(--ui-gap-md) !important;
+  border-bottom: 1px solid var(--gold-border) !important;
+  vertical-align: middle !important;
+}
+body.zltx-theme-gold .matrix-table tbody tr:nth-child(even) {
+  background: var(--gold-bg-tertiary) !important;
+}
+body.zltx-theme-gold .matrix-table tbody tr:hover {
+  background: var(--gold-primary-light) !important;
+}
+body.zltx-theme-gold .matrix-table .allow {
+  color: var(--gold-success) !important;
+}
+body.zltx-theme-gold .matrix-table .limited {
+  color: var(--gold-warning) !important;
+}
+body.zltx-theme-gold .matrix-table .block {
+  color: var(--gold-error) !important;
+}
+
+/* 夜间模式 - 代码预览 */
+body.zltx-theme-gold #taskJson,
+body.zltx-theme-gold pre {
+  background: var(--gold-bg) !important;
+  border: 1px solid var(--gold-border) !important;
+  border-radius: var(--ui-radius-sm) !important;
+  color: var(--gold-primary) !important;
+  font-size: 14px !important;
+  line-height: var(--ui-line-height) !important;
+  padding: var(--ui-gap-md) !important;
+}
+
+/* 夜间模式 - 日志和告警 */
+body.zltx-theme-gold .log-feed p {
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+  border-bottom: 1px solid var(--gold-border) !important;
+  padding: var(--ui-gap-sm) 0 !important;
+}
+body.zltx-theme-gold .alarm {
+  background: rgba(232, 168, 56, 0.1) !important;
+  border-left: 3px solid var(--gold-warning) !important;
+  border-radius: 0 var(--ui-radius-sm) var(--ui-radius-sm) 0 !important;
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+  padding: var(--ui-gap-sm) var(--ui-gap-md) !important;
+  margin-bottom: var(--ui-gap-sm) !important;
+}
+body.zltx-theme-gold .alarm.high {
+  background: rgba(229, 90, 90, 0.1) !important;
+  border-color: var(--gold-error) !important;
+}
+body.zltx-theme-gold .alarm.low {
+  background: rgba(94, 186, 125, 0.1) !important;
+  border-color: var(--gold-success) !important;
+}
+
+/* 夜间模式 - 归档面板 */
+body.zltx-theme-gold .archive-list p,
+body.zltx-theme-gold .recent-archive p {
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+  padding: var(--ui-gap-sm) 0 !important;
+  border-bottom: 1px solid var(--gold-border) !important;
+}
+body.zltx-theme-gold .archive-list b,
+body.zltx-theme-gold .recent-archive b {
+  color: var(--gold-success) !important;
+}
+body.zltx-theme-gold .archive-list .warn,
+body.zltx-theme-gold .recent-archive .warn {
+  color: var(--gold-warning) !important;
+}
+
+/* 夜间模式 - Spark列表 */
+body.zltx-theme-gold .spark-list p {
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-gold .spark-list b {
+  color: var(--gold-primary) !important;
+}
+body.zltx-theme-gold .spark-list i {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(94, 186, 125, 0.15)) !important;
+}
+
+/* 夜间模式 - 工业状态帧 */
+body.zltx-theme-gold .state-frame-media {
+  background: var(--gold-bg) !important;
+  border: 1px solid var(--gold-border) !important;
+  border-radius: var(--ui-radius-md) !important;
+}
+body.zltx-theme-gold .state-frame-empty b {
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-body-lg) !important;
+}
+body.zltx-theme-gold .state-frame-empty span {
+  color: var(--gold-text-muted) !important;
+  font-size: var(--ui-font-body) !important;
+}
+body.zltx-theme-gold .state-frame-metrics li {
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+}
+body.zltx-theme-gold .state-frame-metrics span {
+  color: var(--gold-text-muted) !important;
+}
+body.zltx-theme-gold .state-frame-metrics b {
+  color: var(--gold-text-primary) !important;
+}
+
+/* 夜间模式 - 决策运行控制台 */
+body.zltx-theme-gold .decision-console-card {
+  background: var(--gold-bg-secondary) !important;
+  border: 1px solid var(--gold-border) !important;
+  border-radius: var(--ui-radius-md) !important;
+}
+body.zltx-theme-gold .decision-console-card h4 {
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-body-lg) !important;
+  font-weight: 700 !important;
+  border-bottom: 1px solid var(--gold-border) !important;
+  padding-bottom: var(--ui-gap-sm) !important;
+  margin-bottom: var(--ui-gap-md) !important;
+}
+body.zltx-theme-gold .decision-log-stream p {
+  color: var(--gold-text-primary) !important;
+  font-size: var(--ui-font-body) !important;
+  line-height: var(--ui-line-height) !important;
+}
+
+/* 夜间模式 - 滚动条 */
+body.zltx-theme-gold ::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+body.zltx-theme-gold ::-webkit-scrollbar-track {
+  background: var(--gold-bg) !important;
+  border-radius: 4px !important;
+}
+body.zltx-theme-gold ::-webkit-scrollbar-thumb {
+  background: var(--gold-border) !important;
+  border-radius: 4px !important;
+}
+body.zltx-theme-gold ::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-text-muted) !important;
+}
+
+
+/* ===== 通用优化（两个主题共用） ===== */
+
+/* 文字防溢出 */
+h1, h2, h3, h4, p, span, label, li, td, th, b, strong, small, em {
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
+}
+
+/* 表格垂直居中 */
+.matrix-table td,
+.matrix-table th {
+  vertical-align: middle !important;
+}
+
+/* 卡片内部间距 */
+.panel > *:not(.panel-head),
+.mini-panel > *:not(h3) {
+  padding-left: var(--ui-gap-md) !important;
+  padding-right: var(--ui-gap-md) !important;
+}
+
+/* 响应式适配 */
+@media (max-width: 1600px) {
+  :root {
+    --ui-font-base: 15px;
+    --ui-font-body: 15px;
+    --ui-font-body-lg: 17px;
+    --ui-font-h2: 19px;
+    --ui-font-h1: 23px;
+    --ui-font-h1-lg: 26px;
+  }
+}
+
+@media (max-width: 1400px) {
+  :root {
+    --ui-font-base: 14px;
+    --ui-font-body: 14px;
+    --ui-font-body-lg: 16px;
+    --ui-font-h2: 18px;
+    --ui-font-h1: 22px;
+    --ui-font-h1-lg: 24px;
+  }
+}
+
+/* 确保固定导航 */
+.sidebar {
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+  height: 100vh !important;
+  z-index: 100 !important;
+}
+
+.main-stage {
+  margin-left: var(--side) !important;
+  height: 100vh !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+/* 主题切换按钮样式优化 */
+body.zltx-theme-light .presentation-theme-toggle {
+  background: var(--light-bg) !important;
+  border: 1px solid var(--light-border) !important;
+  color: var(--light-text-primary) !important;
+  box-shadow: 0 2px 8px var(--light-shadow) !important;
+}
+body.zltx-theme-light .presentation-theme-toggle:hover {
+  border-color: var(--light-primary) !important;
+  color: var(--light-primary) !important;
+}
+
+body.zltx-theme-gold .presentation-theme-toggle {
+  background: var(--gold-bg-secondary) !important;
+  border: 1px solid var(--gold-border-gold) !important;
+  color: var(--gold-text-primary) !important;
+  box-shadow: 0 2px 12px var(--gold-shadow) !important;
+}
+body.zltx-theme-gold .presentation-theme-toggle:hover {
+  border-color: var(--gold-primary) !important;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3) !important;
+}

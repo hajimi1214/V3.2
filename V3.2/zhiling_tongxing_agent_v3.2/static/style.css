@@ -19,3 +19,6 @@
 @import url('/static/styles/platform/12-execution-topology/execution_topology.css');
 @import url('/static/styles/platform/13-command-dispatch/command_dispatch_button.css');
 @import url('/static/styles/platform/14-platform-runtime/platform_runtime_docs.css');
+
+/* V3.2 UI优化增强：白天模式(科技蓝)、夜间模式(鎏金)配色优化，字体放大，表格斑马纹。 */
+@import url('/static/styles/platform/105-ui-refinement/industrial_ui_refinement_v32.css');
