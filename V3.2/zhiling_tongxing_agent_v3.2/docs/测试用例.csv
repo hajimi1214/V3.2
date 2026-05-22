@@ -1,0 +1,12 @@
+﻿用例编号,用例名称,方法,接口路径,API地址,API密钥,请求体,期望结果,建议并发,Trace关注点
+TC-001,平台健康检查,GET,/api/test/health,http://127.0.0.1:7860,zltx_live_sk_v3_2_KGK3ghuT7Q2_8tSnwTKjf3jDPste68K0dMri6thwv7hrD29ARkmcn688UG3mzP9v,,HTTP 200 且 ok=true,10线程x10次,记录服务版本和运行时间
+TC-002,运行指标读取,GET,/api/test/runtime-metrics,http://127.0.0.1:7860,zltx_live_sk_v3_2_KGK3ghuT7Q2_8tSnwTKjf3jDPste68K0dMri6thwv7hrD29ARkmcn688UG3mzP9v,,返回请求量和响应时间指标,10线程x10次,观察错误数是否异常增长
+TC-003,Agent指标读取,GET,/api/test/agent-metrics,http://127.0.0.1:7860,zltx_live_sk_v3_2_KGK3ghuT7Q2_8tSnwTKjf3jDPste68K0dMri6thwv7hrD29ARkmcn688UG3mzP9v,,返回Agent数量和仲裁策略,10线程x10次,确认Agent能力指标完整
+TC-004,正常场景决策探针,POST,/api/test/agent-probe,http://127.0.0.1:7860,zltx_live_sk_v3_2_KGK3ghuT7Q2_8tSnwTKjf3jDPste68K0dMri6thwv7hrD29ARkmcn688UG3mzP9v,"{""scenario"":""NORMAL"",""loop_count"":1}",返回PICK_AND_PLACE,5线程x10次,确认视觉/定位/规划/联锁依次通过
+TC-005,CRC异常场景探针,POST,/api/test/agent-probe,http://127.0.0.1:7860,zltx_live_sk_v3_2_KGK3ghuT7Q2_8tSnwTKjf3jDPste68K0dMri6thwv7hrD29ARkmcn688UG3mzP9v,"{""scenario"":""CRC_ERROR"",""loop_count"":1}",返回BLOCKED,5线程x10次,确认硬件联锁Agent阻断
+TC-006,急停场景探针,POST,/api/test/agent-probe,http://127.0.0.1:7860,zltx_live_sk_v3_2_KGK3ghuT7Q2_8tSnwTKjf3jDPste68K0dMri6thwv7hrD29ARkmcn688UG3mzP9v,"{""scenario"":""EMERGENCY_STOP"",""loop_count"":1}",返回BLOCKED,5线程x10次,确认安全策略Agent阻断
+TC-007,设备离线场景探针,POST,/api/test/agent-probe,http://127.0.0.1:7860,zltx_live_sk_v3_2_KGK3ghuT7Q2_8tSnwTKjf3jDPste68K0dMri6thwv7hrD29ARkmcn688UG3mzP9v,"{""scenario"":""DEVICE_OFFLINE"",""loop_count"":1}",返回BLOCKED,5线程x10次,确认设备链路不可下发
+TC-008,路径风险场景探针,POST,/api/test/agent-probe,http://127.0.0.1:7860,zltx_live_sk_v3_2_KGK3ghuT7Q2_8tSnwTKjf3jDPste68K0dMri6thwv7hrD29ARkmcn688UG3mzP9v,"{""scenario"":""PATH_RISK"",""loop_count"":1}",返回LIMITED或受限执行,5线程x10次,确认放置规划Agent给出受限策略
+TC-009,性能探针,POST,/api/test/performance-probe,http://127.0.0.1:7860,zltx_live_sk_v3_2_KGK3ghuT7Q2_8tSnwTKjf3jDPste68K0dMri6thwv7hrD29ARkmcn688UG3mzP9v,"{""scenario"":""NORMAL"",""loop_count"":100,""include_trace"":false}",返回吞吐量和P50/P90/P99,1线程x1次,记录性能报告
+TC-010,上位机目标配置,GET,/api/command/targets,http://127.0.0.1:7860,zltx_live_sk_v3_2_KGK3ghuT7Q2_8tSnwTKjf3jDPste68K0dMri6thwv7hrD29ARkmcn688UG3mzP9v,,返回上位机控制端配置,1线程x1次,确认目标地址和端口
+TC-011,决策控制指令下发,POST,/api/command/dispatch,http://127.0.0.1:7860,zltx_live_sk_v3_2_KGK3ghuT7Q2_8tSnwTKjf3jDPste68K0dMri6thwv7hrD29ARkmcn688UG3mzP9v,"{""source"":""test_engineer"",""taskType"":""PICK_AND_PLACE""}",单次链路验证，不做并发,1线程x1次,确认Agent仲裁完成后才允许下发

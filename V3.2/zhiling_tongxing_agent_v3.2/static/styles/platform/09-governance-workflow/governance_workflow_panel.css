@@ -1,0 +1,162 @@
+
+:root{
+  --v3_2-drawer-w: min(560px, 34vw);
+  --v3_2-side: 300px;
+}
+.sidebar{width:var(--v3_2-side)!important;flex-basis:var(--v3_2-side)!important;}
+.brand-block{height:104px!important;padding:0 20px!important;gap:16px!important;}
+.brand-logo{width:66px!important;height:66px!important;font-size:34px!important;border-radius:18px!important;}
+.brand-title{font-size:24px!important;}
+.brand-sub{font-size:15px!important;}
+.brand-ver{font-size:13px!important;}
+.nav-list{padding:18px 14px!important;gap:9px!important;}
+.nav-item{height:58px!important;font-size:19px!important;padding:0 18px!important;border-radius:14px!important;}
+.nav-item span{font-size:22px!important;width:28px!important;}
+.nav-item b{line-height:1.2!important;}
+.platform-card{left:14px!important;right:14px!important;bottom:14px!important;padding:18px!important;font-size:15px!important;}
+.platform-card .pc-title{font-size:17px!important;}
+.pc-row{font-size:14px!important;}
+
+/* The canvas must own its layer and never bleed into panels below. */
+.tree-panel.workflow-canvas-mode.workflow-canvas-mode{
+  min-height:min(76vh, 820px)!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+  display:grid!important;
+  grid-template-rows:auto auto minmax(0,1fr)!important;
+}
+.tree-panel.workflow-canvas-mode .panel-head{z-index:12!important;background:linear-gradient(90deg,rgba(6,38,65,.96),rgba(4,19,36,.92))!important;}
+.workflow-canvas-toolbar{z-index:11!important;position:relative!important;background:linear-gradient(180deg,rgba(5,35,58,.94),rgba(4,21,39,.94))!important;}
+.tree-viewport.canvas-builder{
+  position:relative!important;
+  overflow:auto!important;
+  z-index:1!important;
+  isolation:isolate!important;
+  contain:strict!important;
+  min-height:460px!important;
+  clip-path:none!important;
+}
+.tree-viewport.canvas-builder .tree-node{
+  overflow:hidden!important;
+  backdrop-filter:none!important;
+  background:linear-gradient(180deg,rgba(9,36,64,.98),rgba(4,20,39,.985))!important;
+}
+.tree-viewport.canvas-builder .tree-node p,
+.tree-viewport.canvas-builder .tree-node .node-work-summary{
+  display:block!important;
+  white-space:normal!important;
+  overflow:visible!important;
+}
+.tree-viewport.canvas-builder .tree-node.agent,
+.tree-viewport.canvas-builder .tree-node.custom-agent{
+  min-height:205px!important;
+  padding:50px 18px 18px!important;
+}
+.tree-viewport.canvas-builder .tree-node.fusion.custom-agent,
+.tree-viewport.canvas-builder .tree-node.fusion{
+  min-height:138px!important;
+}
+.detail-grid,.bottom-grid{position:relative;z-index:0!important;}
+
+/* Component library is a true drawer with mask, not a translucent floating block over the canvas. */
+#agentLibraryBackdrop{
+  position:fixed;
+  inset:0;
+  z-index:6990;
+  display:none;
+  background:rgba(0,8,18,.56);
+  backdrop-filter:blur(3px);
+}
+body.agent-library-open #agentLibraryBackdrop{display:block;}
+body.agent-library-open{overflow:hidden;}
+.flow-agent-library,
+.flow-agent-library.workflow-agent-library,
+.flow-agent-library.workflow-agent-library.workflow-agent-library,
+.flow-agent-library.agent-component-library,
+.flow-agent-library.workflow-agent-library{
+  position:fixed!important;
+  top:0!important;
+  right:0!important;
+  left:auto!important;
+  bottom:0!important;
+  width:var(--v3_2-drawer-w)!important;
+  max-width:var(--v3_2-drawer-w)!important;
+  height:100vh!important;
+  max-height:100vh!important;
+  min-height:100vh!important;
+  resize:none!important;
+  overflow:hidden!important;
+  z-index:7000!important;
+  display:none!important;
+  border:0!important;
+  border-left:1px solid rgba(24,231,255,.45)!important;
+  border-radius:0!important;
+  background:linear-gradient(180deg,#061f37 0%,#04172c 54%,#020e1d 100%)!important;
+  box-shadow:-24px 0 90px rgba(0,0,0,.72),-2px 0 0 rgba(24,231,255,.16)!important;
+  color:#dff8ff!important;
+}
+.flow-agent-library.open{display:grid!important;grid-template-rows:64px auto 1fr!important;}
+.flow-agent-library-head{
+  position:relative!important;
+  top:auto!important;
+  min-height:64px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  padding:0 18px!important;
+  background:linear-gradient(90deg,rgba(12,75,104,.92),rgba(4,29,52,.96))!important;
+  border-bottom:1px solid rgba(24,231,255,.32)!important;
+  cursor:default!important;
+}
+.flow-agent-library-head b{font-size:18px!important;color:#e9fbff!important;}
+.flow-agent-library-head b::after{content:' · 独立抽屉'!important;color:#58eaff!important;font-size:12px!important;margin-left:8px;}
+.flow-agent-library-head button{width:34px!important;height:34px!important;border-radius:10px!important;border:1px solid rgba(24,231,255,.34)!important;background:rgba(24,231,255,.1)!important;color:#e9fbff!important;font-size:16px!important;font-weight:1000!important;}
+.flow-agent-library-head [data-flow-action="toggle-library-size"]{display:none!important;}
+.flow-agent-library>p{margin:0!important;padding:12px 18px!important;color:#9cc6dc!important;background:rgba(24,231,255,.045)!important;border-bottom:1px solid rgba(24,231,255,.12)!important;font-size:13px!important;line-height:1.55!important;font-weight:850!important;}
+.flow-agent-library .agent-lib-section{padding:14px 18px!important;min-height:0!important;}
+.flow-agent-library .agent-lib-section h4{margin:8px 0 12px!important;font-size:14px!important;color:#23eaff!important;letter-spacing:.16em!important;}
+.flow-agent-library .agent-lib-list{display:grid!important;grid-template-columns:1fr!important;gap:10px!important;max-height:none!important;}
+.flow-agent-library .agent-lib-list button{
+  width:100%!important;
+  min-height:92px!important;
+  border:1px solid rgba(24,231,255,.24)!important;
+  border-radius:14px!important;
+  background:linear-gradient(135deg,rgba(12,47,77,.9),rgba(4,22,42,.96))!important;
+  color:#dff8ff!important;
+  display:grid!important;
+  grid-template-columns:42px 1fr!important;
+  gap:12px!important;
+  align-items:center!important;
+  padding:12px!important;
+  cursor:pointer!important;
+  text-align:left!important;
+}
+.flow-agent-library .agent-lib-list button:hover{border-color:#18e7ff!important;box-shadow:0 0 24px rgba(24,231,255,.20)!important;transform:translateX(-2px);}
+.flow-agent-library .agent-lib-list button span{width:38px!important;height:38px!important;border-radius:12px!important;background:rgba(24,231,255,.16)!important;color:#8ff6ff!important;display:grid!important;place-items:center!important;font-size:20px!important;}
+.flow-agent-library .agent-lib-list button b{font-size:17px!important;line-height:1.2!important;color:#f2fbff!important;}
+.flow-agent-library .agent-lib-list button small{display:block!important;margin-top:5px!important;color:#9bc4da!important;font-size:12px!important;line-height:1.35!important;}
+body.agent-library-open .flow-agent-library.open{animation:v3_2SlideIn .18s ease-out;}
+@keyframes v3_2SlideIn{from{transform:translateX(22px);opacity:.7}to{transform:none;opacity:1}}
+
+/* 工业规范治理 module view */
+.governance-workflow-view{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr);gap:14px;}
+.governance-hero{border:1px solid rgba(24,231,255,.25);background:linear-gradient(135deg,rgba(5,47,76,.92),rgba(4,18,34,.92));border-radius:16px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;}
+.governance-hero span{font-size:12px;letter-spacing:.22em;color:#22eaff;font-weight:1000;}
+.governance-hero h3{margin:5px 0 6px;font-size:28px;color:#ecfbff;}
+.governance-hero p{color:#9fbed2;line-height:1.65;font-weight:820;max-width:980px;}
+.governance-hero b{padding:10px 18px;border-radius:999px;border:1px solid rgba(65,241,122,.32);background:rgba(65,241,122,.09);color:#4cf47e;white-space:nowrap;}
+.governance-layout{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;min-height:0;}
+.governance-card{border:1px solid rgba(24,231,255,.22);border-radius:14px;background:rgba(4,24,42,.82);padding:16px;overflow:auto;}
+.governance-card h4{font-size:18px;margin:0 0 12px;color:#eafaff;}
+.governance-command-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+.governance-command{border:1px solid rgba(24,231,255,.16);background:rgba(2,15,31,.76);border-radius:12px;padding:12px;display:grid;grid-template-columns:42px 1fr;gap:10px;align-items:start;}
+.governance-command i{width:34px;height:34px;border-radius:10px;background:#18e7ff;color:#062033;display:grid;place-items:center;font-weight:1000;font-style:normal;}
+.governance-command b{font-size:15px;color:#f1fbff;}.governance-command code{display:block;color:#67eaff;margin:2px 0 5px;font-weight:900;}.governance-command p{color:#9ebfd3;line-height:1.45;font-weight:760;font-size:12px;}
+.governance-flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 14px;}
+.governance-flow span{border:1px solid rgba(24,231,255,.27);background:rgba(24,231,255,.08);padding:8px 10px;border-radius:10px;font-weight:950;color:#dbfbff;}
+.governance-flow i{width:24px;height:2px;background:linear-gradient(90deg,#18e7ff,#4bf077);box-shadow:0 0 10px rgba(24,231,255,.45);}
+.governance-steps{display:grid;gap:9px;}.governance-steps pre{margin:0;border:1px solid rgba(24,231,255,.16);background:#020e1b;border-radius:10px;padding:12px;color:#bdf8ff;white-space:pre-wrap;font-weight:850;line-height:1.5;}
+.governance-agent-chip{display:inline-flex;align-items:center;gap:8px;margin:4px 4px 4px 0;border:1px solid rgba(24,231,255,.24);background:rgba(24,231,255,.08);border-radius:999px;padding:6px 10px;color:#defaff;font-weight:900;}
+.governance-note{margin-top:12px;color:#9fc2d8;line-height:1.6;font-weight:820;}
+@media(max-width:1380px){.governance-layout{grid-template-columns:1fr}.governance-command-list{grid-template-columns:1fr}.flow-agent-library{--v3_2-drawer-w:min(520px,42vw)}}
+

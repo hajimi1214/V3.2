@@ -1,0 +1,29 @@
+/*
+ * 页面屏幕自适应样式。
+ * 配合 screen_adaptive_runtime.js 自动适配不同电脑分辨率。
+ */
+:root{
+  --platform-scale: 1;
+  --platform-width: 100vw;
+  --platform-height: 100vh;
+}
+
+body{
+  overflow: hidden;
+}
+
+.app-shell{
+  width: var(--platform-width) !important;
+  height: var(--platform-height) !important;
+  transform: scale(var(--platform-scale));
+  transform-origin: left top;
+}
+
+.sidebar{
+  height: var(--platform-height) !important;
+}
+
+.main-stage{
+  height: var(--platform-height) !important;
+  width: calc(var(--platform-width) - var(--side)) !important;
+}

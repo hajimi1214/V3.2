@@ -1,0 +1,109 @@
+/* V3.2 progressive Agent decision flow + particle emission */
+.tree-viewport::after{
+  content:'AGENT FLOW / 由工业状态帧逐步触发';
+  position:absolute;
+  right:14px;
+  bottom:10px;
+  z-index:0;
+  font-size:10px;
+  letter-spacing:2px;
+  color:rgba(24,231,255,.16);
+  font-weight:950;
+  pointer-events:none;
+}
+.tree-node{
+  transition:opacity .55s ease, transform .55s cubic-bezier(.2,.85,.2,1), filter .55s ease, border-color .28s ease, box-shadow .28s ease;
+}
+.tree-node.future-node{
+  opacity:0;
+  transform:translateY(18px) scale(.88);
+  filter:blur(2px) saturate(.65);
+  pointer-events:none;
+}
+.tree-node.revealed-node{
+  opacity:1;
+  transform:translateY(0) scale(1);
+  filter:none;
+  animation:nodeMaterialize .72s cubic-bezier(.2,.9,.2,1) both;
+}
+@keyframes nodeMaterialize{
+  0%{opacity:0;transform:translateY(18px) scale(.84);box-shadow:0 0 0 rgba(24,231,255,0)}
+  62%{opacity:1;transform:translateY(-3px) scale(1.025);box-shadow:0 0 34px rgba(24,231,255,.38)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+.tree-lines .flow-line{
+  opacity:0;
+  transition:opacity .5s ease, stroke .3s ease, filter .3s ease;
+}
+.tree-lines .flow-line.line-visible{
+  opacity:.72;
+}
+.tree-lines .flow-line.link-live{
+  opacity:1;
+  stroke:#18e7ff;
+  stroke-width:3;
+  filter:url(#lineGlow);
+  stroke-dasharray:10 8;
+  animation:dash 1.05s linear infinite;
+}
+.tree-node.status-running{
+  background:linear-gradient(180deg,rgba(12,56,90,.98),rgba(4,30,58,.98));
+}
+.tree-node.status-running::before{
+  content:'';
+  position:absolute;
+  inset:-1px;
+  border-radius:inherit;
+  background:linear-gradient(120deg,transparent 0%,rgba(24,231,255,.18) 36%,rgba(24,231,255,.45) 50%,rgba(24,231,255,.16) 64%,transparent 100%);
+  opacity:.64;
+  transform:translateX(-100%);
+  animation:agentScan 1.8s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes agentScan{0%{transform:translateX(-120%)}65%,100%{transform:translateX(120%)}}
+.particle-burst{
+  position:absolute;
+  left:50%;top:50%;
+  z-index:4;
+  pointer-events:none;
+  width:1px;height:1px;
+}
+.particle-burst span{
+  position:absolute;
+  left:0;top:0;
+  width:var(--size,3px);height:var(--size,3px);
+  border-radius:50%;
+  background:#18e7ff;
+  box-shadow:0 0 8px #18e7ff,0 0 18px rgba(24,231,255,.85);
+  animation:particleFly 1.85s ease-out var(--delay,0s) both;
+}
+.particle-burst.parallel span{
+  background:#41f17a;
+  box-shadow:0 0 8px #41f17a,0 0 18px rgba(65,241,122,.55);
+}
+@keyframes particleFly{
+  0%{opacity:0;transform:translate(0,0) scale(.3)}
+  12%{opacity:1}
+  70%{opacity:.9}
+  100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.08)}
+}
+.tree-node.active::after{
+  content:'当前决策中';
+  position:absolute;
+  right:9px;bottom:6px;
+  font-size:9px;
+  color:#031625;
+  background:linear-gradient(90deg,#18e7ff,#41f17a);
+  padding:2px 6px;
+  border-radius:9px;
+  font-weight:950;
+  box-shadow:0 0 14px rgba(24,231,255,.55);
+}
+.tree-node.status-waiting:not(.future-node){
+  border-style:dashed;
+  border-color:rgba(111,155,188,.42);
+}
+.status-bus b#agentBus{color:#18e7ff}
+.run-button span{display:inline-grid;place-items:center;min-width:18px}.run-button:disabled{opacity:.72;cursor:not-allowed}
+.agent-workbox li{position:relative;padding-left:14px}.agent-workbox li:before{position:absolute;left:0;top:0}.agent-workbox li:nth-child(1){animation:workBlink 1.7s ease-in-out infinite}.agent-workbox li:nth-child(2){animation:workBlink 1.7s ease-in-out .25s infinite}.agent-workbox li:nth-child(3){animation:workBlink 1.7s ease-in-out .5s infinite}@keyframes workBlink{0%,100%{color:#dff5ff}50%{color:#44ecff;text-shadow:0 0 10px rgba(24,231,255,.35)}}
+
